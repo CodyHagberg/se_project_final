@@ -1,16 +1,52 @@
 import { useState, useEffect, useRef } from "react";
 import "./ChatWindow.css";
 
-function ChatWindow({ isOpen, onClose }) {
+function ChatWindow({ isOpen, onClose, userName, companyName}) {
   const [messages, setMessages] = useState([]);
   const [inputValue, setInputValue] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef(null);
+  const hasGreeted = useRef(false);
 
   // Auto-scroll to bottom when new messages arrive
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
+
+  // HOOK #2: THE AUTO-GREETING (Triggered only once when window opens)
+  useEffect(() => {
+    if (isOpen && !hasGreeted.current) {
+      sendInitialGreeting();
+      hasGreeted.current = true;
+    }
+  }, [isOpen]);
+
+  const sendInitialGreeting = async () => {
+    setIsLoading(true);
+    try {
+      const response = await fetch("http://localhost:5000/api/chat/message", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ 
+          message: "GREET_USER_FIRST", 
+          userName, 
+          companyName 
+        })
+      });
+      const data = await response.json();
+      if (data.status === "Success") {
+        setMessages([{ 
+          role: "assistant", 
+          content: data.message, 
+          timestamp: new Date() 
+        }]);
+      }
+    } catch (error) {
+      console.error("Initial greeting failed:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const handleSend = async () => {
     if (!inputValue.trim() || isLoading) return;
@@ -31,7 +67,15 @@ function ChatWindow({ isOpen, onClose }) {
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({ message: userMessage.content })
+        body: JSON.stringify({ 
+          message: userMessage.content,
+          userName: userName,
+          companyName: companyName,
+          history: messages.map(msg => ({
+            role: msg.role === "user" ? "user" : "model",
+            parts: [{ text: msg.content }]
+        }))
+      })
       });
 
       const data = await response.json();
@@ -141,7 +185,7 @@ function ChatWindow({ isOpen, onClose }) {
             type="text"
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
-            onKeyPress={handleKeyPress}
+            onKeyDown={handleKeyPress}
             placeholder="Type your message..."
             disabled={isLoading}
             className="chatWindowInput"
