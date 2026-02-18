@@ -9,8 +9,16 @@ function Home() {
       <section id="about">
         <h1 className="pageTitle">About LEAI</h1>
         <p>
-          LEAI is your sales discovery assistant, helping qualify leads by
-          industry and kickstart personalized conversations.
+        LEAI is a next-generation Sales Discovery Assistant designed to bridge the gap between cold leads and closed deals. By leveraging industry-specific intelligence, LEAI automates the most time-consuming part of the sales cycle: the initial discovery and qualification phase.
+
+Core Capabilities
+Industry-Specific Intelligence: LEAI doesn't just "chat"—it understands the unique pain points, jargon, and business models of sectors like Real Estate, SaaS, Medical, and E-commerce.
+
+Automated Lead Qualification: Instantly identifies high-value prospects by asking the right discovery questions before a human rep ever has to pick up the phone.
+
+Instant Contextual Greetings: Replaces generic "Hello" messages with personalized, industry-aware introductions that prove LEAI (and your brand) understands the user's business from second one.
+
+24/7 Discovery Pipeline: While your team sleeps, LEAI is busy engaging visitors, capturing intent, and organizing your pipeline for the next morning.
         </p>
       </section>
 
