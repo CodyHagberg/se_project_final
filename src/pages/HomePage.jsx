@@ -1,6 +1,7 @@
 import "./Pages.css";
 import { useNavigate } from "react-router-dom";
 import PricingCards from "../components/PricingCards/PricingCards";
+import Solutions from "../components/Solutions/Solutions";
 
 function Home() {
   const navigate = useNavigate();
@@ -21,6 +22,8 @@ Instant Contextual Greetings: Replaces generic "Hello" messages with personalize
 24/7 Discovery Pipeline: While your team sleeps, LEAI is busy engaging visitors, capturing intent, and organizing your pipeline for the next morning.
         </p>
       </section>
+
+      <Solutions />
 
       <section id="pricing" className="pageSection">
         <h2 className="pageTitle">Pricing</h2>

@@ -1,0 +1,124 @@
+.solutions {
+  margin-top: 60px;
+  padding: 40px 0;
+}
+
+.solutionsTitle {
+  text-align: center;
+  font-size: 32px;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 40px;
+}
+
+.solutionsSubTitle {
+  text-align: center;
+  font-size: 24px;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 40px;
+}
+
+.solutionsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: clamp(16px, 4vw, 32px);
+  max-width: 1200px;
+  margin: 0 auto;
+  align-items: center;
+  justify-items: center;
+}
+
+.solutionCard {
+  width: 100%;
+  max-width: min(220px, 22vw);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+  border: 1px solid #e0e0e0;
+  padding: clamp(16px, 3vw, 24px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.solutionCard:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 24px rgba(0, 123, 255, 0.15);
+  border-color: #007bff;
+}
+
+.solutionStat {
+  font-size: clamp(32px, 4vw, 44px);
+  font-weight: 800;
+  color: #007bff;
+  margin-bottom: 8px;
+  line-height: 1;
+}
+
+.solutionCardTitle {
+  font-size: clamp(14px, 1.6vw, 18px);
+  font-weight: 600;
+  color: #333;
+  margin: 0 0 6px;
+}
+
+.solutionCardDescription {
+  font-size: clamp(11px, 1.2vw, 13px);
+  color: #666;
+  line-height: 1.4;
+  margin: 0;
+}
+
+@media (max-width: 900px) {
+  .solutionsGrid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+
+  .solutionCard {
+    max-width: min(200px, 40vw);
+  }
+}
+
+@media (max-width: 600px) {
+  .solutions {
+    margin-top: 40px;
+    padding: 24px 0;
+  }
+
+  .solutionsTitle {
+    font-size: 24px;
+    margin-bottom: 24px;
+  }
+
+  .solutionsSubTitle {
+    font-size: 18px;
+    margin-bottom: 24px;
+  }
+
+  .solutionsGrid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+
+  .solutionCard {
+    max-width: min(160px, 42vw);
+  }
+
+  .solutionStat {
+    font-size: 28px;
+  }
+
+  .solutionCardTitle {
+    font-size: 13px;
+  }
+
+  .solutionCardDescription {
+    font-size: 11px;
+  }
+}
