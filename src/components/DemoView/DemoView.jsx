@@ -1,9 +1,10 @@
 import { useState } from "react";
-import ChatWindow from "../components/ChatWindow/ChatWindow";
-import ModalForm from "../components/ModalForm/ModalForm";
-import "./Pages.css";
+import ChatWindow from "../ChatWindow/ChatWindow";
+import ModalForm from "../ModalForm/ModalForm";
+import "../../pages/Pages.css";
+import "./DemoView.css";
 
-function Demo() {
+function DemoView() {
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [showForm, setShowForm] = useState(true);
   const [leadData, setLeadData] = useState(null);
@@ -15,8 +16,8 @@ function Demo() {
   };
 
   return (
-    <div className="page">
-      <h1 className="pageTitle">Demo Page</h1>
+    <div className="demoView">
+      <h1 className="demoViewTitle">Demo</h1>
       {showForm && <ModalForm onSubmit={handleFormSubmit} />}
       {leadData && (
         <div className="demoWelcome">
@@ -32,9 +33,11 @@ function Demo() {
       <ChatWindow
         isOpen={isChatOpen}
         onClose={() => setIsChatOpen(false)}
+        userName={leadData?.name}
+        companyName={leadData?.companyName}
       />
     </div>
   );
 }
 
-export default Demo;
+export default DemoView;

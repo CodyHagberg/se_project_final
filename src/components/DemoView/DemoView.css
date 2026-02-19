@@ -1,0 +1,19 @@
+.demoView {
+  padding: 20px;
+  min-height: 60vh;
+}
+
+.demoViewTitle {
+  margin: 0 0 24px;
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #333;
+}
+
+.demoWelcome {
+  margin-top: 16px;
+}
+
+.demoChatButton {
+  margin-top: 8px;
+}

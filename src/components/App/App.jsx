@@ -1,18 +1,37 @@
-import { Routes, Route } from "react-router-dom";
-import  Header  from "../Header/Header";
-import Home from "../../pages/HomePage";
-import Demo from "../../pages/DemoPage";
-import Footer from "../Footer/Footer"
+import { Routes, Route, useLocation } from "react-router-dom";
+import Header from "../Header/Header";
+import Footer from "../Footer/Footer";
+import About from "../About/About";
+import Solutions from "../Solutions/Solutions";
+import Pricing from "../Pricing/Pricing";
+import FAQ from "../FAQ/FAQ";
+import DemoView from "../DemoView/DemoView";
+import "../../pages/Pages.css";
 
 function App() {
+  const location = useLocation();
+  const isDemo = location.pathname === "/demo";
+
   return (
     <>
       <Header />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/demo" element={<Demo />} />
-      </Routes>
-      <Footer />
+      <main>
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <div className="page">
+                <About />
+                <Solutions />
+                <Pricing />
+                <FAQ />
+              </div>
+            }
+          />
+          <Route path="/demo" element={<DemoView />} />
+        </Routes>
+      </main>
+      {!isDemo && <Footer />}
     </>
   );
 }
