@@ -1,3 +1,8 @@
+/**
+ * Pricing.jsx
+ * Pricing section wrapper: section title + PricingCards grid.
+ * id="pricing" for header anchor links.
+ */
 import PricingCards from "../PricingCards/PricingCards";
 import "./Pricing.css";
 

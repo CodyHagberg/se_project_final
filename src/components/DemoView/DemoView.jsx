@@ -1,3 +1,9 @@
+/**
+ * DemoView.jsx
+ * Demo route content: lead form first, then welcome + "Open Chat" and ChatWindow.
+ * On form submit, lead is saved via API; form hides and chat opens with
+ * personalized greeting. Passes userName/companyName to ChatWindow for AI context.
+ */
 import { useState } from "react";
 import ChatWindow from "../ChatWindow/ChatWindow";
 import ModalForm from "../ModalForm/ModalForm";

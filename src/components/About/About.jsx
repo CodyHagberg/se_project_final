@@ -1,3 +1,9 @@
+/**
+ * About.jsx
+ * Landing "About LEAI" section: intro copy and Core Capabilities list
+ * (industry intelligence, lead qualification, contextual greetings, 24/7 pipeline).
+ * id="about" for header anchor links.
+ */
 import "./About.css";
 
 function About() {

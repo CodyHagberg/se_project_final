@@ -1,3 +1,10 @@
+/**
+ * ChatWindow.jsx
+ * AI chat UI: modal overlay with message list, input, and send. On open,
+ * sends GREET_USER_FIRST to backend for a personalized greeting; then
+ * each user message is sent with conversation history for context.
+ * Props: isOpen, onClose, userName, companyName (from lead form).
+ */
 import { useState, useEffect, useRef } from "react";
 import "./ChatWindow.css";
 
@@ -21,6 +28,7 @@ function ChatWindow({ isOpen, onClose, userName, companyName}) {
     }
   }, [isOpen]);
 
+  /** Request personalized greeting from backend using userName/companyName */
   const sendInitialGreeting = async () => {
     setIsLoading(true);
     try {
@@ -48,6 +56,7 @@ function ChatWindow({ isOpen, onClose, userName, companyName}) {
     }
   };
 
+  /** Send user message + conversation history to backend; append assistant reply or error */
   const handleSend = async () => {
     if (!inputValue.trim() || isLoading) return;
 

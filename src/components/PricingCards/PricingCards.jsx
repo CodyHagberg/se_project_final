@@ -1,3 +1,8 @@
+/**
+ * PricingCards.jsx
+ * Four pricing tiers (Individual, Small Business, Enterprise, Enterprise+)
+ * with feature bullets and a "Try Demo" button that routes to /demo.
+ */
 import { useNavigate } from "react-router-dom";
 import "./PricingCards.css";
 

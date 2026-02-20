@@ -1,3 +1,7 @@
+/**
+ * Footer.jsx
+ * Site footer (author and year). Rendered only on the home route, not on /demo.
+ */
 import "./Footer.css";
 
 export default function Footer() {

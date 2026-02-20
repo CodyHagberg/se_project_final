@@ -1,3 +1,9 @@
+/**
+ * Solutions.jsx
+ * Value-prop section with four circular cards: Cut Discovery Time (75%),
+ * Pre-Qualify Leads (3x), Quality Assurance (100%), Warm Lead Handoff (40%).
+ * Renders between About and Pricing on the home page.
+ */
 import "./Solutions.css";
 
 function Solutions() {
@@ -27,7 +33,7 @@ function Solutions() {
   return (
     <section id="solutions" className="solutions">
       <h2 className="solutionsTitle">Solutions</h2>
-      <h3 className="solutionsSubTitle">How LEAI Transforms Your Sales Process</h3>
+      <h3 className="solutionsSubTitle">Enhancing Your Sales Process with LEAI</h3>
       <div className="solutionsGrid">
         {solutions.map((solution, index) => (
           <div key={index} className="solutionCard">

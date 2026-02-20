@@ -1,3 +1,7 @@
+/**
+ * FAQ.jsx
+ * FAQ section (placeholder copy). id="faq" for header anchor links.
+ */
 import "./FAQ.css";
 
 function FAQ() {
