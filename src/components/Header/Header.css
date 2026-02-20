@@ -58,7 +58,7 @@
 
 .demoButton {
   padding: 8px 16px;
-  background-color: #007bff;
+  background-color: #5fbdca;
   color: #ffffff;
   border: none;
   border-radius: 8px;
@@ -68,5 +68,5 @@
 }
 
 .demoButton:hover {
-  background-color: #0063cc;
+  background-color: #4da8b5;
 }

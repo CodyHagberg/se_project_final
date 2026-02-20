@@ -48,14 +48,14 @@
 
 .solutionCard:hover {
   transform: scale(1.05);
-  box-shadow: 0 8px 24px rgba(0, 123, 255, 0.15);
-  border-color: #007bff;
+  box-shadow: 0 8px 24px rgba(95, 189, 202, 0.25);
+  border-color: #5fbdca;
 }
 
 .solutionStat {
   font-size: clamp(32px, 4vw, 44px);
   font-weight: 800;
-  color: #007bff;
+  color: #5fbdca;
   margin-bottom: 8px;
   line-height: 1;
 }

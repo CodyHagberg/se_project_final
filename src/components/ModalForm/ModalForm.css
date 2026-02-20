@@ -44,7 +44,7 @@
 }
 
 .modalFormInput:focus {
-  border-color: #007bff;
+  border-color: #5fbdca;
 }
 
 .modalFormInput:disabled {
@@ -70,7 +70,7 @@
 
 .modalFormSubmitButton {
   padding: 12px 24px;
-  background-color: #007bff;
+  background-color: #5fbdca;
   color: white;
   border: none;
   border-radius: 8px;
@@ -82,7 +82,7 @@
 }
 
 .modalFormSubmitButton:hover:not(:disabled) {
-  background-color: #0063cc;
+  background-color: #4da8b5;
 }
 
 .modalFormSubmitButton:disabled {

@@ -2,6 +2,14 @@
   padding: 0 0 24px;
 }
 
+.aboutCard {
+  background-color: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 32px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
 .aboutTitle {
   margin: 0 0 16px;
   font-size: 2rem;
@@ -10,25 +18,118 @@
 }
 
 .aboutIntro {
-  margin: 0 0 24px;
-  line-height: 1.6;
+  margin: 0;
+  line-height: 1.7;
   color: #555;
+  font-size: 1rem;
+}
+
+.aboutDivider {
+  border: none;
+  border-top: 1px solid #e0e0e0;
+  margin: 24px 0;
+}
+
+.aboutCapabilities {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.aboutCapabilitiesHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .aboutSubtitle {
-  margin: 0 0 12px;
+  margin: 0;
   font-size: 1.25rem;
   font-weight: 600;
   color: #333;
 }
 
-.aboutList {
-  margin: 0;
-  padding-left: 24px;
-  line-height: 1.7;
-  color: #555;
+.aboutControls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
-.aboutList li {
-  margin-bottom: 12px;
+.aboutArrow {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid #ddd;
+  background: #fff;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+  color: #555;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.aboutArrow:hover {
+  background: #5fbdca;
+  color: #fff;
+  border-color: #5fbdca;
+}
+
+.aboutCounter {
+  font-size: 0.875rem;
+  color: #999;
+  min-width: 40px;
+  text-align: center;
+}
+
+.aboutCapabilityContent {
+  min-height: 100px;
+}
+
+.aboutCapabilityTitle {
+  margin: 0 0 8px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.aboutCapabilityDesc {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: #666;
+}
+
+.aboutDots {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.aboutDot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: none;
+  background: #ddd;
+  cursor: pointer;
+  padding: 0;
+  transition: background 0.2s ease;
+}
+
+.aboutDotActive {
+  background: #5fbdca;
+}
+
+@media (max-width: 768px) {
+  .aboutCard {
+    padding: 24px 20px;
+  }
+
+  .aboutCapabilityContent {
+    min-height: 120px;
+  }
 }

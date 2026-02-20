@@ -15,6 +15,7 @@ import Pricing from "../Pricing/Pricing";
 import FAQ from "../FAQ/FAQ";
 import DemoView from "../DemoView/DemoView";
 import "../../pages/Pages.css";
+import "./App.css";
 
 function App() {
   const location = useLocation();
@@ -23,7 +24,7 @@ function App() {
   return (
     <>
       <Header />
-      <main>
+      <main className={!isDemo ? "mainHome" : ""}>
         <Routes>
           <Route
             path="/"
