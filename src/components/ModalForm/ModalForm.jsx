@@ -5,6 +5,7 @@
  * can hide form and open chat. Inline on demo page (not a modal overlay).
  */
 import { useState } from "react";
+import { createLead } from "../../utils/api";
 import "./ModalForm.css";
 
 function ModalForm({ onSubmit }) {
@@ -64,24 +65,10 @@ function ModalForm({ onSubmit }) {
     setIsSubmitting(true);
 
     try {
-      const response = await fetch("http://localhost:5000/api/leads", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(formData)
-      });
-
-      const data = await response.json();
-
-      if (data.status === "Success") {
-        onSubmit(data.lead);
-      } else {
-        setErrors({ submit: data.error || "Failed to submit form" });
-        setIsSubmitting(false);
-      }
+      const data = await createLead(formData);
+      onSubmit(data.lead);
     } catch (error) {
-      setErrors({ submit: "Failed to connect to server. Please try again." });
+      setErrors({ submit: error.message || "Failed to connect to server. Please try again." });
       setIsSubmitting(false);
     }
   };

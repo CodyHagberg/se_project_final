@@ -6,6 +6,7 @@
  * Props: isOpen, onClose, userName, companyName (from lead form).
  */
 import { useState, useEffect, useRef } from "react";
+import { sendChatMessage } from "../../utils/api";
 import "./ChatWindow.css";
 
 function ChatWindow({ isOpen, onClose, userName, companyName}) {
@@ -32,23 +33,16 @@ function ChatWindow({ isOpen, onClose, userName, companyName}) {
   const sendInitialGreeting = async () => {
     setIsLoading(true);
     try {
-      const response = await fetch("http://localhost:5000/api/chat/message", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ 
-          message: "GREET_USER_FIRST", 
-          userName, 
-          companyName 
-        })
+      const data = await sendChatMessage({
+        message: "GREET_USER_FIRST",
+        userName,
+        companyName,
       });
-      const data = await response.json();
-      if (data.status === "Success") {
-        setMessages([{ 
-          role: "assistant", 
-          content: data.message, 
-          timestamp: new Date() 
-        }]);
-      }
+      setMessages([{
+        role: "assistant",
+        content: data.message,
+        timestamp: new Date(),
+      }]);
     } catch (error) {
       console.error("Initial greeting failed:", error);
     } finally {
@@ -71,46 +65,29 @@ function ChatWindow({ isOpen, onClose, userName, companyName}) {
     setIsLoading(true);
 
     try {
-      const response = await fetch("http://localhost:5000/api/chat/message", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ 
-          message: userMessage.content,
-          userName: userName,
-          companyName: companyName,
-          history: messages.map(msg => ({
-            role: msg.role === "user" ? "user" : "model",
-            parts: [{ text: msg.content }]
-        }))
-      })
+      const data = await sendChatMessage({
+        message: userMessage.content,
+        userName,
+        companyName,
+        history: messages.map((msg) => ({
+          role: msg.role === "user" ? "user" : "model",
+          parts: [{ text: msg.content }],
+        })),
       });
 
-      const data = await response.json();
-
-      if (data.status === "Success") {
-        const assistantMessage = {
-          role: "assistant",
-          content: data.message,
-          timestamp: new Date()
-        };
-        setMessages((prev) => [...prev, assistantMessage]);
-      } else {
-        const errorMessage = {
-          role: "assistant",
-          content: `Error: ${data.error || "Failed to get response"}`,
-          timestamp: new Date()
-        };
-        setMessages((prev) => [...prev, errorMessage]);
-      }
+      setMessages((prev) => [
+        ...prev,
+        { role: "assistant", content: data.message, timestamp: new Date() },
+      ]);
     } catch (error) {
-      const errorMessage = {
-        role: "assistant",
-        content: `Error: ${error.message || "Failed to connect to server"}`,
-        timestamp: new Date()
-      };
-      setMessages((prev) => [...prev, errorMessage]);
+      setMessages((prev) => [
+        ...prev,
+        {
+          role: "assistant",
+          content: `Error: ${error.message || "Failed to connect to server"}`,
+          timestamp: new Date(),
+        },
+      ]);
     } finally {
       setIsLoading(false);
     }
