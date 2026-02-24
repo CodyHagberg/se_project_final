@@ -133,3 +133,49 @@
     min-height: 120px;
   }
 }
+
+@media (max-width: 480px) {
+  .aboutCard {
+    padding: 20px 16px;
+  }
+
+  .aboutTitle {
+    font-size: 1.5rem;
+  }
+
+  .aboutIntro {
+    font-size: 0.9rem;
+  }
+
+  .aboutCapabilitiesHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .aboutSubtitle {
+    font-size: 1.1rem;
+  }
+
+  .aboutArrow {
+    width: 32px;
+    height: 32px;
+    font-size: 18px;
+  }
+
+  .aboutControls {
+    gap: 8px;
+  }
+
+  .aboutCapabilityTitle {
+    font-size: 1rem;
+  }
+
+  .aboutCapabilityDesc {
+    font-size: 0.85rem;
+  }
+
+  .aboutDivider {
+    margin: 16px 0;
+  }
+}

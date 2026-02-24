@@ -17,3 +17,14 @@
 .demoChatButton {
   margin-top: 8px;
 }
+
+@media (max-width: 480px) {
+  .demoView {
+    padding: 16px 12px;
+  }
+
+  .demoViewTitle {
+    font-size: 1.4rem;
+    margin-bottom: 16px;
+  }
+}

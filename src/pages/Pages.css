@@ -33,3 +33,18 @@
 .demoChatButton {
   margin-top: 8px;
 }
+
+@media (max-width: 480px) {
+  .page {
+    padding: 16px;
+  }
+
+  .pageSection {
+    margin-top: 28px;
+  }
+
+  .primaryButton {
+    font-size: 14px;
+    padding: 10px 16px;
+  }
+}

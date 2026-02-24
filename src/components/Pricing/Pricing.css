@@ -8,3 +8,9 @@
   font-weight: 700;
   color: #333;
 }
+
+@media (max-width: 480px) {
+  .pricingTitle {
+    font-size: 1.25rem;
+  }
+}

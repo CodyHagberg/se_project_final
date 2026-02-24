@@ -70,3 +70,53 @@
 .pricingCardButton:active {
   transform: scale(0.98);
 }
+
+@media (max-width: 600px) {
+  .pricingCards {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+
+  .pricingCard {
+    padding: 18px;
+  }
+
+  .pricingCardTitle {
+    font-size: 20px;
+  }
+
+  .pricingCardFeature {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 480px) {
+  .pricingCards {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .pricingCard {
+    padding: 16px;
+  }
+
+  .pricingCardTitle {
+    font-size: 18px;
+    margin-bottom: 12px;
+  }
+
+  .pricingCardFeatures {
+    margin-bottom: 16px;
+  }
+
+  .pricingCardFeature {
+    font-size: 13px;
+    padding: 6px 0;
+    padding-left: 22px;
+  }
+
+  .pricingCardButton {
+    padding: 10px 20px;
+    font-size: 13px;
+  }
+}
