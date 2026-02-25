@@ -1,9 +1,3 @@
-/**
- * About.jsx
- * Single "About LEAI" card: static intro on top, Core Capabilities
- * step-through below (one capability at a time with prev/next arrows).
- * id="about" for header anchor links.
- */
 import { useState } from "react";
 import "./About.css";
 

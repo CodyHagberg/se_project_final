@@ -1,10 +1,3 @@
-/**
- * ChatWindow.jsx
- * AI chat UI: modal overlay with message list, input, and send. On open,
- * sends GREET_USER_FIRST to backend for a personalized greeting; then
- * each user message is sent with conversation history for context.
- * Props: isOpen, onClose, userName, companyName (from lead form).
- */
 import { useState, useEffect, useRef } from "react";
 import { sendChatMessage } from "../../utils/api";
 import "./ChatWindow.css";
@@ -16,12 +9,10 @@ function ChatWindow({ isOpen, onClose, userName, companyName}) {
   const messagesEndRef = useRef(null);
   const hasGreeted = useRef(false);
 
-  // Auto-scroll to bottom when new messages arrive
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  // HOOK #2: THE AUTO-GREETING (Triggered only once when window opens)
   useEffect(() => {
     if (isOpen && !hasGreeted.current) {
       sendInitialGreeting();
@@ -29,7 +20,6 @@ function ChatWindow({ isOpen, onClose, userName, companyName}) {
     }
   }, [isOpen]);
 
-  /** Request personalized greeting from backend using userName/companyName */
   const sendInitialGreeting = async () => {
     setIsLoading(true);
     try {
@@ -50,7 +40,6 @@ function ChatWindow({ isOpen, onClose, userName, companyName}) {
     }
   };
 
-  /** Send user message + conversation history to backend; append assistant reply or error */
   const handleSend = async () => {
     if (!inputValue.trim() || isLoading) return;
 
@@ -115,7 +104,6 @@ function ChatWindow({ isOpen, onClose, userName, companyName}) {
         className="chatWindowModal"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Header */}
         <div className="chatWindowHeader">
           <h2 className="chatWindowTitle">Chat with Gemini</h2>
           <button
@@ -126,7 +114,6 @@ function ChatWindow({ isOpen, onClose, userName, companyName}) {
           </button>
         </div>
 
-        {/* Messages */}
         <div className="chatWindowMessages">
           {messages.length === 0 && (
             <div className="chatWindowEmptyState">
@@ -165,7 +152,6 @@ function ChatWindow({ isOpen, onClose, userName, companyName}) {
           <div ref={messagesEndRef} />
         </div>
 
-        {/* Input */}
         <div className="chatWindowInputRow">
           <input
             type="text"

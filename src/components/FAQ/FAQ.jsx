@@ -1,8 +1,3 @@
-/**
- * FAQ.jsx
- * Accordion-style FAQ section with expandable questions.
- * id="faq" for header anchor links.
- */
 import { useState } from "react";
 import "./FAQ.css";
 

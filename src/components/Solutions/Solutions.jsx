@@ -1,9 +1,3 @@
-/**
- * Solutions.jsx
- * Value-prop section with four circular cards: Cut Discovery Time (75%),
- * Pre-Qualify Leads (3x), Quality Assurance (100%), Warm Lead Handoff (40%).
- * Renders between About and Pricing on the home page.
- */
 import "./Solutions.css";
 
 function Solutions() {

@@ -1,9 +1,3 @@
-/**
- * ModalForm.jsx
- * Lead capture form (name, email, company name). Validates on submit,
- * POSTs to /api/leads, then calls onSubmit(lead) on success so parent
- * can hide form and open chat. Inline on demo page (not a modal overlay).
- */
 import { useState } from "react";
 import { createLead } from "../../utils/api";
 import "./ModalForm.css";
@@ -23,7 +17,6 @@ function ModalForm({ onSubmit }) {
       ...prev,
       [name]: value
     }));
-    // Clear error when user starts typing
     if (errors[name]) {
       setErrors((prev) => ({
         ...prev,
@@ -32,7 +25,6 @@ function ModalForm({ onSubmit }) {
     }
   };
 
-  /** Client-side validation for required fields and email format */
   const validateForm = () => {
     const newErrors = {};
 
@@ -54,7 +46,6 @@ function ModalForm({ onSubmit }) {
     return Object.keys(newErrors).length === 0;
   };
 
-  /** Submit: validate, POST to /api/leads, then call onSubmit(lead) or set errors */
   const handleSubmit = async (e) => {
     e.preventDefault();
 

@@ -1,8 +1,3 @@
-/**
- * Header.jsx
- * Site-wide navigation bar. Logo links to home; nav links scroll to
- * About, Pricing, FAQ on the home page; Demo button routes to /demo.
- */
 import { useNavigate } from "react-router-dom";
 import "./Header.css";
 import logo from "../../assets/header-logo.svg";

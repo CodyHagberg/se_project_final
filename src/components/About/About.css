@@ -13,7 +13,7 @@
 .aboutTitle {
   margin: 0 0 16px;
   font-size: 2rem;
-  font-weight: 700;
+  font-weight: 500;
   color: #333;
 }
 
@@ -45,7 +45,7 @@
 .aboutSubtitle {
   margin: 0;
   font-size: 1.25rem;
-  font-weight: 600;
+  font-weight: 500;
   color: #333;
 }
 
@@ -91,7 +91,7 @@
 .aboutCapabilityTitle {
   margin: 0 0 8px;
   font-size: 1.1rem;
-  font-weight: 600;
+  font-weight: 500;
   color: #333;
 }
 

@@ -1,9 +1,5 @@
-const BASE_URL = "http://localhost:5000";
+import { BASE_URL } from "./constants";
 
-/**
- * Shared fetch wrapper — throws on non-OK responses with
- * the server's error message when available.
- */
 async function request(endpoint, options = {}) {
   const response = await fetch(`${BASE_URL}${endpoint}`, {
     headers: { "Content-Type": "application/json" },

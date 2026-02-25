@@ -5,7 +5,7 @@
 .faqTitle {
   margin: 0 0 24px;
   font-size: 1.75rem;
-  font-weight: 700;
+  font-weight: 500;
   color: #333;
 }
 
@@ -42,7 +42,7 @@
   border: none;
   cursor: pointer;
   font-size: 1rem;
-  font-weight: 600;
+  font-weight: 500;
   color: #333;
   text-align: left;
   gap: 16px;
