@@ -1,4 +1,8 @@
 import { useNavigate } from "react-router-dom";
+import individualBg from "../../assets/individual.svg";
+import smallBusinessBg from "../../assets/small business.svg";
+import enterpriseBg from "../../assets/enterprise.svg";
+import enterprisePlusBg from "../../assets/enterprise_plus.svg";
 import "./PricingCards.css";
 
 function PricingCards() {
@@ -7,6 +11,7 @@ function PricingCards() {
   const pricingTiers = [
     {
       title: "Individual",
+      image: individualBg,
       features: [
         "Up to 10 conversations per month",
         "Basic industry qualification",
@@ -16,6 +21,7 @@ function PricingCards() {
     },
     {
       title: "Small Business",
+      image: smallBusinessBg,
       features: [
         "Up to 50 conversations per month",
         "Advanced industry qualification",
@@ -26,6 +32,7 @@ function PricingCards() {
     },
     {
       title: "Enterprise",
+      image: enterpriseBg,
       features: [
         "Unlimited conversations",
         "Full industry qualification suite",
@@ -37,6 +44,7 @@ function PricingCards() {
     },
     {
       title: "Enterprise +",
+      image: enterprisePlusBg,
       features: [
         "Everything in Enterprise",
         "White-label solution",
@@ -52,20 +60,28 @@ function PricingCards() {
     <div className="pricingCards">
       {pricingTiers.map((tier, index) => (
         <div key={index} className="pricingCard">
-          <h3 className="pricingCardTitle">{tier.title}</h3>
-          <ul className="pricingCardFeatures">
-            {tier.features.map((feature, featureIndex) => (
-              <li key={featureIndex} className="pricingCardFeature">
-                {feature}
-              </li>
-            ))}
-          </ul>
-          <button
-            className="pricingCardButton"
-            onClick={() => navigate("/demo")}
-          >
-            Try Demo
-          </button>
+          <div className="pricingCardHeader">
+            <h3 className="pricingCardTitle">{tier.title}</h3>
+          </div>
+          <div
+            className="pricingCardImage"
+            style={{ backgroundImage: `url(${tier.image})` }}
+          />
+          <div className="pricingCardBody">
+            <ul className="pricingCardFeatures">
+              {tier.features.map((feature, featureIndex) => (
+                <li key={featureIndex} className="pricingCardFeature">
+                  {feature}
+                </li>
+              ))}
+            </ul>
+            <button
+              className="pricingCardButton"
+              onClick={() => navigate("/demo")}
+            >
+              Try Demo
+            </button>
+          </div>
         </div>
       ))}
     </div>

@@ -8,22 +8,42 @@
 .pricingCard {
   border: 1px solid #e0e0e0;
   border-radius: 12px;
-  padding: 24px;
-  background-color: #ffffff;
   display: flex;
   flex-direction: column;
   transition: box-shadow 0.2s ease;
+  overflow: hidden;
+  background-color: #ffffff;
 }
 
 .pricingCard:hover {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
+.pricingCardHeader {
+  padding: 20px 24px 0;
+  background-color: #ffffff;
+}
+
 .pricingCardTitle {
-  margin: 0 0 16px;
+  margin: 0;
   font-size: 24px;
   font-weight: 500;
   color: #333;
+}
+
+.pricingCardImage {
+  height: 160px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.pricingCardBody {
+  padding: 20px 24px 24px;
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
 }
 
 .pricingCardFeatures {
@@ -77,12 +97,20 @@
     gap: 16px;
   }
 
-  .pricingCard {
-    padding: 18px;
+  .pricingCardHeader {
+    padding: 16px 18px 0;
   }
 
   .pricingCardTitle {
     font-size: 20px;
+  }
+
+  .pricingCardImage {
+    height: 120px;
+  }
+
+  .pricingCardBody {
+    padding: 16px 18px 18px;
   }
 
   .pricingCardFeature {
@@ -96,13 +124,20 @@
     gap: 14px;
   }
 
-  .pricingCard {
-    padding: 16px;
+  .pricingCardHeader {
+    padding: 14px 16px 0;
   }
 
   .pricingCardTitle {
     font-size: 18px;
-    margin-bottom: 12px;
+  }
+
+  .pricingCardImage {
+    height: 140px;
+  }
+
+  .pricingCardBody {
+    padding: 14px 16px 16px;
   }
 
   .pricingCardFeatures {
