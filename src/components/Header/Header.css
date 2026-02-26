@@ -48,7 +48,7 @@
 .nav-link {
   text-decoration: none;
   color: #555;
-  font-size: 14px;
+  font-size: 18px;
   font-weight: 500;
 }
 
@@ -57,12 +57,12 @@
 }
 
 .demoButton {
-  padding: 8px 16px;
+  padding: 12px 24px;
   background-color: #5fbdca;
   color: #ffffff;
   border: none;
   border-radius: 8px;
-  font-size: 14px;
+  font-size: 18px;
   font-weight: 500;
   cursor: pointer;
 }
@@ -92,7 +92,7 @@
   }
 
   .nav-link {
-    font-size: 12px;
+    font-size: 15px;
   }
 
   .nav {
@@ -100,8 +100,8 @@
   }
 
   .demoButton {
-    font-size: 13px;
-    padding: 8px 12px;
+    font-size: 15px;
+    padding: 10px 16px;
   }
 }
 
@@ -122,12 +122,12 @@
   }
 
   .nav-link {
-    font-size: 11px;
+    font-size: 13px;
   }
 
   .demoButton {
-    font-size: 12px;
-    padding: 6px 10px;
+    font-size: 13px;
+    padding: 8px 12px;
     flex-shrink: 0;
   }
 }
