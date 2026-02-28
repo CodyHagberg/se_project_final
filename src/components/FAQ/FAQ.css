@@ -4,7 +4,7 @@
 
 .faqTitle {
   margin: 0 0 24px;
-  font-size: 1.75rem;
+  font-size: 28px;
   font-weight: 500;
   color: #333;
 }
@@ -41,7 +41,7 @@
   background: none;
   border: none;
   cursor: pointer;
-  font-size: 1rem;
+  font-size: 16px;
   font-weight: 500;
   color: #333;
   text-align: left;
@@ -53,7 +53,7 @@
 }
 
 .faqIcon {
-  font-size: 1.25rem;
+  font-size: 20px;
   font-weight: 700;
   color: #5fbdca;
   flex-shrink: 0;
@@ -67,7 +67,7 @@
 
 .faqAnswer p {
   margin: 0;
-  font-size: 0.95rem;
+  font-size: 15px;
   line-height: 1.7;
   color: #555;
 }
@@ -75,7 +75,7 @@
 @media (max-width: 768px) {
   .faqQuestion {
     padding: 16px 20px;
-    font-size: 0.95rem;
+    font-size: 15px;
   }
 
   .faqAnswer {
@@ -85,7 +85,7 @@
 
 @media (max-width: 480px) {
   .faqTitle {
-    font-size: 1.4rem;
+    font-size: 22px;
     margin-bottom: 16px;
   }
 
@@ -95,7 +95,7 @@
 
   .faqQuestion {
     padding: 14px 16px;
-    font-size: 0.875rem;
+    font-size: 14px;
     gap: 12px;
   }
 
@@ -104,11 +104,11 @@
   }
 
   .faqAnswer p {
-    font-size: 0.85rem;
+    font-size: 14px;
   }
 
   .faqIcon {
-    font-size: 1.1rem;
+    font-size: 18px;
     width: 20px;
   }
 }

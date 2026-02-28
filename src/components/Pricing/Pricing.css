@@ -4,13 +4,13 @@
 
 .pricingTitle {
   margin: 0 0 16px;
-  font-size: 1.5rem;
+  font-size: 24px;
   font-weight: 500;
   color: #333;
 }
 
 @media (max-width: 480px) {
   .pricingTitle {
-    font-size: 1.25rem;
+    font-size: 20px;
   }
 }

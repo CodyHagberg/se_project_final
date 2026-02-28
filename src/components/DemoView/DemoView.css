@@ -5,7 +5,7 @@
 
 .demoViewTitle {
   margin: 0 0 24px;
-  font-size: 1.75rem;
+  font-size: 28px;
   font-weight: 500;
   color: #333;
 }
@@ -24,7 +24,7 @@
   }
 
   .demoViewTitle {
-    font-size: 1.4rem;
+    font-size: 22px;
     margin-bottom: 16px;
   }
 }

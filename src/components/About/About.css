@@ -12,7 +12,7 @@
 
 .aboutTitle {
   margin: 0 0 16px;
-  font-size: 2rem;
+  font-size: 32px;
   font-weight: 500;
   color: #333;
 }
@@ -21,7 +21,7 @@
   margin: 0;
   line-height: 1.7;
   color: #555;
-  font-size: 1rem;
+  font-size: 16px;
 }
 
 .aboutDivider {
@@ -44,7 +44,7 @@
 
 .aboutSubtitle {
   margin: 0;
-  font-size: 1.25rem;
+  font-size: 20px;
   font-weight: 500;
   color: #333;
 }
@@ -78,7 +78,7 @@
 }
 
 .aboutCounter {
-  font-size: 0.875rem;
+  font-size: 14px;
   color: #999;
   min-width: 40px;
   text-align: center;
@@ -90,14 +90,14 @@
 
 .aboutCapabilityTitle {
   margin: 0 0 8px;
-  font-size: 1.1rem;
+  font-size: 18px;
   font-weight: 500;
   color: #333;
 }
 
 .aboutCapabilityDesc {
   margin: 0;
-  font-size: 0.95rem;
+  font-size: 15px;
   line-height: 1.7;
   color: #666;
 }
@@ -140,11 +140,11 @@
   }
 
   .aboutTitle {
-    font-size: 1.5rem;
+    font-size: 24px;
   }
 
   .aboutIntro {
-    font-size: 0.9rem;
+    font-size: 14px;
   }
 
   .aboutCapabilitiesHeader {
@@ -154,7 +154,7 @@
   }
 
   .aboutSubtitle {
-    font-size: 1.1rem;
+    font-size: 18px;
   }
 
   .aboutArrow {
@@ -168,11 +168,11 @@
   }
 
   .aboutCapabilityTitle {
-    font-size: 1rem;
+    font-size: 16px;
   }
 
   .aboutCapabilityDesc {
-    font-size: 0.85rem;
+    font-size: 14px;
   }
 
   .aboutDivider {
