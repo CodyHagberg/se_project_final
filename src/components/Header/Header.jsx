@@ -16,10 +16,10 @@ function Header() {
         style={{ backgroundImage: `url(${backgroundImage})` }}
       >
         <nav className="nav">
-          <a href={`${import.meta.env.BASE_URL}#about`} className="nav-link">About</a>
-          <a href={`${import.meta.env.BASE_URL}#solutions`} className="nav-link">Solutions</a>
-          <a href={`${import.meta.env.BASE_URL}#pricing`} className="nav-link">Pricing</a>
-          <a href={`${import.meta.env.BASE_URL}#faq`} className="nav-link">FAQ</a>
+          <a href="/#about" className="nav-link">About</a>
+          <a href="/#solutions" className="nav-link">Solutions</a>
+          <a href="/#pricing" className="nav-link">Pricing</a>
+          <a href="/#faq" className="nav-link">FAQ</a>
         </nav>
       </div>
       <button
