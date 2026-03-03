@@ -54,6 +54,12 @@
   color: #000;
 }
 
+.header__actions {
+  display: flex;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
 .demoButton {
   padding: 12px 24px;
   background-color: #5fbdca;
@@ -67,6 +73,14 @@
 
 .demoButton:hover {
   background-color: #4da8b5;
+}
+
+.header__loginBtn {
+  background-color: #1a1a2e;
+}
+
+.header__loginBtn:hover {
+  background-color: #2a2a4e;
 }
 
 @media (max-width: 768px) {

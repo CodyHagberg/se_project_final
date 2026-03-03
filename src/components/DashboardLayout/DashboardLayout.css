@@ -1,0 +1,89 @@
+.dashboard {
+  display: flex;
+  min-height: calc(100vh - 100px);
+}
+
+.dashboard__sidebar {
+  width: 240px;
+  background: #1a1a2e;
+  color: #fff;
+  padding: 24px 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-shrink: 0;
+}
+
+.dashboard__sidebarTop {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.dashboard__userInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.dashboard__companyName {
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.dashboard__role {
+  font-size: 12px;
+  text-transform: uppercase;
+  color: #5fbdca;
+  letter-spacing: 0.5px;
+}
+
+.dashboard__nav {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.dashboard__navLink {
+  padding: 10px 12px;
+  border-radius: 8px;
+  text-decoration: none;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 14px;
+  font-weight: 500;
+  transition: background 0.15s, color 0.15s;
+}
+
+.dashboard__navLink:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+}
+
+.dashboard__navLink--active {
+  background: rgba(95, 189, 202, 0.2);
+  color: #5fbdca;
+}
+
+.dashboard__logoutBtn {
+  padding: 10px 12px;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.dashboard__logoutBtn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+}
+
+.dashboard__content {
+  flex: 1;
+  padding: 32px;
+  background: #f5f7fa;
+  overflow-y: auto;
+}
