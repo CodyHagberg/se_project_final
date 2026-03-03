@@ -1,9 +1,15 @@
-import { BASE_URL } from "./constants";
+import { BASE_URL, DEMO_API_KEY } from "./constants";
 
 async function request(endpoint, options = {}) {
+  const { headers: customHeaders, ...restOptions } = options;
+
   const response = await fetch(`${BASE_URL}${endpoint}`, {
-    headers: { "Content-Type": "application/json" },
-    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      "X-API-Key": DEMO_API_KEY,
+      ...customHeaders,
+    },
+    ...restOptions,
   });
 
   const data = await response.json();
