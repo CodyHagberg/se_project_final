@@ -22,9 +22,9 @@ export async function createLead(formData) {
   });
 }
 
-export async function sendChatMessage({ message, userName, companyName, history }) {
+export async function sendChatMessage({ message, userName, companyName, history, leadId }) {
   return request("/api/chat/message", {
     method: "POST",
-    body: JSON.stringify({ message, userName, companyName, history }),
+    body: JSON.stringify({ message, userName, companyName, history, leadId }),
   });
 }

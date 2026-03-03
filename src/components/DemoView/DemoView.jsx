@@ -35,6 +35,7 @@ function DemoView() {
         onClose={() => setIsChatOpen(false)}
         userName={leadData?.name}
         companyName={leadData?.companyName}
+        leadId={leadData?.id}
       />
     </div>
   );

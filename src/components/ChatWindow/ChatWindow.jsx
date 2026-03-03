@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { sendChatMessage } from "../../utils/api";
 import "./ChatWindow.css";
 
-function ChatWindow({ isOpen, onClose, userName, companyName}) {
+function ChatWindow({ isOpen, onClose, userName, companyName, leadId }) {
   const [messages, setMessages] = useState([]);
   const [inputValue, setInputValue] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -27,6 +27,7 @@ function ChatWindow({ isOpen, onClose, userName, companyName}) {
         message: "GREET_USER_FIRST",
         userName,
         companyName,
+        leadId,
       });
       setMessages([{
         role: "assistant",
@@ -58,6 +59,7 @@ function ChatWindow({ isOpen, onClose, userName, companyName}) {
         message: userMessage.content,
         userName,
         companyName,
+        leadId,
         history: messages.map((msg) => ({
           role: msg.role === "user" ? "user" : "model",
           parts: [{ text: msg.content }],
