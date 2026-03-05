@@ -25,9 +25,6 @@ function Header() {
         </nav>
       </div>
       <div className="header__actions">
-        <button className="demoButton" onClick={() => navigate("/demo")}>
-          Demo
-        </button>
         <button
           className="demoButton header__loginBtn"
           onClick={() => navigate(user ? "/dashboard" : "/login")}
