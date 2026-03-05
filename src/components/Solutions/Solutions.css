@@ -1,162 +1,149 @@
 .solutions {
-  margin-top: 60px;
-  padding: 40px 0;
+  padding: 48px 0 24px;
+}
+
+.solutionsHeader {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.solutionsTitleBubble {
+  display: inline-block;
+  background: #ffffff;
+  padding: 10px 36px;
+  border-radius: 50px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  margin-bottom: 12px;
 }
 
 .solutionsTitle {
-  text-align: center;
-  font-size: 32px;
-  font-weight: 500;
+  font-size: 36px;
+  font-weight: 600;
   color: #333;
-  margin-bottom: 40px;
+  margin: 0;
 }
 
 .solutionsSubTitle {
-  text-align: center;
-  font-size: 24px;
-  font-weight: 500;
-  color: #333;
-  margin-bottom: 40px;
+  font-size: 18px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.92);
+  margin: 0;
 }
 
 .solutionsGrid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: clamp(16px, 4vw, 32px);
-  max-width: 1300px;
-  margin: 0 auto;
-  align-items: center;
-  justify-items: center;
+  gap: 16px;
 }
 
 .solutionCard {
-  width: 100%;
-  max-width: min(270px, 25vw);
-  aspect-ratio: 1;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+  background: #ffffff;
   border: 1px solid #e0e0e0;
-  padding: clamp(20px, 3.5vw, 32px);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  border-radius: 12px;
+  padding: 28px 20px;
   text-align: center;
   transition: all 0.3s ease;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .solutionCard:hover {
-  transform: scale(1.05);
-  box-shadow: 0 8px 24px rgba(95, 189, 202, 0.25);
-  border-color: #5fbdca;
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
 }
 
 .solutionStat {
-  font-size: clamp(32px, 4vw, 44px);
+  font-size: 44px;
   font-weight: 800;
   color: #5fbdca;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
   line-height: 1;
 }
 
 .solutionCardTitle {
-  font-size: clamp(14px, 1.6vw, 18px);
-  font-weight: 500;
+  font-size: 17px;
+  font-weight: 600;
   color: #333;
-  margin: 0 0 6px;
+  margin: 0 0 10px;
 }
 
 .solutionCardDescription {
-  font-size: clamp(11px, 1.2vw, 13px);
-  color: #666;
-  line-height: 1.4;
+  font-size: 14px;
+  color: #555;
+  line-height: 1.6;
   margin: 0;
 }
 
 @media (max-width: 900px) {
   .solutionsGrid {
     grid-template-columns: repeat(2, 1fr);
-    gap: 24px;
-  }
-
-  .solutionCard {
-    max-width: min(250px, 44vw);
+    gap: 16px;
   }
 }
 
 @media (max-width: 600px) {
   .solutions {
-    margin-top: 40px;
-    padding: 24px 0;
+    padding: 36px 0 24px;
   }
 
   .solutionsTitle {
-    font-size: 24px;
-    margin-bottom: 24px;
-  }
-
-  .solutionsSubTitle {
-    font-size: 18px;
-    margin-bottom: 24px;
-  }
-
-  .solutionsGrid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
-  }
-
-  .solutionCard {
-    max-width: min(210px, 44vw);
-  }
-
-  .solutionStat {
     font-size: 28px;
-  }
-
-  .solutionCardTitle {
-    font-size: 13px;
-  }
-
-  .solutionCardDescription {
-    font-size: 11px;
-  }
-}
-
-@media (max-width: 400px) {
-  .solutions {
-    margin-top: 24px;
-    padding: 16px 0;
-  }
-
-  .solutionsTitle {
-    font-size: 20px;
-    margin-bottom: 16px;
   }
 
   .solutionsSubTitle {
     font-size: 16px;
-    margin-bottom: 16px;
   }
 
   .solutionsGrid {
-    grid-template-columns: 1fr;
-    gap: 16px;
-  }
-
-  .solutionCard {
-    max-width: 210px;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
   }
 
   .solutionStat {
-    font-size: 26px;
+    font-size: 36px;
   }
 
   .solutionCardTitle {
-    font-size: 13px;
+    font-size: 15px;
   }
 
   .solutionCardDescription {
-    font-size: 11px;
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 480px) {
+  .solutions {
+    padding: 28px 0 24px;
+  }
+
+  .solutionsTitleBubble {
+    padding: 8px 28px;
+  }
+
+  .solutionsTitle {
+    font-size: 24px;
+  }
+
+  .solutionsSubTitle {
+    font-size: 15px;
+  }
+
+  .solutionCard {
+    padding: 22px 16px;
+  }
+
+  .solutionStat {
+    font-size: 32px;
+  }
+
+  .solutionCardTitle {
+    font-size: 14px;
+  }
+
+  .solutionCardDescription {
+    font-size: 12px;
   }
 }

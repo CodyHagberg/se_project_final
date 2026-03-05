@@ -76,11 +76,12 @@
 }
 
 .header__loginBtn {
-  background-color: #1a1a2e;
+  background-color: #ffffff;
+  color: #333;
 }
 
 .header__loginBtn:hover {
-  background-color: #2a2a4e;
+  background-color: #f0f0f0;
 }
 
 @media (max-width: 768px) {

@@ -34,10 +34,12 @@ function App() {
   const showHeader = !isDashboard;
   const showFooter = !isDashboard && !isDemo && !isAuthPage;
 
+  const hasGradient = !isDashboard;
+
   return (
-    <>
+    <div className={hasGradient ? "appHome" : undefined}>
       {showHeader && <Header />}
-      <main className={!isDemo && !isDashboard && !isAuthPage ? "mainHome" : ""}>
+      <main>
         <Routes>
           <Route
             path="/"
@@ -87,7 +89,7 @@ function App() {
         </Routes>
       </main>
       {showFooter && <Footer />}
-    </>
+    </div>
   );
 }
 

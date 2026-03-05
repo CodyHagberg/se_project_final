@@ -2,15 +2,28 @@
   padding: 0 0 24px;
 }
 
+.pricingTitleBubble {
+  display: inline-block;
+  background: #ffffff;
+  padding: 10px 36px;
+  border-radius: 50px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  margin-bottom: 20px;
+}
+
 .pricingTitle {
-  margin: 0 0 16px;
-  font-size: 24px;
-  font-weight: 500;
+  margin: 0;
+  font-size: 32px;
+  font-weight: 600;
   color: #333;
 }
 
 @media (max-width: 480px) {
+  .pricingTitleBubble {
+    padding: 8px 28px;
+  }
+
   .pricingTitle {
-    font-size: 20px;
+    font-size: 24px;
   }
 }

@@ -33,7 +33,9 @@ function FAQ() {
 
   return (
     <section id="faq" className="faq pageSection">
-      <h2 className="faqTitle">Frequently Asked Questions</h2>
+      <div className="faqTitleBubble">
+        <h2 className="faqTitle">Frequently Asked Questions</h2>
+      </div>
       <div className="faqList">
         {faqItems.map((item, index) => (
           <div
