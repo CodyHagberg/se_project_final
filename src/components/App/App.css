@@ -38,3 +38,24 @@
 .appHome .header__loginBtn:hover {
   background-color: #f0f0f0;
 }
+
+@media (max-width: 560px) {
+  .appHome .nav-oval-wrapper {
+    padding: 6px 12px;
+    margin: 0 6px;
+  }
+}
+
+@media (max-width: 400px) {
+  .appHome .nav-oval-wrapper {
+    padding: 4px 8px;
+    margin: 0 4px;
+  }
+}
+
+@media (max-width: 300px) {
+  .appHome .nav-oval-wrapper {
+    padding: 3px 6px;
+    margin: 0 3px;
+  }
+}
