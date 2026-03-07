@@ -1,3 +1,4 @@
+//AdminOnboard component
 import { useState } from "react";
 import { createBusiness } from "../../utils/api";
 import "./AdminOnboard.css";
