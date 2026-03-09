@@ -29,6 +29,7 @@ function VoiceChat({ leadId, userName, companyName, micStream, onClose }) {
   const processorRef = useRef(null);
   const playbackQueueRef = useRef([]);
   const isPlayingRef = useRef(false);
+  const nextPlayTimeRef = useRef(0);
   const transcriptEndRef = useRef(null);
   const isMutedRef = useRef(false);
 
@@ -67,29 +68,46 @@ function VoiceChat({ leadId, userName, companyName, micStream, onClose }) {
     };
 
     drainQueueRef.current = () => {
+      const ctx = playbackContextRef.current;
+      if (!ctx) return;
+
       if (playbackQueueRef.current.length === 0) {
         isPlayingRef.current = false;
         setIsAiSpeaking(false);
         return;
       }
+
       isPlayingRef.current = true;
       setIsAiSpeaking(true);
 
-      const ctx = playbackContextRef.current;
-      if (!ctx) return;
+      while (playbackQueueRef.current.length > 0) {
+        const buffer = playbackQueueRef.current.shift();
+        const source = ctx.createBufferSource();
+        source.buffer = buffer;
+        source.connect(ctx.destination);
 
-      const buffer = playbackQueueRef.current.shift();
-      const source = ctx.createBufferSource();
-      source.buffer = buffer;
-      source.connect(ctx.destination);
-      source.onended = () => drainQueueRef.current?.();
-      source.start();
+        const startAt = Math.max(ctx.currentTime, nextPlayTimeRef.current);
+        source.start(startAt);
+        nextPlayTimeRef.current = startAt + buffer.duration;
+
+        if (playbackQueueRef.current.length === 0) {
+          source.onended = () => {
+            if (playbackQueueRef.current.length > 0) {
+              drainQueueRef.current?.();
+            } else {
+              isPlayingRef.current = false;
+              setIsAiSpeaking(false);
+            }
+          };
+        }
+      }
     };
   });
 
   function playAudioChunk(base64Audio) {
     if (!playbackContextRef.current) {
       playbackContextRef.current = new AudioContext({ sampleRate: 24000 });
+      nextPlayTimeRef.current = 0;
     }
 
     const binaryStr = atob(base64Audio);
@@ -108,9 +126,7 @@ function VoiceChat({ leadId, userName, companyName, micStream, onClose }) {
     audioBuffer.getChannelData(0).set(float32);
 
     playbackQueueRef.current.push(audioBuffer);
-    if (!isPlayingRef.current) {
-      drainQueueRef.current?.();
-    }
+    drainQueueRef.current?.();
   }
 
   function cleanupAll() {
@@ -136,6 +152,7 @@ function VoiceChat({ leadId, userName, companyName, micStream, onClose }) {
     }
     playbackQueueRef.current = [];
     isPlayingRef.current = false;
+    nextPlayTimeRef.current = 0;
   }
 
   function startAudioCapture() {
