@@ -1,0 +1,285 @@
+.voiceChat {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+}
+
+.voiceChatMain {
+  background: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  width: 100%;
+  max-width: 520px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.voiceChatVisual {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 24px 24px;
+  background: linear-gradient(180deg, rgba(95, 189, 202, 0.08) 0%, transparent 100%);
+}
+
+.voiceChatOrb {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+  transition: all 0.4s ease;
+}
+
+.voiceChatOrbConnecting {
+  background: rgba(200, 200, 200, 0.3);
+}
+
+.voiceChatOrbListening {
+  background: rgba(95, 189, 202, 0.2);
+  animation: orbPulse 2.5s ease-in-out infinite;
+}
+
+.voiceChatOrbSpeaking {
+  background: rgba(95, 189, 202, 0.3);
+  animation: orbSpeak 0.8s ease-in-out infinite;
+}
+
+.voiceChatOrbInner {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: #5fbdca;
+  transition: all 0.3s ease;
+}
+
+.voiceChatOrbSpeaking .voiceChatOrbInner {
+  animation: orbInnerSpeak 0.6s ease-in-out infinite alternate;
+}
+
+@keyframes orbPulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.06); opacity: 0.85; }
+}
+
+@keyframes orbSpeak {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+@keyframes orbInnerSpeak {
+  0% { transform: scale(0.9); }
+  100% { transform: scale(1.1); }
+}
+
+.voiceChatStatus {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 500;
+  color: #888;
+}
+
+.voiceChatTranscript {
+  flex: 1;
+  min-height: 180px;
+  max-height: 300px;
+  overflow-y: auto;
+  border-top: 1px solid #f0f0f0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.voiceChatTranscriptInner {
+  padding: 16px 20px;
+}
+
+.voiceChatTranscriptEmpty {
+  text-align: center;
+  color: #aaa;
+  font-size: 14px;
+  font-style: italic;
+  margin: 24px 0;
+}
+
+.voiceChatMsg {
+  margin-bottom: 14px;
+}
+
+.voiceChatMsgRole {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 3px;
+}
+
+.voiceChatMsgUser .voiceChatMsgRole {
+  color: #5fbdca;
+}
+
+.voiceChatMsgAssistant .voiceChatMsgRole {
+  color: #888;
+}
+
+.voiceChatMsgText {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.6;
+  color: #333;
+}
+
+.voiceChatControls {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  padding: 24px;
+}
+
+.voiceChatBtn {
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.voiceChatBtnRound {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #f5f5f5;
+  color: #333;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.voiceChatBtnRound svg {
+  width: 24px;
+  height: 24px;
+}
+
+.voiceChatBtnRound:hover {
+  background: #e8e8e8;
+}
+
+.voiceChatBtnMuted {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.voiceChatBtnMuted:hover {
+  background: #fecaca;
+}
+
+.voiceChatBtnEnd {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #ef4444;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.voiceChatBtnEnd svg {
+  width: 24px;
+  height: 24px;
+}
+
+.voiceChatBtnEnd:hover {
+  background: #dc2626;
+}
+
+.voiceChatBtnSecondary {
+  padding: 10px 24px;
+  border-radius: 8px;
+  background: #f5f5f5;
+  color: #333;
+}
+
+.voiceChatBtnSecondary:hover {
+  background: #e8e8e8;
+}
+
+.voiceChatError {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 40px 32px;
+  max-width: 400px;
+  text-align: center;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+.voiceChatErrorIcon {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: #fee2e2;
+  color: #dc2626;
+  font-size: 24px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px;
+}
+
+.voiceChatErrorText {
+  margin: 0 0 24px;
+  font-size: 15px;
+  line-height: 1.6;
+  color: #555;
+}
+
+.voiceChatErrorActions {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+@media (max-width: 480px) {
+  .voiceChat {
+    padding: 12px;
+  }
+
+  .voiceChatMain {
+    border-radius: 16px;
+  }
+
+  .voiceChatVisual {
+    padding: 28px 16px 20px;
+  }
+
+  .voiceChatOrb {
+    width: 80px;
+    height: 80px;
+  }
+
+  .voiceChatOrbInner {
+    width: 48px;
+    height: 48px;
+  }
+
+  .voiceChatControls {
+    padding: 16px;
+    gap: 16px;
+  }
+
+  .voiceChatBtnRound,
+  .voiceChatBtnEnd {
+    width: 48px;
+    height: 48px;
+  }
+
+  .voiceChatBtnRound svg,
+  .voiceChatBtnEnd svg {
+    width: 20px;
+    height: 20px;
+  }
+}
