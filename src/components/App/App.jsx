@@ -17,13 +17,14 @@ import AIConfig from "../AIConfig/AIConfig";
 import WidgetSetup from "../WidgetSetup/WidgetSetup";
 import AdminOnboard from "../AdminOnboard/AdminOnboard";
 import AdminBusinesses from "../AdminBusinesses/AdminBusinesses";
+import DashboardOverview from "../DashboardOverview/DashboardOverview";
 import "../../pages/Pages.css";
 import "./App.css";
 
 function DashboardRedirect() {
   const { user } = useAuth();
   if (user?.role === "admin") return <Navigate to="/dashboard/admin/businesses" replace />;
-  return <Navigate to="/dashboard/leads" replace />;
+  return <Navigate to="/dashboard/overview" replace />;
 }
 
 function App() {
@@ -65,6 +66,7 @@ function App() {
             }
           >
             <Route index element={<DashboardRedirect />} />
+            <Route path="overview" element={<DashboardOverview />} />
             <Route path="leads" element={<LeadsList />} />
             <Route path="leads/:id" element={<LeadDetail />} />
             <Route path="ai-config" element={<AIConfig />} />

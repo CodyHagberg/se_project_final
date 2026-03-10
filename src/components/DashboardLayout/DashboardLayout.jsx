@@ -43,6 +43,14 @@ function DashboardLayout() {
             {user?.role === "business" && (
               <>
                 <NavLink
+                  to="/dashboard/overview"
+                  className={({ isActive }) =>
+                    `dashboard__navLink ${isActive ? "dashboard__navLink--active" : ""}`
+                  }
+                >
+                  Overview
+                </NavLink>
+                <NavLink
                   to="/dashboard/leads"
                   className={({ isActive }) =>
                     `dashboard__navLink ${isActive ? "dashboard__navLink--active" : ""}`
@@ -74,8 +82,13 @@ function DashboardLayout() {
           Sign Out
         </button>
       </aside>
-      <div className="dashboard__content">
-        <Outlet />
+      <div className="dashboard__main">
+        <div className="dashboard__content">
+          <Outlet />
+        </div>
+        <footer className="dashboard__footer">
+          LEAI {new Date().getFullYear()}
+        </footer>
       </div>
     </div>
   );

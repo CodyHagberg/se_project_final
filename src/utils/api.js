@@ -71,6 +71,13 @@ export async function fetchLeadDetail(id) {
   return authRequest(`/api/dashboard/leads/${id}`);
 }
 
+export async function updateLeadStatus(id, status) {
+  return authRequest(`/api/dashboard/leads/${id}/status`, {
+    method: "PATCH",
+    body: JSON.stringify({ status }),
+  });
+}
+
 export async function fetchWidgetSnippet() {
   return authRequest("/api/dashboard/widget-snippet");
 }

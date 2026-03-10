@@ -1,6 +1,6 @@
 .dashboard {
   display: flex;
-  min-height: calc(100vh - 100px);
+  height: 100vh;
 }
 
 .dashboard__sidebar {
@@ -81,9 +81,26 @@
   color: #fff;
 }
 
+.dashboard__main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
 .dashboard__content {
   flex: 1;
   padding: 32px;
   background: #f5f7fa;
   overflow-y: auto;
+}
+
+.dashboard__footer {
+  padding: 16px 32px;
+  background: #f5f7fa;
+  border-top: 1px solid #e0e4e8;
+  text-align: center;
+  font-size: 13px;
+  color: #999;
+  flex-shrink: 0;
 }

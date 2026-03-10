@@ -1,0 +1,65 @@
+.overview__loading,
+.overview__error {
+  padding: 32px;
+  text-align: center;
+  color: #666;
+}
+
+.overview__error {
+  color: #e74c3c;
+}
+
+.overview__title {
+  margin: 0 0 28px;
+  font-size: 24px;
+  font-weight: 600;
+  color: #1a1a2e;
+}
+
+.overview__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.overview__card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 28px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  border-left: 4px solid #ccc;
+}
+
+.overview__card--total {
+  border-left-color: #5fbdca;
+}
+
+.overview__card--new {
+  border-left-color: #3498db;
+}
+
+.overview__card--qualified {
+  border-left-color: #f39c12;
+}
+
+.overview__card--closed {
+  border-left-color: #27ae60;
+}
+
+.overview__cardValue {
+  font-size: 36px;
+  font-weight: 700;
+  color: #1a1a2e;
+  line-height: 1;
+}
+
+.overview__cardLabel {
+  font-size: 14px;
+  font-weight: 500;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}

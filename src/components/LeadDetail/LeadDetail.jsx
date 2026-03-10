@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { fetchLeadDetail } from "../../utils/api";
+import { fetchLeadDetail, updateLeadStatus } from "../../utils/api";
 import "./LeadDetail.css";
 
 function LeadDetail() {
@@ -9,6 +9,7 @@ function LeadDetail() {
   const [lead, setLead] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [statusSaving, setStatusSaving] = useState(false);
 
   useEffect(() => {
     loadLead();
@@ -41,9 +42,27 @@ function LeadDetail() {
           <p className="leadDetail__meta">{lead.email} &middot; {lead.companyName}</p>
           <div className="leadDetail__tags">
             {lead.industry && <span className="leadDetail__tag">{lead.industry}</span>}
-            <span className={`leadDetail__tag leadDetail__tag--${lead.status || "new"}`}>
-              {lead.status || "new"}
-            </span>
+            <select
+              className={`leadDetail__statusSelect leadDetail__statusSelect--${lead.status || "new"}`}
+              value={lead.status || "new"}
+              disabled={statusSaving}
+              onChange={async (e) => {
+                const newStatus = e.target.value;
+                setStatusSaving(true);
+                try {
+                  await updateLeadStatus(id, newStatus);
+                  setLead((prev) => ({ ...prev, status: newStatus }));
+                } catch (err) {
+                  setError(err.message);
+                } finally {
+                  setStatusSaving(false);
+                }
+              }}
+            >
+              <option value="new">New</option>
+              <option value="qualified">Qualified</option>
+              <option value="closed">Closed</option>
+            </select>
           </div>
         </div>
         <span className="leadDetail__date">

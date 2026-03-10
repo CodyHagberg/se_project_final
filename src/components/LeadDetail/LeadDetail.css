@@ -67,6 +67,42 @@
   color: #c62828;
 }
 
+.leadDetail__statusSelect {
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: capitalize;
+  border: 2px solid transparent;
+  cursor: pointer;
+  outline: none;
+  appearance: auto;
+  font-family: inherit;
+}
+
+.leadDetail__statusSelect--new {
+  background: #e8f4fd;
+  color: #0277bd;
+  border-color: #b3dff5;
+}
+
+.leadDetail__statusSelect--qualified {
+  background: #e8f5e9;
+  color: #2e7d32;
+  border-color: #a5d6a7;
+}
+
+.leadDetail__statusSelect--closed {
+  background: #fce4ec;
+  color: #c62828;
+  border-color: #f8bbd0;
+}
+
+.leadDetail__statusSelect:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
 .leadDetail__date {
   font-size: 13px;
   color: #999;
