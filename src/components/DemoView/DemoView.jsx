@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState } from "react";
 import ChatWindow from "../ChatWindow/ChatWindow";
 import ChatModeSelector from "../ChatModeSelector/ChatModeSelector";
 import VoiceChat from "../VoiceChat/VoiceChat";
@@ -11,7 +11,7 @@ function DemoView() {
   const [leadData, setLeadData] = useState(null);
   const [chatMode, setChatMode] = useState(null);
   const [micError, setMicError] = useState(null);
-  const micStreamRef = useRef(null);
+  const [micStream, setMicStream] = useState(null);
 
   const handleFormSubmit = (lead) => {
     setLeadData(lead);
@@ -30,7 +30,7 @@ function DemoView() {
             noiseSuppression: true,
           },
         });
-        micStreamRef.current = stream;
+        setMicStream(stream);
         setChatMode("voice");
       } catch (err) {
         if (err.name === "NotAllowedError") {
@@ -45,9 +45,9 @@ function DemoView() {
   };
 
   const handleBackToModeSelect = () => {
-    if (micStreamRef.current) {
-      micStreamRef.current.getTracks().forEach((t) => t.stop());
-      micStreamRef.current = null;
+    if (micStream) {
+      micStream.getTracks().forEach((t) => t.stop());
+      setMicStream(null);
     }
     setChatMode(null);
     setMicError(null);
@@ -82,7 +82,7 @@ function DemoView() {
           leadId={leadData?.id}
           userName={leadData?.name}
           companyName={leadData?.companyName}
-          micStream={micStreamRef.current}
+          micStream={micStream}
           onClose={handleBackToModeSelect}
         />
       )}
