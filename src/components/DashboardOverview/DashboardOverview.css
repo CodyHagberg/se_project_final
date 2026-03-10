@@ -63,3 +63,29 @@
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
+
+.overview__chartSection {
+  margin-top: 32px;
+  background: #fff;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.overview__chartTitle {
+  margin: 0 0 20px;
+  font-size: 18px;
+  font-weight: 600;
+  color: #1a1a2e;
+}
+
+.overview__chartEmpty {
+  color: #999;
+  font-size: 14px;
+  text-align: center;
+  padding: 40px 0;
+}
+
+.overview__chart {
+  width: 100%;
+}
