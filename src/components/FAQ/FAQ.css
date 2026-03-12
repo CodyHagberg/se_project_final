@@ -1,21 +1,14 @@
 .faq {
-  padding: 0 0 24px;
-}
-
-.faqTitleBubble {
-  display: inline-block;
-  background: #ffffff;
-  padding: 10px 36px;
-  border-radius: 50px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
-  margin-bottom: 24px;
+  padding: 72px 0 0;
 }
 
 .faqTitle {
-  margin: 0;
-  font-size: 28px;
-  font-weight: 600;
-  color: #333;
+  margin: 0 0 32px;
+  font-size: 40px;
+  font-weight: 700;
+  color: #fff;
+  text-align: center;
+  letter-spacing: -0.5px;
 }
 
 .faqList {
@@ -25,20 +18,21 @@
 }
 
 .faqItem {
-  background-color: #ffffff;
-  border: 1px solid #e0e0e0;
-  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 14px;
   overflow: hidden;
-  transition: box-shadow 0.2s ease;
+  transition: all 0.2s ease;
 }
 
 .faqItem:hover {
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  background: rgba(255, 255, 255, 0.14);
 }
 
 .faqItemOpen {
-  border-color: #5fbdca;
-  box-shadow: 0 2px 12px rgba(95, 189, 202, 0.15);
+  border-color: rgba(255, 255, 255, 0.35);
 }
 
 .faqQuestion {
@@ -52,19 +46,20 @@
   cursor: pointer;
   font-size: 16px;
   font-weight: 500;
-  color: #333;
+  color: #fff;
   text-align: left;
   gap: 16px;
+  font-family: inherit;
 }
 
 .faqQuestion:hover {
-  color: #5fbdca;
+  color: rgba(255, 255, 255, 0.9);
 }
 
 .faqIcon {
   font-size: 20px;
   font-weight: 700;
-  color: #5fbdca;
+  color: rgba(255, 255, 255, 0.6);
   flex-shrink: 0;
   width: 24px;
   text-align: center;
@@ -78,10 +73,18 @@
   margin: 0;
   font-size: 15px;
   line-height: 1.7;
-  color: #555;
+  color: rgba(255, 255, 255, 0.75);
 }
 
 @media (max-width: 768px) {
+  .faq {
+    padding: 56px 0 0;
+  }
+
+  .faqTitle {
+    font-size: 32px;
+  }
+
   .faqQuestion {
     padding: 16px 20px;
     font-size: 15px;
@@ -93,9 +96,13 @@
 }
 
 @media (max-width: 480px) {
+  .faq {
+    padding: 40px 0 0;
+  }
+
   .faqTitle {
-    font-size: 22px;
-    margin-bottom: 16px;
+    font-size: 28px;
+    margin-bottom: 24px;
   }
 
   .faqList {

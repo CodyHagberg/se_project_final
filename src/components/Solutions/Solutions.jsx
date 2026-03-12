@@ -31,9 +31,7 @@ function Solutions() {
   return (
     <section id="solutions" className="solutions">
       <div className="solutionsHeader">
-        <div className="solutionsTitleBubble">
-          <h2 className="solutionsTitle">Solutions</h2>
-        </div>
+        <h2 className="solutionsTitle">Solutions</h2>
         <p className="solutionsSubTitle">
           Enhancing Your Sales Process with LEAI
         </p>

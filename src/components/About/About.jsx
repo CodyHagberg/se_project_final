@@ -27,9 +27,7 @@ function About() {
   return (
     <section id="about" className="about">
       <div className="aboutHero">
-        <div className="aboutTitleBubble">
-          <h2 className="aboutTitle">About LEAI</h2>
-        </div>
+        <h2 className="aboutTitle">About LEAI</h2>
         <p className="aboutIntro">
           LEAI is a next-generation Sales Discovery Assistant designed to bridge
           the gap between cold leads and closed deals. By leveraging
