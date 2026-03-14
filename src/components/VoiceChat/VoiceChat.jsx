@@ -3,8 +3,11 @@ import { WS_BASE_URL, DEMO_API_KEY } from "../../utils/constants";
 import "./VoiceChat.css";
 
 const WS_VOICE_URL = `${WS_BASE_URL}/ws/voice`;
+// Server expects 16kHz PCM audio; browser mic may capture at 44.1/48kHz
+// so the AudioContext is created at this rate to let the browser resample for us.
 const TARGET_SAMPLE_RATE = 16000;
 
+/** Encode raw PCM bytes as base64 for transmission over the WebSocket. */
 function arrayBufferToBase64(buffer) {
   const bytes = new Uint8Array(buffer);
   let binary = "";
@@ -22,16 +25,16 @@ function VoiceChat({ leadId, userName, companyName, micStream, onClose }) {
   const [error, setError] = useState(null);
   const [status, setStatus] = useState("Connecting...");
 
-  const wsRef = useRef(null);
-  const audioContextRef = useRef(null);
-  const playbackContextRef = useRef(null);
-  const streamRef = useRef(null);
-  const processorRef = useRef(null);
-  const playbackQueueRef = useRef([]);
+  const wsRef = useRef(null);             // WebSocket connection to the voice server
+  const audioContextRef = useRef(null);    // AudioContext for mic capture (16kHz)
+  const playbackContextRef = useRef(null); // Separate AudioContext for AI audio playback (24kHz)
+  const streamRef = useRef(null);          // MediaStream from the user's microphone
+  const processorRef = useRef(null);       // ScriptProcessorNode that captures mic frames
+  const playbackQueueRef = useRef([]);     // Queued AudioBuffers waiting to be scheduled
   const isPlayingRef = useRef(false);
-  const nextPlayTimeRef = useRef(0);
-  const transcriptEndRef = useRef(null);
-  const isMutedRef = useRef(false);
+  const nextPlayTimeRef = useRef(0);       // Tracks the end-time of the last scheduled buffer for gapless playback
+  const transcriptEndRef = useRef(null);   // Invisible element at the bottom of the transcript for auto-scroll
+  const isMutedRef = useRef(false);        // Mirror of isMuted state so the audio processor callback can read it synchronously
 
   useEffect(() => {
     isMutedRef.current = isMuted;
@@ -41,11 +44,16 @@ function VoiceChat({ leadId, userName, companyName, micStream, onClose }) {
     transcriptEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [transcript]);
 
+  // These refs hold the latest closures so the WebSocket onmessage handler
+  // (which is set up once) always calls the most recent version of each function
+  // without needing to tear down and re-establish the connection on every render.
   const addTranscriptRef = useRef(null);
   const finalizeRef = useRef(null);
   const drainQueueRef = useRef(null);
 
   useEffect(() => {
+    // Append streamed text to the current partial transcript entry,
+    // or create a new entry if the speaker changed.
     addTranscriptRef.current = (role, content) => {
       setTranscript((prev) => {
         const last = prev[prev.length - 1];
@@ -58,6 +66,7 @@ function VoiceChat({ leadId, userName, companyName, micStream, onClose }) {
       });
     };
 
+    // Mark the latest transcript entry as complete (no longer partial).
     finalizeRef.current = () => {
       setTranscript((prev) => {
         if (prev.length === 0) return prev;
@@ -67,6 +76,10 @@ function VoiceChat({ leadId, userName, companyName, micStream, onClose }) {
       });
     };
 
+    // Schedule all queued AudioBuffers for gapless playback.
+    // Each buffer is scheduled to start exactly when the previous one ends,
+    // and the last buffer's `onended` callback either drains newly-arrived
+    // chunks or marks playback as finished.
     drainQueueRef.current = () => {
       const ctx = playbackContextRef.current;
       if (!ctx) return;
@@ -104,6 +117,12 @@ function VoiceChat({ leadId, userName, companyName, micStream, onClose }) {
     };
   });
 
+  /**
+   * Decode a base64-encoded 16-bit PCM chunk from the server,
+   * convert it to a Web Audio API buffer, and queue it for playback.
+   * The server sends 24kHz mono PCM; we lazily create a dedicated
+   * playback AudioContext at that sample rate to avoid resampling artifacts.
+   */
   function playAudioChunk(base64Audio) {
     if (!playbackContextRef.current) {
       playbackContextRef.current = new AudioContext({ sampleRate: 24000 });
@@ -116,6 +135,7 @@ function VoiceChat({ leadId, userName, companyName, micStream, onClose }) {
       bytes[i] = binaryStr.charCodeAt(i);
     }
 
+    // Convert signed 16-bit PCM → float32 range [-1, 1] for Web Audio
     const int16 = new Int16Array(bytes.buffer);
     const float32 = new Float32Array(int16.length);
     for (let i = 0; i < int16.length; i++) {
@@ -129,6 +149,7 @@ function VoiceChat({ leadId, userName, companyName, micStream, onClose }) {
     drainQueueRef.current?.();
   }
 
+  /** Tear down every resource: audio contexts, mic stream, WebSocket, and playback queue. */
   function cleanupAll() {
     if (processorRef.current) {
       processorRef.current.disconnect();
@@ -155,6 +176,11 @@ function VoiceChat({ leadId, userName, companyName, micStream, onClose }) {
     nextPlayTimeRef.current = 0;
   }
 
+  /**
+   * Hook the mic stream into a ScriptProcessorNode that converts each audio
+   * frame from float32 to signed 16-bit PCM, base64-encodes it, and sends it
+   * over the WebSocket. Called once the server signals "ready".
+   */
   function startAudioCapture() {
     if (!micStream) {
       setError("No microphone stream available. Please go back and try again.");
@@ -173,6 +199,7 @@ function VoiceChat({ leadId, userName, companyName, micStream, onClose }) {
       if (isMutedRef.current) return;
       if (wsRef.current?.readyState !== WebSocket.OPEN) return;
 
+      // Convert float32 → signed 16-bit PCM (inverse of playAudioChunk)
       const float32 = e.inputBuffer.getChannelData(0);
       const int16 = new Int16Array(float32.length);
       for (let i = 0; i < float32.length; i++) {
@@ -192,6 +219,9 @@ function VoiceChat({ leadId, userName, companyName, micStream, onClose }) {
     setStatus("Connected — speak now");
   }
 
+  // Main WebSocket lifecycle — opens once on mount and cleans up on unmount.
+  // Protocol: client sends "setup" → server replies "ready" → bidirectional audio streaming begins.
+  // Server messages: "audio" (PCM chunks), "transcript" (partial text), "turn_complete", "rate_limit", "error".
   useEffect(() => {
     const ws = new WebSocket(WS_VOICE_URL);
     wsRef.current = ws;
