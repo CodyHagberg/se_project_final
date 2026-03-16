@@ -3,28 +3,28 @@ import "./Solutions.css";
 function Solutions() {
   const solutions = [
     {
-      title: "Cut Discovery Time",
-      stat: "75%",
+      title: "Kill the Blind Call",
+      stat: "75% less time wasted on discovery",
       description:
-        "Reduce initial discovery calls from 30 minutes to under 5 minutes. LEAI pre-qualifies leads and gathers essential information before your team even connects.",
+        "30-minute discovery calls are killing your team's momentum. LEAI handles pre-qualification in under 5 minutes — so reps show up to conversations that actually matter.",
     },
     {
-      title: "Pre-Qualify Leads",
-      stat: "3x",
+      title: "Only Talk to Buyers",
+      stat: "60% fewer wasted calls",
       description:
-        "Increase conversion rates by identifying high-intent prospects early. Our AI asks the right questions to separate hot leads from cold inquiries.",
+        "LEAI separates serious buyers from tire-kickers the moment they engage — tripling your conversion rate before a human ever dials.",
     },
     {
-      title: "Quality Assurance",
-      stat: "100%",
+      title: "Consistent. Every Time.",
+      stat: "Zero off days",
       description:
-        "Ensure consistent, professional interactions with every lead. LEAI maintains your brand voice and never misses critical qualification questions.",
+        "Every lead gets the same sharp, on-brand experience. No off days, no missed questions, no inconsistent pitches — just a flawless first impression, every time.",
     },
     {
-      title: "Warm Lead Handoff",
-      stat: "40%",
+      title: "Hand Off, Not Cold Call",
+      stat: "2x faster to close",
       description:
-        "Empower your sales team with fully qualified, warm leads. Sales reps start conversations with complete context and ready-to-close opportunities.",
+        "Your reps inherit full context — budget, pain points, timeline — from the first hello. That's not a warm lead, that's a loaded conversation.",
     },
   ];
 
@@ -32,16 +32,17 @@ function Solutions() {
     <section id="solutions" className="solutions">
       <div className="solutionsHeader">
         <h2 className="solutionsTitle">Solutions</h2>
-        <p className="solutionsSubTitle">
-          Enhancing Your Sales Process with LEAI
+        <h3 className="solutionsSubTitle">Stop Losing Deals Before They Start</h3>
+        <p className="solutionsDescription">
+          LEAI eliminates the blind call — so every conversation your team has is already worth having.
         </p>
       </div>
       <div className="solutionsGrid">
         {solutions.map((solution, index) => (
           <div key={index} className="solutionCard">
-            <div className="solutionStat">{solution.stat}</div>
             <h3 className="solutionCardTitle">{solution.title}</h3>
             <p className="solutionCardDescription">{solution.description}</p>
+            <div className="solutionStat">{solution.stat}</div>
           </div>
         ))}
       </div>
