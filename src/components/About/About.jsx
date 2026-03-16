@@ -9,17 +9,17 @@ const capabilities = [
   {
     title: "Automated Lead Qualification",
     description:
-      "Instantly identifies high-value prospects by asking the right discovery questions before a human rep ever has to pick up the phone.",
+      "No more blind calls. LEAI asks the hard discovery questions — budget, timeline, pain points — so your reps only touch leads that are ready to talk.",
   },
   {
     title: "Instant Contextual Greetings",
     description:
-      "Replaces generic messages with personalized, industry-aware introductions that prove your brand understands the user's business.",
+      "First impressions close deals. LEAI greets every visitor by name with messaging tailored to their industry — in the first second of interaction.",
   },
   {
     title: "24/7 Discovery Pipeline",
     description:
-      "While your team sleeps, LEAI is busy engaging visitors, capturing intent, and organizing your pipeline for the next morning.",
+      "Your best rep doesn't sleep. LEAI works nights, weekends, and holidays — capturing intent and warming leads while your team recharges.",
   },
 ];
 
@@ -27,12 +27,9 @@ function About() {
   return (
     <section id="about" className="about">
       <div className="aboutHero">
-        <h2 className="aboutTitle">About LEAI</h2>
+        <h2 className="aboutTitle">The Engine Behind Closed Deals</h2>
         <p className="aboutIntro">
-          LEAI is a next-generation Sales Discovery Assistant designed to bridge
-          the gap between cold leads and closed deals. By leveraging
-          industry-specific intelligence, LEAI automates the most time-consuming
-          part of the sales cycle: the initial discovery and qualification phase.
+        Most leads go cold before a human ever says hello. LEAI changes that — a native audio and chat assistant that qualifies, engages, and organizes your pipeline the moment a prospect shows up.
         </p>
       </div>
       <div className="aboutGrid">
