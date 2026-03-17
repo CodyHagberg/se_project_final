@@ -11,11 +11,28 @@ import {
 import { fetchLeads } from "../../utils/api";
 import "./DashboardOverview.css";
 
-function buildActivityData(leads) {
+const DATE_RANGES = [
+  { label: "7D", days: 7 },
+  { label: "30D", days: 30 },
+  { label: "90D", days: 90 },
+  { label: "All", days: null },
+];
+
+function buildActivityData(leads, rangeDays) {
   if (!leads.length) return [];
 
+  let filtered = leads;
+  if (rangeDays) {
+    const cutoff = new Date();
+    cutoff.setDate(cutoff.getDate() - rangeDays);
+    cutoff.setHours(0, 0, 0, 0);
+    filtered = leads.filter((l) => new Date(l.createdAt) >= cutoff);
+  }
+
+  if (!filtered.length) return [];
+
   const counts = {};
-  leads.forEach((lead) => {
+  filtered.forEach((lead) => {
     const date = new Date(lead.createdAt).toLocaleDateString("en-US", {
       month: "short",
       day: "numeric",
@@ -23,18 +40,21 @@ function buildActivityData(leads) {
     counts[date] = (counts[date] || 0) + 1;
   });
 
-  const sorted = leads
-    .map((l) => new Date(l.createdAt))
-    .sort((a, b) => a - b);
+  const now = new Date();
+  now.setHours(0, 0, 0, 0);
 
-  const start = new Date(sorted[0]);
-  const end = new Date(sorted[sorted.length - 1]);
+  const start = rangeDays
+    ? new Date(now.getTime() - (rangeDays - 1) * 86400000)
+    : new Date(
+        filtered
+          .map((l) => new Date(l.createdAt))
+          .sort((a, b) => a - b)[0]
+      );
   start.setHours(0, 0, 0, 0);
-  end.setHours(0, 0, 0, 0);
 
   const data = [];
   const current = new Date(start);
-  while (current <= end) {
+  while (current <= now) {
     const label = current.toLocaleDateString("en-US", {
       month: "short",
       day: "numeric",
@@ -48,7 +68,9 @@ function buildActivityData(leads) {
 
 function DashboardOverview() {
   const [stats, setStats] = useState(null);
+  const [allLeads, setAllLeads] = useState([]);
   const [chartData, setChartData] = useState([]);
+  const [range, setRange] = useState(30);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -56,17 +78,24 @@ function DashboardOverview() {
     loadStats();
   }, []);
 
+  useEffect(() => {
+    if (allLeads.length) {
+      setChartData(buildActivityData(allLeads, range));
+    }
+  }, [range, allLeads]);
+
   const loadStats = async () => {
     try {
       const data = await fetchLeads();
       const leads = data.leads || [];
+      setAllLeads(leads);
       setStats({
         total: leads.length,
         newLeads: leads.filter((l) => l.status === "new").length,
         qualified: leads.filter((l) => l.status === "qualified").length,
         closed: leads.filter((l) => l.status === "closed").length,
       });
-      setChartData(buildActivityData(leads));
+      setChartData(buildActivityData(leads, 30));
     } catch (err) {
       setError(err.message);
     } finally {
@@ -97,7 +126,20 @@ function DashboardOverview() {
       </div>
 
       <div className="overview__chartSection">
-        <h3 className="overview__chartTitle">Lead Activity</h3>
+        <div className="overview__chartHeader">
+          <h3 className="overview__chartTitle">Lead Activity</h3>
+          <div className="overview__rangeSelector">
+            {DATE_RANGES.map((r) => (
+              <button
+                key={r.label}
+                className={`overview__rangeBtn ${range === r.days ? "overview__rangeBtn--active" : ""}`}
+                onClick={() => setRange(r.days)}
+              >
+                {r.label}
+              </button>
+            ))}
+          </div>
+        </div>
         {chartData.length === 0 ? (
           <p className="overview__chartEmpty">No activity data yet.</p>
         ) : (
