@@ -1,5 +1,5 @@
 .pricing {
-  padding: 72px 0 0;
+  padding: 0;
 }
 
 .pricingTitle {
@@ -13,7 +13,7 @@
 
 @media (max-width: 768px) {
   .pricing {
-    padding: 56px 0 0;
+    padding: 0;
   }
 
   .pricingTitle {
@@ -24,7 +24,7 @@
 
 @media (max-width: 480px) {
   .pricing {
-    padding: 40px 0 0;
+    padding: 0;
   }
 
   .pricingTitle {
