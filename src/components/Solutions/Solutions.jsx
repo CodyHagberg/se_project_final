@@ -4,7 +4,7 @@ function Solutions() {
   const solutions = [
     {
       title: "Kill the Blind Call",
-      stat: "75% less time wasted on discovery",
+      stat: "Cut discovery by 75%",
       description:
         "30-minute discovery calls are killing your team's momentum. LEAI handles pre-qualification in under 5 minutes — so reps show up to conversations that actually matter.",
     },
