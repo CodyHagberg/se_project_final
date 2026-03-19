@@ -1,0 +1,214 @@
+.dojo__title {
+  margin: 0 0 4px;
+  font-size: 22px;
+  color: #1a1a2e;
+}
+
+.dojo__subtitle {
+  margin: 0 0 24px;
+  font-size: 14px;
+  color: #666;
+}
+
+.dojo__error {
+  padding: 10px 14px;
+  background: #fee;
+  color: #c00;
+  border-radius: 8px;
+  font-size: 14px;
+  margin-bottom: 16px;
+}
+
+.dojo__panels {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  height: calc(100vh - 220px);
+  min-height: 480px;
+}
+
+.dojo__panel {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.dojo__panelHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 18px;
+  border-bottom: 1px solid #e0e4e8;
+  flex-shrink: 0;
+}
+
+.dojo__panelLabel {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1a1a2e;
+}
+
+.dojo__resetBtn {
+  padding: 4px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  background: none;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  color: #666;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.15s;
+}
+
+.dojo__resetBtn:hover {
+  border-color: #999;
+  color: #333;
+}
+
+.dojo__iframeWrap {
+  flex: 1;
+  position: relative;
+}
+
+.dojo__iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.dojo__iframePlaceholder {
+  color: #999;
+  font-size: 14px;
+  text-align: center;
+  padding: 40px;
+}
+
+.dojo__messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.dojo__emptyState {
+  color: #999;
+  font-size: 14px;
+  text-align: center;
+  padding: 40px 16px;
+}
+
+.dojo__msg {
+  max-width: 85%;
+}
+
+.dojo__msg--user {
+  align-self: flex-end;
+}
+
+.dojo__msg--ai {
+  align-self: flex-start;
+}
+
+.dojo__msgRole {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: #999;
+  margin-bottom: 3px;
+  letter-spacing: 0.3px;
+}
+
+.dojo__msg--user .dojo__msgRole {
+  text-align: right;
+}
+
+.dojo__msgText {
+  margin: 0;
+  padding: 10px 14px;
+  border-radius: 12px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.dojo__msg--user .dojo__msgText {
+  background: #5fbdca;
+  color: #fff;
+  border-bottom-right-radius: 4px;
+}
+
+.dojo__msg--ai .dojo__msgText {
+  background: #f0f2f5;
+  color: #1a1a2e;
+  border-bottom-left-radius: 4px;
+}
+
+.dojo__msgText--thinking {
+  color: #999;
+  font-style: italic;
+}
+
+.dojo__inputRow {
+  display: flex;
+  gap: 8px;
+  padding: 14px 16px;
+  border-top: 1px solid #e0e4e8;
+  flex-shrink: 0;
+}
+
+.dojo__input {
+  flex: 1;
+  padding: 10px 14px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: inherit;
+}
+
+.dojo__input:focus {
+  outline: none;
+  border-color: #5fbdca;
+}
+
+.dojo__sendBtn {
+  padding: 10px 20px;
+  background: #5fbdca;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.15s;
+}
+
+.dojo__sendBtn:hover:not(:disabled) {
+  background: #4da8b5;
+}
+
+.dojo__sendBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+@media (max-width: 900px) {
+  .dojo__panels {
+    grid-template-columns: 1fr;
+    height: auto;
+  }
+
+  .dojo__panel--iframe {
+    height: 400px;
+  }
+
+  .dojo__panel--chat {
+    height: 500px;
+  }
+}

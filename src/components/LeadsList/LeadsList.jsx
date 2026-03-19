@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { fetchLeads } from "../../utils/api";
+import { fetchLeads, exportLeadsCSV } from "../../utils/api";
 import "./LeadsList.css";
 
 function LeadsList() {
@@ -24,12 +24,33 @@ function LeadsList() {
     }
   };
 
+  const handleExport = async () => {
+    try {
+      const blob = await exportLeadsCSV();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "leads_export.csv";
+      a.click();
+      URL.revokeObjectURL(url);
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
   if (loading) return <p className="leadsList__loading">Loading leads...</p>;
   if (error) return <p className="leadsList__error">{error}</p>;
 
   return (
     <div className="leadsList">
-      <h2 className="leadsList__title">Leads</h2>
+      <div className="leadsList__header">
+        <h2 className="leadsList__title">Leads</h2>
+        {leads.length > 0 && (
+          <button className="leadsList__exportBtn" onClick={handleExport}>
+            Export CSV
+          </button>
+        )}
+      </div>
       {leads.length === 0 ? (
         <p className="leadsList__empty">No leads yet. They will appear here once visitors use your chat widget.</p>
       ) : (

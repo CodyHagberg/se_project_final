@@ -2,7 +2,7 @@ import { useState } from "react";
 import { createLead } from "../../utils/api";
 import "./ModalForm.css";
 
-function ModalForm({ onSubmit }) {
+function ModalForm({ onSubmit, apiKey }) {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -56,7 +56,7 @@ function ModalForm({ onSubmit }) {
     setIsSubmitting(true);
 
     try {
-      const data = await createLead(formData);
+      const data = await createLead(formData, apiKey);
       onSubmit(data.lead);
     } catch (error) {
       setErrors({ submit: error.message || "Failed to connect to server. Please try again." });

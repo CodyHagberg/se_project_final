@@ -18,6 +18,11 @@ import WidgetSetup from "../WidgetSetup/WidgetSetup";
 import AdminOnboard from "../AdminOnboard/AdminOnboard";
 import AdminBusinesses from "../AdminBusinesses/AdminBusinesses";
 import DashboardOverview from "../DashboardOverview/DashboardOverview";
+import Dojo from "../Dojo/Dojo";
+import SupportConfig from "../SupportConfig/SupportConfig";
+import SupportBubble from "../SupportBubble/SupportBubble";
+import EmbeddableWidget from "../EmbeddableWidget/EmbeddableWidget";
+import { DEMO_API_KEY } from "../../utils/constants";
 import "../../pages/Pages.css";
 import "./App.css";
 
@@ -32,10 +37,12 @@ function App() {
   const isDashboard = location.pathname.startsWith("/dashboard");
   const isAuthPage = location.pathname === "/login" || location.pathname === "/change-password";
   const isDemo = location.pathname === "/demo";
-  const showHeader = !isDashboard;
-  const showFooter = !isDashboard && !isDemo && !isAuthPage;
+  const isSupportBubble = location.pathname === "/support-bubble";
+  const isWidget = location.pathname === "/widget";
+  const showHeader = !isDashboard && !isSupportBubble && !isWidget;
+  const showFooter = !isDashboard && !isDemo && !isAuthPage && !isSupportBubble && !isWidget;
 
-  const hasGradient = !isDashboard;
+  const hasGradient = !isDashboard && !isSupportBubble && !isWidget;
 
   return (
     <div className={hasGradient ? "appHome" : undefined}>
@@ -54,6 +61,8 @@ function App() {
             }
           />
           <Route path="/demo" element={<DemoView />} />
+          <Route path="/support-bubble" element={<SupportBubble />} />
+          <Route path="/widget" element={<EmbeddableWidget />} />
           <Route path="/login" element={<Login />} />
           <Route path="/change-password" element={<ChangePassword />} />
 
@@ -71,6 +80,8 @@ function App() {
             <Route path="leads/:id" element={<LeadDetail />} />
             <Route path="ai-config" element={<AIConfig />} />
             <Route path="widget" element={<WidgetSetup />} />
+            <Route path="dojo" element={<Dojo />} />
+            <Route path="support-config" element={<SupportConfig />} />
             <Route
               path="admin/businesses"
               element={
@@ -91,6 +102,7 @@ function App() {
         </Routes>
       </main>
       {showFooter && <Footer />}
+      {showFooter && <SupportBubble apiKey={DEMO_API_KEY} />}
     </div>
   );
 }

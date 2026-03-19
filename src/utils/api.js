@@ -34,17 +34,19 @@ function authRequest(endpoint, options = {}) {
   });
 }
 
-export async function createLead(formData) {
+export async function createLead(formData, apiKey) {
   return request("/api/leads", {
     method: "POST",
     body: JSON.stringify(formData),
+    headers: apiKey ? { "X-API-Key": apiKey } : {},
   });
 }
 
-export async function sendChatMessage({ message, userName, companyName, history, leadId }) {
+export async function sendChatMessage({ message, userName, companyName, history, leadId, apiKey }) {
   return request("/api/chat/message", {
     method: "POST",
     body: JSON.stringify({ message, userName, companyName, history, leadId }),
+    headers: apiKey ? { "X-API-Key": apiKey } : {},
   });
 }
 
@@ -97,6 +99,17 @@ export async function fetchDefaultTemplate() {
   return authRequest("/api/config/template");
 }
 
+export async function fetchSupportConfig() {
+  return authRequest("/api/config/support");
+}
+
+export async function updateSupportConfig(configData) {
+  return authRequest("/api/config/support", {
+    method: "PUT",
+    body: JSON.stringify(configData),
+  });
+}
+
 export async function createBusiness(data) {
   return authRequest("/api/admin/create-business", {
     method: "POST",
@@ -106,4 +119,20 @@ export async function createBusiness(data) {
 
 export async function fetchBusinesses() {
   return authRequest("/api/admin/businesses");
+}
+
+export async function fetchApiKey() {
+  return authRequest("/api/dashboard/api-key");
+}
+
+export async function exportLeadsCSV() {
+  const token = localStorage.getItem("token");
+  const res = await fetch(`${BASE_URL}/api/dashboard/leads/export/csv`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "X-API-Key": DEMO_API_KEY,
+    },
+  });
+  if (!res.ok) throw new Error("Failed to export leads");
+  return res.blob();
 }

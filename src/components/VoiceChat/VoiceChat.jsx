@@ -17,7 +17,7 @@ function arrayBufferToBase64(buffer) {
   return btoa(binary);
 }
 
-function VoiceChat({ leadId, userName, companyName, micStream, onClose }) {
+function VoiceChat({ leadId, userName, companyName, micStream, onClose, apiKey }) {
   const [isConnected, setIsConnected] = useState(false);
   const [isAiSpeaking, setIsAiSpeaking] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
@@ -236,7 +236,7 @@ function VoiceChat({ leadId, userName, companyName, micStream, onClose }) {
         leadId,
         userName,
         companyName,
-        apiKey: DEMO_API_KEY,
+        apiKey: apiKey || DEMO_API_KEY,
       }));
     };
 

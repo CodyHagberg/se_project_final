@@ -1,7 +1,30 @@
+.leadsList__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
 .leadsList__title {
-  margin: 0 0 20px;
+  margin: 0;
   font-size: 22px;
   color: #1a1a2e;
+}
+
+.leadsList__exportBtn {
+  padding: 8px 18px;
+  background: #1a1a2e;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.leadsList__exportBtn:hover {
+  background: #2a2a4e;
 }
 
 .leadsList__loading,

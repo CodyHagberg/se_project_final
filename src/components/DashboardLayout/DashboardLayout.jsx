@@ -64,7 +64,15 @@ function DashboardLayout() {
                     `dashboard__navLink ${isActive ? "dashboard__navLink--active" : ""}`
                   }
                 >
-                  AI Config
+                  Sales AI Config
+                </NavLink>
+                <NavLink
+                  to="/dashboard/support-config"
+                  className={({ isActive }) =>
+                    `dashboard__navLink ${isActive ? "dashboard__navLink--active" : ""}`
+                  }
+                >
+                  Support Knowledge
                 </NavLink>
                 <NavLink
                   to="/dashboard/widget"
@@ -73,6 +81,14 @@ function DashboardLayout() {
                   }
                 >
                   Widget Setup
+                </NavLink>
+                <NavLink
+                  to="/dashboard/dojo"
+                  className={({ isActive }) =>
+                    `dashboard__navLink ${isActive ? "dashboard__navLink--active" : ""}`
+                  }
+                >
+                  Dojo
                 </NavLink>
               </>
             )}
