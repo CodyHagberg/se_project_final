@@ -3,6 +3,16 @@ import { fetchApiKey } from "../../utils/api";
 import { BASE_URL, DEMO_API_KEY } from "../../utils/constants";
 import "./Dojo.css";
 
+/**
+ * Dashboard view for previewing and testing a tenant's AI configuration.
+ *
+ * Layout:
+ *   Left panel  — iframe embedding the EmbeddableWidget route (/widget?apiKey=…)
+ *                  so the tenant can see exactly what end-users experience.
+ *   Right panel — inline test chat that hits the chat API directly with
+ *                  the tenant's own API key, letting them verify system
+ *                  knowledge without filling out the lead form each time.
+ */
 function Dojo() {
   const [apiKey, setApiKey] = useState(null);
   const [messages, setMessages] = useState([]);
@@ -11,12 +21,15 @@ function Dojo() {
   const [error, setError] = useState("");
   const [iframeUrl, setIframeUrl] = useState("");
   const messagesEndRef = useRef(null);
+  // Prevents the auto-greeting from firing more than once
   const hasGreeted = useRef(false);
 
+  // Keep the chat scrolled to the latest message
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
+  // Fetch the tenant's API key on mount so we can authenticate all requests
   useEffect(() => {
     loadApiKey();
   }, []);
@@ -25,12 +38,15 @@ function Dojo() {
     try {
       const data = await fetchApiKey();
       setApiKey(data.apiKey);
+      // Point the iframe at the embeddable widget route with the tenant's key
       setIframeUrl(`${window.location.origin}/widget?apiKey=${data.apiKey}`);
     } catch (err) {
       setError(err.message);
     }
   };
 
+  // Once the key is loaded, fire an initial greeting from the AI so the
+  // test panel isn't empty when the page first renders.
   useEffect(() => {
     if (apiKey && !hasGreeted.current) {
       hasGreeted.current = true;
@@ -38,6 +54,14 @@ function Dojo() {
     }
   }, [apiKey]);
 
+  /**
+   * Sends a message to the chat API using a direct fetch (bypassing the
+   * shared api.js helpers) so we can inject the tenant's API key and use
+   * placeholder user/company names for testing.
+   *
+   * The special "GREET_USER_FIRST" sentinel tells the backend to reply
+   * with an opening greeting rather than expecting real user input.
+   */
   const sendTestMessage = async (message, history) => {
     setIsLoading(true);
     try {
@@ -58,6 +82,8 @@ function Dojo() {
       const data = await res.json();
       if (data.status === "Error") throw new Error(data.error);
 
+      // For the initial greeting we only append the AI response;
+      // for normal messages we prepend the user bubble too.
       setMessages((prev) => [
         ...prev,
         ...(message !== "GREET_USER_FIRST"
@@ -80,6 +106,7 @@ function Dojo() {
     const text = inputValue.trim();
     setInputValue("");
 
+    // Convert local message history into the Gemini multi-turn format
     const history = messages.map((m) => ({
       role: m.role === "user" ? "user" : "model",
       parts: [{ text: m.content }],
@@ -95,6 +122,7 @@ function Dojo() {
     }
   };
 
+  // Clear the conversation and re-trigger the AI greeting
   const handleReset = () => {
     setMessages([]);
     hasGreeted.current = false;
@@ -115,7 +143,10 @@ function Dojo() {
 
       {error && <p className="dojo__error">{error}</p>}
 
+      {/* Two-column layout: widget preview on the left, test chat on the right */}
       <div className="dojo__panels">
+        {/* Left panel — iframe loads the EmbeddableWidget so the tenant
+            sees the exact same form → mode select → chat flow end-users get */}
         <div className="dojo__panel dojo__panel--iframe">
           <div className="dojo__panelHeader">
             <span className="dojo__panelLabel">Widget Preview</span>
@@ -133,6 +164,8 @@ function Dojo() {
           </div>
         </div>
 
+        {/* Right panel — lightweight inline chat that bypasses the lead form,
+            useful for quickly testing system knowledge without re-submitting */}
         <div className="dojo__panel dojo__panel--chat">
           <div className="dojo__panelHeader">
             <span className="dojo__panelLabel">Test Chat</span>
