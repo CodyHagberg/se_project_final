@@ -6,13 +6,13 @@ function Solutions() {
       title: "Kill the Blind Call",
       stat: "Cut discovery by 75%",
       description:
-        "30-minute discovery calls are killing your team's momentum. LEAI handles pre-qualification in under 5 minutes — so reps show up to conversations that actually matter.",
+        "30-minute discovery calls are killing your team's momentum. ALEI handles pre-qualification in under 5 minutes — so reps show up to conversations that actually matter.",
     },
     {
       title: "Only Talk to Buyers",
       stat: "60% fewer wasted calls",
       description:
-        "LEAI separates serious buyers from tire-kickers the moment they engage — tripling your conversion rate before a human ever dials.",
+        "ALEI separates serious buyers from tire-kickers the moment they engage — tripling your conversion rate before a human ever dials.",
     },
     {
       title: "Consistent. Every Time.",
@@ -34,7 +34,7 @@ function Solutions() {
         <h2 className="solutionsTitle">Solutions</h2>
         <h3 className="solutionsSubTitle">Stop Losing Deals Before They Start</h3>
         <p className="solutionsDescription">
-          LEAI eliminates the blind call — so every conversation your team has is already worth having.
+          ALEI eliminates the blind call — so every conversation your team has is already worth having.
         </p>
       </div>
       <div className="solutionsGrid">

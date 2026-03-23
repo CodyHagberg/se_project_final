@@ -11,7 +11,7 @@ function Header() {
   return (
     <header className="header">
       <h1 className="header-logo" onClick={() => navigate("/")}>
-        <img src={logo} alt="LEAI" />
+        <img src={logo} alt="ALEI" />
       </h1>
       <div
         className="nav-oval-wrapper"

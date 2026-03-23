@@ -268,7 +268,7 @@ function VoiceChat({ leadId, userName, companyName, micStream, onClose, apiKey }
             break;
 
           case "rate_limit":
-            setError(data.message || "Message limit reached. Thanks for trying LEAI!");
+            setError(data.message || "Message limit reached. Thanks for trying ALEI!");
             cleanupAll();
             break;
 
@@ -347,7 +347,7 @@ function VoiceChat({ leadId, userName, companyName, micStream, onClose, apiKey }
                 className={`voiceChatMsg ${msg.role === "user" ? "voiceChatMsgUser" : "voiceChatMsgAssistant"}`}
               >
                 <span className="voiceChatMsgRole">
-                  {msg.role === "user" ? "You" : "LEAI"}
+                  {msg.role === "user" ? "You" : "ALEI"}
                 </span>
                 <p className="voiceChatMsgText">{msg.content}</p>
               </div>

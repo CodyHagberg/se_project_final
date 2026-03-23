@@ -4,22 +4,22 @@ const capabilities = [
   {
     title: "Industry-Specific Intelligence",
     description:
-      "LEAI understands the unique pain points, jargon, and business models of sectors like Real Estate, SaaS, Medical, and E-commerce.",
+      "ALEI understands the unique pain points, jargon, and business models of sectors like Real Estate, SaaS, Medical, and E-commerce.",
   },
   {
     title: "Automated Lead Qualification",
     description:
-      "No more blind calls. LEAI asks the hard discovery questions — budget, timeline, pain points — so your reps only touch leads that are ready to talk.",
+      "No more blind calls. ALEI asks the hard discovery questions — budget, timeline, pain points — so your reps only touch leads that are ready to talk.",
   },
   {
     title: "Instant Contextual Greetings",
     description:
-      "First impressions close deals. LEAI greets every visitor by name with messaging tailored to their industry — in the first second of interaction.",
+      "First impressions close deals. ALEI greets every visitor by name with messaging tailored to their industry — in the first second of interaction.",
   },
   {
     title: "24/7 Discovery Pipeline",
     description:
-      "Your best rep doesn't sleep. LEAI works nights, weekends, and holidays — capturing intent and warming leads while your team recharges.",
+      "Your best rep doesn't sleep. ALEI works nights, weekends, and holidays — capturing intent and warming leads while your team recharges.",
   },
 ];
 
@@ -29,7 +29,7 @@ function About() {
       <div className="aboutHero">
         <h2 className="aboutTitle">The Engine Behind Closed Deals</h2>
         <p className="aboutIntro">
-        Most leads go cold before a human ever says hello. LEAI changes that — a native audio and chat assistant that qualifies, engages, and organizes your pipeline the moment a prospect shows up.
+        Most leads go cold before a human ever says hello. ALEI changes that — a native audio and chat assistant that qualifies, engages, and organizes your pipeline the moment a prospect shows up.
         </p>
       </div>
       <div className="aboutGrid">

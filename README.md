@@ -1,6 +1,6 @@
-# LEAI Frontend
+# ALEI Frontend
 
-React single-page application for the LEAI Sales Discovery Assistant. Provides the marketing landing page (About, Solutions, Pricing, FAQ) and the interactive demo flow where users fill out a lead form and chat with the AI assistant.
+React single-page application for the ALEI Sales Discovery Assistant. Provides the marketing landing page (About, Solutions, Pricing, FAQ) and the interactive demo flow where users fill out a lead form and chat with the AI assistant.
 
 ## Github Pages Reviewer 
 - Open Github pages URL [LINK](https://codyhagberg.github.io/se_project_final/)
@@ -18,7 +18,7 @@ React single-page application for the LEAI Sales Discovery Assistant. Provides t
 ## Prerequisites
 
 - [Node.js](https://nodejs.org/) v18+
-- The [LEAI backend](../leai-backend) running on `http://localhost:5000`
+- The [ALEI backend](../alei-backend) running on `http://localhost:5000`
 
 ## Getting Started
 
@@ -40,5 +40,5 @@ React single-page application for the LEAI Sales Discovery Assistant. Provides t
 
 
 ### Video
-[LEAI Video](https://drive.google.com/file/d/1I3AyiIjxnq31sk7Bs7kqjdjjJenx0OML/view?usp=drive_link)
+[ALEI Video](https://drive.google.com/file/d/1I3AyiIjxnq31sk7Bs7kqjdjjJenx0OML/view?usp=drive_link)
 

@@ -103,7 +103,7 @@ function DashboardLayout() {
           <Outlet />
         </div>
         <footer className="dashboard__footer">
-          LEAI {new Date().getFullYear()}
+          ALEI {new Date().getFullYear()}
         </footer>
       </div>
     </div>

@@ -40,8 +40,8 @@ function WidgetSetup() {
 
   const snippet = activeTab === "sales" ? salesSnippet : supportSnippet;
   const description = activeTab === "sales"
-    ? "Embed the LEAI sales chat widget on your website. This uses your Sales AI Config to qualify leads."
-    : "Embed the LEAI support chat bubble on your website. This uses your Support Knowledge config for FAQs and customer help.";
+    ? "Embed the ALEI sales chat widget on your website. This uses your Sales AI Config to qualify leads."
+    : "Embed the ALEI support chat bubble on your website. This uses your Support Knowledge config for FAQs and customer help.";
 
   return (
     <div className="widgetSetup">
