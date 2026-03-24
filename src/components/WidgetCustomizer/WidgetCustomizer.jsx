@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { fetchConfig, updateConfig } from "../../utils/api";
+import { FIELD_CATALOG } from "../../utils/fieldCatalog";
 import "./WidgetCustomizer.css";
 
 const DEFAULT_FIELDS = [
@@ -7,6 +8,8 @@ const DEFAULT_FIELDS = [
   { key: "email", label: "Email *", placeholder: "Enter your email", type: "email", required: true, enabled: true, options: [] },
   { key: "companyName", label: "Company Name *", placeholder: "Enter your company name", type: "text", required: true, enabled: true, options: [] },
 ];
+
+const CORE_KEYS = ["name", "email"];
 
 function WidgetCustomizer() {
   const [formTitle, setFormTitle] = useState("Get Started");
@@ -55,17 +58,21 @@ function WidgetCustomizer() {
     setFields((prev) => prev.map((f, i) => (i === index ? { ...f, [key]: value } : f)));
   };
 
-  const addField = () => {
-    const key = `custom_${Date.now()}`;
+  const activeKeys = fields.map((f) => f.key);
+  const availableCatalogFields = FIELD_CATALOG.filter((cf) => !activeKeys.includes(cf.key));
+
+  const addCatalogField = (catalogKey) => {
+    const template = FIELD_CATALOG.find((f) => f.key === catalogKey);
+    if (!template) return;
     setFields((prev) => [
       ...prev,
-      { key, label: "New Field", placeholder: "", type: "text", required: false, enabled: true, options: [] },
+      { ...template, enabled: true },
     ]);
   };
 
   const removeField = (index) => {
     const field = fields[index];
-    if (["name", "email"].includes(field.key)) return;
+    if (CORE_KEYS.includes(field.key)) return;
     setFields((prev) => prev.filter((_, i) => i !== index));
   };
 
@@ -107,41 +114,30 @@ function WidgetCustomizer() {
         <div className="wc__section">
           <div className="wc__sectionHeader">
             <label className="wc__label">Form Fields</label>
-            <button type="button" className="wc__addBtn" onClick={addField}>
-              + Add Field
-            </button>
+            {availableCatalogFields.length > 0 && (
+              <select
+                className="wc__addSelect"
+                value=""
+                onChange={(e) => {
+                  if (e.target.value) addCatalogField(e.target.value);
+                }}
+              >
+                <option value="">+ Add Field</option>
+                {availableCatalogFields.map((cf) => (
+                  <option key={cf.key} value={cf.key}>{cf.label}</option>
+                ))}
+              </select>
+            )}
           </div>
 
           <div className="wc__fieldsList">
             {fields.map((field, index) => {
-              const isCore = ["name", "email"].includes(field.key);
+              const isCore = CORE_KEYS.includes(field.key);
               return (
                 <div key={field.key} className="wc__fieldRow">
                   <div className="wc__fieldRowTop">
-                    <input
-                      type="text"
-                      className="wc__fieldInput"
-                      value={field.label}
-                      onChange={(e) => updateField(index, "label", e.target.value)}
-                      placeholder="Label"
-                    />
-                    <input
-                      type="text"
-                      className="wc__fieldInput"
-                      value={field.placeholder}
-                      onChange={(e) => updateField(index, "placeholder", e.target.value)}
-                      placeholder="Placeholder"
-                    />
-                    <select
-                      className="wc__fieldSelect"
-                      value={field.type}
-                      onChange={(e) => updateField(index, "type", e.target.value)}
-                    >
-                      <option value="text">Text</option>
-                      <option value="email">Email</option>
-                      <option value="tel">Phone</option>
-                      <option value="select">Dropdown</option>
-                    </select>
+                    <span className="wc__fieldName">{field.label}</span>
+                    <span className="wc__fieldType">{field.type}</span>
                   </div>
                   <div className="wc__fieldRowBottom">
                     <label className="wc__toggle">
@@ -173,24 +169,6 @@ function WidgetCustomizer() {
                     )}
                     {isCore && <span className="wc__coreBadge">Required field</span>}
                   </div>
-                  {field.type === "select" && (
-                    <div className="wc__fieldOptions">
-                      <label className="wc__optionsLabel">Options (comma separated)</label>
-                      <input
-                        type="text"
-                        className="wc__fieldInput"
-                        value={(field.options || []).join(", ")}
-                        onChange={(e) =>
-                          updateField(
-                            index,
-                            "options",
-                            e.target.value.split(",").map((o) => o.trim()).filter(Boolean)
-                          )
-                        }
-                        placeholder="Option 1, Option 2, Option 3"
-                      />
-                    </div>
-                  )}
                 </div>
               );
             })}
