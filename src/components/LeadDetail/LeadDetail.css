@@ -163,6 +163,40 @@
   opacity: 0.6;
 }
 
+.leadDetail__customFields {
+  margin-bottom: 28px;
+}
+
+.leadDetail__customFieldsList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.leadDetail__customField {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  background: #f8f8f8;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  padding: 10px 14px;
+  min-width: 140px;
+}
+
+.leadDetail__customFieldKey {
+  font-size: 11px;
+  font-weight: 600;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.leadDetail__customFieldValue {
+  font-size: 14px;
+  color: #333;
+}
+
 .leadDetail__loading,
 .leadDetail__error {
   font-size: 14px;

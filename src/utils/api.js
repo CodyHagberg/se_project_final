@@ -125,6 +125,17 @@ export async function fetchApiKey() {
   return authRequest("/api/dashboard/api-key");
 }
 
+export async function fetchWidgetConfig(apiKey) {
+  const response = await fetch(`${BASE_URL}/api/widget/config?apiKey=${encodeURIComponent(apiKey)}`, {
+    headers: { "Content-Type": "application/json" },
+  });
+  const data = await response.json();
+  if (!response.ok || data.status === "Error") {
+    throw new Error(data.error || "Failed to fetch widget config");
+  }
+  return data;
+}
+
 export async function exportLeadsCSV() {
   const token = localStorage.getItem("token");
   const res = await fetch(`${BASE_URL}/api/dashboard/leads/export/csv`, {

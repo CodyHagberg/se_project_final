@@ -2,44 +2,51 @@ import { useState } from "react";
 import { createLead } from "../../utils/api";
 import "./ModalForm.css";
 
-function ModalForm({ onSubmit, apiKey }) {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    companyName: ""
+const CORE_KEYS = ["name", "email", "companyName"];
+
+function ModalForm({ onSubmit, apiKey, widgetConfig }) {
+  const activeFields = widgetConfig?.fields?.filter((f) => f.enabled) || null;
+
+  const [formData, setFormData] = useState(() => {
+    if (activeFields) {
+      const initial = {};
+      activeFields.forEach((f) => { initial[f.key] = ""; });
+      return initial;
+    }
+    return { name: "", email: "", companyName: "" };
   });
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value
-    }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
     if (errors[name]) {
-      setErrors((prev) => ({
-        ...prev,
-        [name]: ""
-      }));
+      setErrors((prev) => ({ ...prev, [name]: "" }));
     }
   };
 
   const validateForm = () => {
     const newErrors = {};
 
-    if (!formData.name.trim()) {
-      newErrors.name = "Name is required";
-    }
-
-    if (!formData.email.trim()) {
-      newErrors.email = "Email is required";
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = "Invalid email format";
-    }
-
-    if (!formData.companyName.trim()) {
-      newErrors.companyName = "Company name is required";
+    if (activeFields) {
+      activeFields.forEach((field) => {
+        const val = (formData[field.key] || "").trim();
+        if (field.required && !val) {
+          newErrors[field.key] = `${field.label.replace(/\s*\*\s*$/, "")} is required`;
+        }
+        if (field.type === "email" && val && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val)) {
+          newErrors[field.key] = "Invalid email format";
+        }
+      });
+    } else {
+      if (!formData.name.trim()) newErrors.name = "Name is required";
+      if (!formData.email.trim()) {
+        newErrors.email = "Email is required";
+      } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+        newErrors.email = "Invalid email format";
+      }
+      if (!formData.companyName.trim()) newErrors.companyName = "Company name is required";
     }
 
     setErrors(newErrors);
@@ -48,15 +55,24 @@ function ModalForm({ onSubmit, apiKey }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    if (!validateForm()) {
-      return;
-    }
+    if (!validateForm()) return;
 
     setIsSubmitting(true);
 
     try {
-      const data = await createLead(formData, apiKey);
+      const payload = { name: formData.name || "", email: formData.email || "", companyName: formData.companyName || "" };
+
+      if (activeFields) {
+        const customFields = {};
+        activeFields.forEach((f) => {
+          if (!CORE_KEYS.includes(f.key) && formData[f.key]) {
+            customFields[f.key] = formData[f.key];
+          }
+        });
+        if (Object.keys(customFields).length) payload.customFields = customFields;
+      }
+
+      const data = await createLead(payload, apiKey);
       onSubmit(data.lead);
     } catch (error) {
       setErrors({ submit: error.message || "Failed to connect to server. Please try again." });
@@ -64,6 +80,65 @@ function ModalForm({ onSubmit, apiKey }) {
     }
   };
 
+  const formTitle = widgetConfig?.formTitle || "Get Started";
+  const submitText = widgetConfig?.submitButtonText || "Submit";
+
+  // Dynamic rendering when widgetConfig is provided
+  if (activeFields) {
+    return (
+      <div className="modalForm">
+        <h2 className="modalFormTitle">{formTitle}</h2>
+        <form className="modalFormContent" onSubmit={handleSubmit}>
+          {activeFields.map((field) => (
+            <div key={field.key} className="modalFormField">
+              <label htmlFor={field.key} className="modalFormLabel">
+                {field.label}
+              </label>
+              {field.type === "select" ? (
+                <select
+                  id={field.key}
+                  name={field.key}
+                  value={formData[field.key] || ""}
+                  onChange={handleChange}
+                  className={`modalFormInput ${errors[field.key] ? "modalFormInputError" : ""}`}
+                  disabled={isSubmitting}
+                >
+                  <option value="">{field.placeholder || "Select..."}</option>
+                  {(field.options || []).map((opt) => (
+                    <option key={opt} value={opt}>{opt}</option>
+                  ))}
+                </select>
+              ) : (
+                <input
+                  type={field.type || "text"}
+                  id={field.key}
+                  name={field.key}
+                  value={formData[field.key] || ""}
+                  onChange={handleChange}
+                  className={`modalFormInput ${errors[field.key] ? "modalFormInputError" : ""}`}
+                  placeholder={field.placeholder}
+                  disabled={isSubmitting}
+                />
+              )}
+              {errors[field.key] && (
+                <span className="modalFormError">{errors[field.key]}</span>
+              )}
+            </div>
+          ))}
+
+          {errors.submit && (
+            <div className="modalFormError modalFormSubmitError">{errors.submit}</div>
+          )}
+
+          <button type="submit" className="modalFormSubmitButton" disabled={isSubmitting}>
+            {isSubmitting ? "Submitting..." : submitText}
+          </button>
+        </form>
+      </div>
+    );
+  }
+
+  // Default hardcoded form (demo / no widgetConfig)
   return (
     <div className="modalForm">
       <h2 className="modalFormTitle">Get Started</h2>

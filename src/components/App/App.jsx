@@ -22,6 +22,7 @@ import Dojo from "../Dojo/Dojo";
 import SupportConfig from "../SupportConfig/SupportConfig";
 import SupportBubble from "../SupportBubble/SupportBubble";
 import EmbeddableWidget from "../EmbeddableWidget/EmbeddableWidget";
+import WidgetCustomizer from "../WidgetCustomizer/WidgetCustomizer";
 import { DEMO_API_KEY } from "../../utils/constants";
 import "../../pages/Pages.css";
 import "./App.css";
@@ -81,6 +82,7 @@ function App() {
             <Route path="ai-config" element={<AIConfig />} />
             <Route path="widget" element={<WidgetSetup />} />
             <Route path="dojo" element={<Dojo />} />
+            <Route path="widget-customizer" element={<WidgetCustomizer />} />
             <Route path="support-config" element={<SupportConfig />} />
             <Route
               path="admin/businesses"

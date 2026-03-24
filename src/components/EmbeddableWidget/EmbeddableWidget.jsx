@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
+import { fetchWidgetConfig } from "../../utils/api";
 import ModalForm from "../ModalForm/ModalForm";
 import ChatModeSelector from "../ChatModeSelector/ChatModeSelector";
 import ChatWindow from "../ChatWindow/ChatWindow";
@@ -15,6 +16,9 @@ import "./EmbeddableWidget.css";
  * The tenant's API key is read from the URL query string (?apiKey=…) and
  * threaded into every child component so all API calls authenticate against
  * the correct tenant rather than the hardcoded demo key.
+ *
+ * On mount, fetches the tenant's widget customization (title, fields, button
+ * text) from the public /api/widget/config endpoint and passes it to ModalForm.
  */
 function EmbeddableWidget() {
   const [searchParams] = useSearchParams();
@@ -26,6 +30,15 @@ function EmbeddableWidget() {
   const [chatMode, setChatMode] = useState(null);    // null | "text" | "voice"
   const [micError, setMicError] = useState(null);
   const [micStream, setMicStream] = useState(null);  // raw MediaStream for voice mode
+  const [widgetConfig, setWidgetConfig] = useState(null);
+
+  useEffect(() => {
+    if (apiKey) {
+      fetchWidgetConfig(apiKey)
+        .then((data) => setWidgetConfig(data.widgetConfig))
+        .catch(() => {});
+    }
+  }, [apiKey]);
 
   const handleFormSubmit = (lead) => {
     setLeadData(lead);
@@ -83,8 +96,8 @@ function EmbeddableWidget() {
 
   return (
     <div className="embeddableWidget">
-      {/* Step 1 — Capture the lead's contact info */}
-      {showForm && <ModalForm onSubmit={handleFormSubmit} apiKey={apiKey} />}
+      {/* Step 1 — Capture the lead's contact info (uses tenant's widget config if available) */}
+      {showForm && <ModalForm onSubmit={handleFormSubmit} apiKey={apiKey} widgetConfig={widgetConfig} />}
 
       {/* Step 2 — Let the lead pick text or voice chat */}
       {leadData && !chatMode && (

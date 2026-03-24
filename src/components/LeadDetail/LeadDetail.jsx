@@ -70,6 +70,20 @@ function LeadDetail() {
         </span>
       </div>
 
+      {lead.customFields && Object.keys(lead.customFields).length > 0 && (
+        <div className="leadDetail__customFields">
+          <h3 className="leadDetail__sectionTitle">Additional Info</h3>
+          <div className="leadDetail__customFieldsList">
+            {Object.entries(lead.customFields).map(([key, value]) => (
+              <div key={key} className="leadDetail__customField">
+                <span className="leadDetail__customFieldKey">{key}</span>
+                <span className="leadDetail__customFieldValue">{value}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
       <div className="leadDetail__conversation">
         <h3 className="leadDetail__sectionTitle">Conversation History</h3>
         {!lead.messages || lead.messages.length === 0 ? (
