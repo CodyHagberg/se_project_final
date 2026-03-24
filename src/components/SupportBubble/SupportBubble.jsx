@@ -54,7 +54,7 @@ function SupportBubble({ apiKey: apiKeyProp }) {
           : []),
         { role: "assistant", content: data.message },
       ]);
-    } catch (err) {
+    } catch {
       setMessages((prev) => [
         ...prev,
         { role: "assistant", content: "Sorry, I'm having trouble connecting. Please try again." },
