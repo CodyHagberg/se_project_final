@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { sendChatMessage } from "../../utils/api";
+import logo from "../../assets/ALEI_Hidden.svg";
 import "./ChatWindow.css";
 
 function ChatWindow({ isOpen, onClose, userName, companyName, leadId, apiKey, idleTimeoutSeconds = 60 }) {
@@ -127,7 +128,7 @@ function ChatWindow({ isOpen, onClose, userName, companyName, leadId, apiKey, id
         onClick={(e) => e.stopPropagation()}
       >
         <div className="chatWindowHeader">
-          <h2 className="chatWindowTitle">Chat with Gemini</h2>
+          <img src={logo} alt="ALEI" className="chatWindowLogo" />
           <button
             onClick={onClose}
             className="chatWindowCloseButton"
@@ -139,7 +140,7 @@ function ChatWindow({ isOpen, onClose, userName, companyName, leadId, apiKey, id
         <div className="chatWindowMessages">
           {messages.length === 0 && (
             <div className="chatWindowEmptyState">
-              Start a conversation with Gemini...
+              Start a conversation with ALEI...
             </div>
           )}
           {messages.map((msg, index) => (

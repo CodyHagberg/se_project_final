@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { WS_BASE_URL, DEMO_API_KEY } from "../../utils/constants";
+import logo from "../../assets/ALEI_Hidden.svg";
 import "./VoiceChat.css";
 
 const WS_VOICE_URL = `${WS_BASE_URL}/ws/voice`;
@@ -347,6 +348,10 @@ function VoiceChat({ leadId, userName, companyName, micStream, onClose, apiKey, 
   return (
     <div className="voiceChat">
       <div className="voiceChatMain">
+        <div className="voiceChatHeader">
+          <img src={logo} alt="ALEI" className="voiceChatLogo" />
+          <button className="voiceChatCloseBtn" onClick={handleEndCall} title="End conversation">×</button>
+        </div>
         <div className="voiceChatVisual">
           <div className={`voiceChatOrb ${isAiSpeaking ? "voiceChatOrbSpeaking" : isConnected ? "voiceChatOrbListening" : "voiceChatOrbConnecting"}`}>
             <div className="voiceChatOrbInner" />
