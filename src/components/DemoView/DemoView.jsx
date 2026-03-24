@@ -64,6 +64,7 @@ function DemoView() {
           userName={leadData.name}
           onSelect={handleModeSelect}
           micError={micError}
+          allowedModes="both"
         />
       )}
 
@@ -74,6 +75,7 @@ function DemoView() {
           userName={leadData?.name}
           companyName={leadData?.companyName}
           leadId={leadData?.id}
+          idleTimeoutSeconds={60}
         />
       )}
 
@@ -84,6 +86,7 @@ function DemoView() {
           companyName={leadData?.companyName}
           micStream={micStream}
           onClose={handleBackToModeSelect}
+          idleTimeoutSeconds={60}
         />
       )}
     </div>

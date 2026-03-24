@@ -114,3 +114,40 @@
   opacity: 0.6;
   cursor: not-allowed;
 }
+
+.aiConfig__divider {
+  border: none;
+  border-top: 1px solid #e0e0e0;
+  margin: 28px 0 20px;
+}
+
+.aiConfig__sectionTitle {
+  font-size: 17px;
+  font-weight: 600;
+  color: #1a1a2e;
+  margin: 0 0 16px;
+}
+
+.aiConfig__row {
+  display: flex;
+  gap: 20px;
+}
+
+.aiConfig__field--half {
+  flex: 1;
+}
+
+.aiConfig__select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 15px;
+  background: #fff;
+  cursor: pointer;
+}
+
+.aiConfig__select:focus {
+  outline: none;
+  border-color: #5fbdca;
+}

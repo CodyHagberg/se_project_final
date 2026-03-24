@@ -82,6 +82,17 @@
   color: #888;
 }
 
+.voiceChatTimeWarning {
+  margin: 8px 0 0;
+  padding: 6px 16px;
+  background: rgba(255, 165, 0, 0.12);
+  border: 1px solid rgba(255, 165, 0, 0.4);
+  border-radius: 8px;
+  color: #c27800;
+  font-size: 13px;
+  font-weight: 600;
+}
+
 .voiceChatTranscript {
   flex: 1;
   min-height: 180px;

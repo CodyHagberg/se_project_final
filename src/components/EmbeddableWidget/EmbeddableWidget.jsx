@@ -11,45 +11,45 @@ import "./EmbeddableWidget.css";
  * Chrome-free widget designed to be embedded in an iframe on third-party sites
  * or inside the Dojo preview panel.
  *
- * Flow:  Lead Form  →  Mode Selector (text / voice)  →  Chat
+ * Flow:  Lead Form  ->  Mode Selector (text / voice)  ->  Chat
  *
- * The tenant's API key is read from the URL query string (?apiKey=…) and
- * threaded into every child component so all API calls authenticate against
- * the correct tenant rather than the hardcoded demo key.
+ * The tenant's publishable key is read from the URL query string (?key=...)
+ * and threaded into every child component so all API calls authenticate
+ * against the correct tenant. Falls back to ?apiKey= for backwards compat.
  *
  * On mount, fetches the tenant's widget customization (title, fields, button
  * text) from the public /api/widget/config endpoint and passes it to ModalForm.
  */
 function EmbeddableWidget() {
   const [searchParams] = useSearchParams();
-  // Tenant API key supplied by whoever generates the iframe URL
-  const apiKey = searchParams.get("apiKey");
+  const widgetKey = searchParams.get("key") || searchParams.get("apiKey");
 
   const [showForm, setShowForm] = useState(true);
-  const [leadData, setLeadData] = useState(null);   // populated after the lead form is submitted
-  const [chatMode, setChatMode] = useState(null);    // null | "text" | "voice"
+  const [leadData, setLeadData] = useState(null);
+  const [chatMode, setChatMode] = useState(null);
   const [micError, setMicError] = useState(null);
-  const [micStream, setMicStream] = useState(null);  // raw MediaStream for voice mode
+  const [micStream, setMicStream] = useState(null);
   const [widgetConfig, setWidgetConfig] = useState(null);
+  const [chatModes, setChatModes] = useState("both");
+  const [idleTimeoutSeconds, setIdleTimeoutSeconds] = useState(60);
 
   useEffect(() => {
-    if (apiKey) {
-      fetchWidgetConfig(apiKey)
-        .then((data) => setWidgetConfig(data.widgetConfig))
+    if (widgetKey) {
+      fetchWidgetConfig(widgetKey)
+        .then((data) => {
+          setWidgetConfig(data.widgetConfig);
+          if (data.chatModes) setChatModes(data.chatModes);
+          if (data.idleTimeoutSeconds) setIdleTimeoutSeconds(data.idleTimeoutSeconds);
+        })
         .catch(() => {});
     }
-  }, [apiKey]);
+  }, [widgetKey]);
 
   const handleFormSubmit = (lead) => {
     setLeadData(lead);
     setShowForm(false);
   };
 
-  /**
-   * When voice is selected we need to acquire the mic stream *before*
-   * rendering VoiceChat — the component expects the stream as a prop so
-   * it can immediately begin capturing audio frames.
-   */
   const handleModeSelect = async (mode) => {
     if (mode === "voice") {
       setMicError(null);
@@ -76,7 +76,6 @@ function EmbeddableWidget() {
     }
   };
 
-  // Tear down the mic stream and return the user to the mode selector
   const handleBackToModeSelect = () => {
     if (micStream) {
       micStream.getTracks().forEach((t) => t.stop());
@@ -86,7 +85,7 @@ function EmbeddableWidget() {
     setMicError(null);
   };
 
-  if (!apiKey) {
+  if (!widgetKey) {
     return (
       <div className="embeddableWidget">
         <p className="embeddableWidget__error">Missing API key.</p>
@@ -96,19 +95,19 @@ function EmbeddableWidget() {
 
   return (
     <div className="embeddableWidget">
-      {/* Step 1 — Capture the lead's contact info (uses tenant's widget config if available) */}
-      {showForm && <ModalForm onSubmit={handleFormSubmit} apiKey={apiKey} widgetConfig={widgetConfig} />}
+      {showForm && <ModalForm onSubmit={handleFormSubmit} apiKey={widgetKey} widgetConfig={widgetConfig} />}
 
-      {/* Step 2 — Let the lead pick text or voice chat */}
       {leadData && !chatMode && (
         <ChatModeSelector
           userName={leadData.name}
           onSelect={handleModeSelect}
           micError={micError}
+          allowedModes={chatModes}
+          title={widgetConfig?.modeSelectorTitle}
+          description={widgetConfig?.modeSelectorDescription}
         />
       )}
 
-      {/* Step 3a — Text chat with the tenant's AI */}
       {chatMode === "text" && (
         <ChatWindow
           isOpen={true}
@@ -116,11 +115,11 @@ function EmbeddableWidget() {
           userName={leadData?.name}
           companyName={leadData?.companyName}
           leadId={leadData?.id}
-          apiKey={apiKey}
+          apiKey={widgetKey}
+          idleTimeoutSeconds={idleTimeoutSeconds}
         />
       )}
 
-      {/* Step 3b — Real-time voice chat with the tenant's AI */}
       {chatMode === "voice" && (
         <VoiceChat
           leadId={leadData?.id}
@@ -128,7 +127,8 @@ function EmbeddableWidget() {
           companyName={leadData?.companyName}
           micStream={micStream}
           onClose={handleBackToModeSelect}
-          apiKey={apiKey}
+          apiKey={widgetKey}
+          idleTimeoutSeconds={idleTimeoutSeconds}
         />
       )}
     </div>

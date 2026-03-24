@@ -14,6 +14,8 @@ const CORE_KEYS = ["name", "email"];
 function WidgetCustomizer() {
   const [formTitle, setFormTitle] = useState("Get Started");
   const [submitButtonText, setSubmitButtonText] = useState("Submit");
+  const [modeSelectorTitle, setModeSelectorTitle] = useState("");
+  const [modeSelectorDescription, setModeSelectorDescription] = useState("");
   const [fields, setFields] = useState(DEFAULT_FIELDS);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -31,6 +33,8 @@ function WidgetCustomizer() {
         const wc = data.config.widgetConfig;
         setFormTitle(wc.formTitle || "Get Started");
         setSubmitButtonText(wc.submitButtonText || "Submit");
+        setModeSelectorTitle(wc.modeSelectorTitle || "");
+        setModeSelectorDescription(wc.modeSelectorDescription || "");
         if (wc.fields?.length) setFields(wc.fields);
       }
     } catch (err) {
@@ -45,7 +49,7 @@ function WidgetCustomizer() {
     setMessage("");
     setError("");
     try {
-      await updateConfig({ widgetConfig: { formTitle, submitButtonText, fields } });
+      await updateConfig({ widgetConfig: { formTitle, submitButtonText, modeSelectorTitle, modeSelectorDescription, fields } });
       setMessage("Widget configuration saved successfully");
     } catch (err) {
       setError(err.message);
@@ -110,6 +114,36 @@ function WidgetCustomizer() {
             placeholder="Submit"
           />
         </div>
+
+        <hr className="wc__divider" />
+        <h3 className="wc__sectionTitle">Chat Mode Selector</h3>
+        <p className="wc__sectionHint">
+          Customize the greeting screen shown after form submission. Leave blank to use defaults.
+        </p>
+
+        <div className="wc__field">
+          <label className="wc__label">Selector Title</label>
+          <input
+            type="text"
+            className="wc__input"
+            value={modeSelectorTitle}
+            onChange={(e) => setModeSelectorTitle(e.target.value)}
+            placeholder="Welcome, {name}!"
+          />
+        </div>
+
+        <div className="wc__field">
+          <label className="wc__label">Selector Description</label>
+          <input
+            type="text"
+            className="wc__input"
+            value={modeSelectorDescription}
+            onChange={(e) => setModeSelectorDescription(e.target.value)}
+            placeholder="How would you like to chat with our AI assistant?"
+          />
+        </div>
+
+        <hr className="wc__divider" />
 
         <div className="wc__section">
           <div className="wc__sectionHeader">

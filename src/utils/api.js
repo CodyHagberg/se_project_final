@@ -1,5 +1,11 @@
 import { BASE_URL, DEMO_API_KEY } from "./constants";
 
+function keyHeader(key) {
+  if (!key) return {};
+  if (key.startsWith("alei_pub_")) return { "X-Publishable-Key": key };
+  return { "X-API-Key": key };
+}
+
 async function request(endpoint, options = {}) {
   const { headers: customHeaders, ...restOptions } = options;
 
@@ -38,7 +44,7 @@ export async function createLead(formData, apiKey) {
   return request("/api/leads", {
     method: "POST",
     body: JSON.stringify(formData),
-    headers: apiKey ? { "X-API-Key": apiKey } : {},
+    headers: apiKey ? keyHeader(apiKey) : {},
   });
 }
 
@@ -46,7 +52,7 @@ export async function sendChatMessage({ message, userName, companyName, history,
   return request("/api/chat/message", {
     method: "POST",
     body: JSON.stringify({ message, userName, companyName, history, leadId }),
-    headers: apiKey ? { "X-API-Key": apiKey } : {},
+    headers: apiKey ? keyHeader(apiKey) : {},
   });
 }
 
@@ -121,14 +127,40 @@ export async function fetchBusinesses() {
   return authRequest("/api/admin/businesses");
 }
 
+export async function regeneratePublishableKey(userId) {
+  return authRequest(`/api/admin/regenerate-pub-key/${userId}`, {
+    method: "POST",
+  });
+}
+
+export async function updateAllowedDomains(userId, domains) {
+  return authRequest(`/api/admin/domains/${userId}`, {
+    method: "PUT",
+    body: JSON.stringify({ allowedDomains: domains }),
+  });
+}
+
+export async function updateGeminiKey(userId, geminiApiKey) {
+  return authRequest(`/api/admin/gemini-key/${userId}`, {
+    method: "PUT",
+    body: JSON.stringify({ geminiApiKey }),
+  });
+}
+
 export async function fetchApiKey() {
   return authRequest("/api/dashboard/api-key");
 }
 
 export async function fetchWidgetConfig(apiKey) {
-  const response = await fetch(`${BASE_URL}/api/widget/config?apiKey=${encodeURIComponent(apiKey)}`, {
-    headers: { "Content-Type": "application/json" },
-  });
+  const header = apiKey.startsWith("alei_pub_")
+    ? { "X-Publishable-Key": apiKey }
+    : {};
+  const paramName = apiKey.startsWith("alei_pub_") ? "key" : "apiKey";
+
+  const response = await fetch(
+    `${BASE_URL}/api/widget/config?${paramName}=${encodeURIComponent(apiKey)}`,
+    { headers: { "Content-Type": "application/json", ...header } },
+  );
   const data = await response.json();
   if (!response.ok || data.status === "Error") {
     throw new Error(data.error || "Failed to fetch widget config");

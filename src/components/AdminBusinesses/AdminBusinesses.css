@@ -15,31 +15,40 @@
   font-size: 14px;
 }
 
-.adminBiz__table {
-  width: 100%;
-  border-collapse: collapse;
+.adminBiz__actionMsg {
+  padding: 8px 14px;
+  background: #e8f5e9;
+  color: #2e7d32;
+  border-radius: 8px;
+  font-size: 13px;
+  margin-bottom: 16px;
+}
+
+.adminBiz__cards {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.adminBiz__card {
   background: #fff;
-  border-radius: 10px;
-  overflow: hidden;
+  border-radius: 12px;
+  padding: 20px 24px;
   box-shadow: 0 1px 6px rgba(0, 0, 0, 0.06);
 }
 
-.adminBiz__table th {
-  text-align: left;
-  padding: 12px 16px;
-  background: #1a1a2e;
-  color: #fff;
-  font-size: 13px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.3px;
+.adminBiz__cardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
 }
 
-.adminBiz__table td {
-  padding: 12px 16px;
-  border-bottom: 1px solid #eee;
-  font-size: 14px;
-  color: #333;
+.adminBiz__company {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 600;
+  color: #1a1a2e;
 }
 
 .adminBiz__plan {
@@ -53,10 +62,143 @@
   color: #0277bd;
 }
 
-.adminBiz__key {
+.adminBiz__meta {
+  display: flex;
+  gap: 16px;
+  font-size: 13px;
+  color: #777;
+  margin-bottom: 14px;
+}
+
+.adminBiz__keySection {
+  margin-bottom: 12px;
+}
+
+.adminBiz__keyRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.adminBiz__keyLabel {
+  font-size: 12px;
+  font-weight: 600;
+  color: #555;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  min-width: 120px;
+}
+
+.adminBiz__keyValue {
   font-size: 11px;
   background: #f5f5f5;
-  padding: 2px 6px;
+  padding: 4px 8px;
   border-radius: 4px;
   color: #888;
+  font-family: monospace;
+}
+
+.adminBiz__copyBtn,
+.adminBiz__regenBtn,
+.adminBiz__editBtn {
+  background: none;
+  border: 1px solid #5fbdca;
+  color: #5fbdca;
+  padding: 3px 10px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.adminBiz__copyBtn:hover,
+.adminBiz__editBtn:hover {
+  background: #5fbdca;
+  color: #fff;
+}
+
+.adminBiz__regenBtn {
+  border-color: #e67e22;
+  color: #e67e22;
+}
+
+.adminBiz__regenBtn:hover {
+  background: #e67e22;
+  color: #fff;
+}
+
+.adminBiz__domainSection {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.adminBiz__domainDisplay {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+}
+
+.adminBiz__domainList {
+  font-size: 13px;
+  color: #666;
+}
+
+.adminBiz__domainEdit {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.adminBiz__domainInput {
+  padding: 8px 10px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 13px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.adminBiz__domainInput:focus {
+  outline: none;
+  border-color: #5fbdca;
+}
+
+.adminBiz__domainActions {
+  display: flex;
+  gap: 8px;
+}
+
+.adminBiz__saveBtn {
+  padding: 5px 14px;
+  background: #5fbdca;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.adminBiz__saveBtn:hover {
+  background: #4da8b5;
+}
+
+.adminBiz__cancelBtn {
+  padding: 5px 14px;
+  background: #f5f5f5;
+  color: #666;
+  border: none;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.adminBiz__cancelBtn:hover {
+  background: #e8e8e8;
 }

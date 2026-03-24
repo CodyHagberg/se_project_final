@@ -38,8 +38,8 @@ function Dojo() {
     try {
       const data = await fetchApiKey();
       setApiKey(data.apiKey);
-      // Point the iframe at the embeddable widget route with the tenant's key
-      setIframeUrl(`${window.location.origin}/widget?apiKey=${data.apiKey}`);
+      const widgetKey = data.publishableKey || data.apiKey;
+      setIframeUrl(`${window.location.origin}/widget?key=${widgetKey}`);
     } catch (err) {
       setError(err.message);
     }

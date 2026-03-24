@@ -2,12 +2,13 @@ import { useState, useEffect, useRef } from "react";
 import { sendChatMessage } from "../../utils/api";
 import "./ChatWindow.css";
 
-function ChatWindow({ isOpen, onClose, userName, companyName, leadId, apiKey }) {
+function ChatWindow({ isOpen, onClose, userName, companyName, leadId, apiKey, idleTimeoutSeconds = 60 }) {
   const [messages, setMessages] = useState([]);
   const [inputValue, setInputValue] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef(null);
   const hasGreeted = useRef(false);
+  const idleTimerRef = useRef(null);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -18,6 +19,22 @@ function ChatWindow({ isOpen, onClose, userName, companyName, leadId, apiKey }) 
       sendInitialGreeting();
       hasGreeted.current = true;
     }
+  }, [isOpen]);
+
+  const resetIdleTimer = () => {
+    if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
+    idleTimerRef.current = setTimeout(() => {
+      setMessages((prev) => [
+        ...prev,
+        { role: "assistant", content: "Session timed out due to inactivity.", timestamp: new Date() },
+      ]);
+      setTimeout(() => onClose(), 2500);
+    }, idleTimeoutSeconds * 1000);
+  };
+
+  useEffect(() => {
+    if (isOpen) resetIdleTimer();
+    return () => { if (idleTimerRef.current) clearTimeout(idleTimerRef.current); };
   }, [isOpen]);
 
   const sendInitialGreeting = async () => {
@@ -54,6 +71,7 @@ function ChatWindow({ isOpen, onClose, userName, companyName, leadId, apiKey }) 
     setMessages((prev) => [...prev, userMessage]);
     setInputValue("");
     setIsLoading(true);
+    resetIdleTimer();
 
     try {
       const data = await sendChatMessage({

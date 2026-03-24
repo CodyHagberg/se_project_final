@@ -1,10 +1,16 @@
-//AdminOnboard component
 import { useState } from "react";
 import { createBusiness } from "../../utils/api";
 import "./AdminOnboard.css";
 
 function AdminOnboard() {
-  const [form, setForm] = useState({ email: "", companyName: "", tempPassword: "", plan: "free" });
+  const [form, setForm] = useState({
+    email: "",
+    companyName: "",
+    tempPassword: "",
+    plan: "free",
+    allowedDomains: "",
+    geminiApiKey: "",
+  });
   const [result, setResult] = useState(null);
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -16,9 +22,15 @@ function AdminOnboard() {
     setIsLoading(true);
 
     try {
-      const data = await createBusiness(form);
+      const data = await createBusiness({
+        ...form,
+        allowedDomains: form.allowedDomains
+          .split(",")
+          .map((d) => d.trim())
+          .filter(Boolean),
+      });
       setResult(data.business);
-      setForm({ email: "", companyName: "", tempPassword: "", plan: "free" });
+      setForm({ email: "", companyName: "", tempPassword: "", plan: "free", allowedDomains: "", geminiApiKey: "" });
     } catch (err) {
       setError(err.message);
     } finally {
@@ -40,7 +52,12 @@ function AdminOnboard() {
           <p><strong>Account created for {result.companyName}</strong></p>
           <p>Email: {result.email}</p>
           <p>Plan: {result.plan}</p>
-          <p>API Key: <code>{result.apiKey}</code></p>
+          <p>API Key (secret): <code>{result.apiKey}</code></p>
+          <p>Publishable Key (for widgets): <code>{result.publishableKey}</code></p>
+          <p>Gemini API Key: {result.hasGeminiKey ? "Configured" : "Not set"}</p>
+          {result.allowedDomains?.length > 0 && (
+            <p>Allowed Domains: {result.allowedDomains.join(", ")}</p>
+          )}
         </div>
       )}
 
@@ -86,6 +103,33 @@ function AdminOnboard() {
             <option value="pro">Pro</option>
             <option value="enterprise">Enterprise</option>
           </select>
+        </label>
+        <label className="adminOnboard__label">
+          Gemini API Key
+          <input
+            type="password"
+            className="adminOnboard__input"
+            value={form.geminiApiKey}
+            onChange={(e) => setForm({ ...form, geminiApiKey: e.target.value })}
+            placeholder="AIzaSy..."
+            required
+          />
+          <span className="adminOnboard__hint">
+            Generate from Google AI Studio. Each business uses its own key for AI calls.
+          </span>
+        </label>
+        <label className="adminOnboard__label">
+          Allowed Domains
+          <input
+            type="text"
+            className="adminOnboard__input"
+            value={form.allowedDomains}
+            onChange={(e) => setForm({ ...form, allowedDomains: e.target.value })}
+            placeholder="acme.com, www.acme.com (leave empty for dev mode)"
+          />
+          <span className="adminOnboard__hint">
+            Comma-separated list of domains where the widget will be embedded. Leave empty to allow all origins.
+          </span>
         </label>
         <button type="submit" className="adminOnboard__button" disabled={isLoading}>
           {isLoading ? "Creating..." : "Create Business Account"}

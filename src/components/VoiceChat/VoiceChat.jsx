@@ -17,13 +17,14 @@ function arrayBufferToBase64(buffer) {
   return btoa(binary);
 }
 
-function VoiceChat({ leadId, userName, companyName, micStream, onClose, apiKey }) {
+function VoiceChat({ leadId, userName, companyName, micStream, onClose, apiKey, idleTimeoutSeconds = 60 }) {
   const [isConnected, setIsConnected] = useState(false);
   const [isAiSpeaking, setIsAiSpeaking] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
   const [transcript, setTranscript] = useState([]);
   const [error, setError] = useState(null);
   const [status, setStatus] = useState("Connecting...");
+  const [timeWarning, setTimeWarning] = useState(null);
 
   const wsRef = useRef(null);             // WebSocket connection to the voice server
   const audioContextRef = useRef(null);    // AudioContext for mic capture (16kHz)
@@ -35,10 +36,21 @@ function VoiceChat({ leadId, userName, companyName, micStream, onClose, apiKey }
   const nextPlayTimeRef = useRef(0);       // Tracks the end-time of the last scheduled buffer for gapless playback
   const transcriptEndRef = useRef(null);   // Invisible element at the bottom of the transcript for auto-scroll
   const isMutedRef = useRef(false);        // Mirror of isMuted state so the audio processor callback can read it synchronously
+  const idleTimerRef = useRef(null);
+  const cleanedUpRef = useRef(false);
 
   useEffect(() => {
     isMutedRef.current = isMuted;
   }, [isMuted]);
+
+  const resetIdleTimer = () => {
+    if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
+    idleTimerRef.current = setTimeout(() => {
+      if (cleanedUpRef.current) return;
+      setError("Session timed out due to inactivity.");
+      cleanupAll();
+    }, idleTimeoutSeconds * 1000);
+  };
 
   useEffect(() => {
     transcriptEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -151,6 +163,8 @@ function VoiceChat({ leadId, userName, companyName, micStream, onClose, apiKey }
 
   /** Tear down every resource: audio contexts, mic stream, WebSocket, and playback queue. */
   function cleanupAll() {
+    cleanedUpRef.current = true;
+    if (idleTimerRef.current) { clearTimeout(idleTimerRef.current); idleTimerRef.current = null; }
     if (processorRef.current) {
       processorRef.current.disconnect();
       processorRef.current = null;
@@ -199,7 +213,6 @@ function VoiceChat({ leadId, userName, companyName, micStream, onClose, apiKey }
       if (isMutedRef.current) return;
       if (wsRef.current?.readyState !== WebSocket.OPEN) return;
 
-      // Convert float32 → signed 16-bit PCM (inverse of playAudioChunk)
       const float32 = e.inputBuffer.getChannelData(0);
       const int16 = new Int16Array(float32.length);
       for (let i = 0; i < float32.length; i++) {
@@ -212,6 +225,7 @@ function VoiceChat({ leadId, userName, companyName, micStream, onClose, apiKey }
         type: "audio",
         data: base64,
       }));
+      resetIdleTimer();
     };
 
     source.connect(processor);
@@ -249,6 +263,7 @@ function VoiceChat({ leadId, userName, companyName, micStream, onClose, apiKey }
             setError(null);
             setStatus("Listening...");
             startAudioCapture();
+            resetIdleTimer();
             break;
 
           case "audio":
@@ -260,6 +275,7 @@ function VoiceChat({ leadId, userName, companyName, micStream, onClose, apiKey }
           case "transcript":
             if (data.role && data.content) {
               addTranscriptRef.current?.(data.role, data.content);
+              resetIdleTimer();
             }
             break;
 
@@ -267,8 +283,12 @@ function VoiceChat({ leadId, userName, companyName, micStream, onClose, apiKey }
             finalizeRef.current?.();
             break;
 
+          case "time_warning":
+            setTimeWarning(data.message || "You have 1 minute remaining.");
+            break;
+
           case "rate_limit":
-            setError(data.message || "Message limit reached. Thanks for trying ALEI!");
+            setError(data.message || "Voice time limit reached. Thanks for trying ALEI!");
             cleanupAll();
             break;
 
@@ -332,6 +352,9 @@ function VoiceChat({ leadId, userName, companyName, micStream, onClose, apiKey }
             <div className="voiceChatOrbInner" />
           </div>
           <p className="voiceChatStatus">{status}</p>
+          {timeWarning && (
+            <p className="voiceChatTimeWarning">{timeWarning}</p>
+          )}
         </div>
 
         <div className="voiceChatTranscript">

@@ -5,7 +5,7 @@ import "./SupportBubble.css";
 
 function SupportBubble({ apiKey: apiKeyProp }) {
   const [searchParams] = useSearchParams();
-  const apiKey = apiKeyProp || searchParams.get("apiKey");
+  const apiKey = apiKeyProp || searchParams.get("key") || searchParams.get("apiKey");
 
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([]);
@@ -32,7 +32,9 @@ function SupportBubble({ apiKey: apiKeyProp }) {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "X-API-Key": apiKey,
+          ...(apiKey?.startsWith("alei_pub_")
+            ? { "X-Publishable-Key": apiKey }
+            : { "X-API-Key": apiKey }),
         },
         body: JSON.stringify({
           message,

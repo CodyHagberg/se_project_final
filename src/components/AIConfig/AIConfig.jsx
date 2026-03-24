@@ -9,6 +9,10 @@ function AIConfig() {
     companyInfo: "",
     greetingTemplate: "",
     maxMessages: 6,
+    maxVoiceMinutes: 5,
+    maxVoiceOverageMinutes: 6,
+    chatModes: "both",
+    idleTimeoutSeconds: 60,
   });
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -29,6 +33,10 @@ function AIConfig() {
           companyInfo: data.config.companyInfo || "",
           greetingTemplate: data.config.greetingTemplate || "",
           maxMessages: data.config.maxMessages || 6,
+          maxVoiceMinutes: data.config.maxVoiceMinutes ?? 5,
+          maxVoiceOverageMinutes: data.config.maxVoiceOverageMinutes ?? 6,
+          chatModes: data.config.chatModes || "both",
+          idleTimeoutSeconds: data.config.idleTimeoutSeconds ?? 60,
         });
       }
     } catch (err) {
@@ -134,6 +142,65 @@ function AIConfig() {
           min={1}
           max={20}
         />
+      </div>
+
+      <hr className="aiConfig__divider" />
+      <h3 className="aiConfig__sectionTitle">Voice &amp; Chat Limits</h3>
+
+      <div className="aiConfig__row">
+        <div className="aiConfig__field aiConfig__field--half">
+          <label className="aiConfig__label">Max Voice Minutes</label>
+          <input
+            type="number"
+            className="aiConfig__input aiConfig__input--sm"
+            value={config.maxVoiceMinutes}
+            onChange={(e) => setConfig({ ...config, maxVoiceMinutes: parseInt(e.target.value, 10) || 5 })}
+            min={1}
+            max={10}
+          />
+        </div>
+
+        <div className="aiConfig__field aiConfig__field--half">
+          <label className="aiConfig__label">Voice Overage Limit (minutes)</label>
+          <input
+            type="number"
+            className="aiConfig__input aiConfig__input--sm"
+            value={config.maxVoiceOverageMinutes}
+            onChange={(e) => {
+              const val = parseInt(e.target.value, 10) || config.maxVoiceMinutes;
+              setConfig({ ...config, maxVoiceOverageMinutes: Math.max(val, config.maxVoiceMinutes) });
+            }}
+            min={config.maxVoiceMinutes}
+            max={15}
+          />
+        </div>
+      </div>
+
+      <div className="aiConfig__row">
+        <div className="aiConfig__field aiConfig__field--half">
+          <label className="aiConfig__label">Allowed Chat Modes</label>
+          <select
+            className="aiConfig__select"
+            value={config.chatModes}
+            onChange={(e) => setConfig({ ...config, chatModes: e.target.value })}
+          >
+            <option value="both">Both (Voice &amp; Text)</option>
+            <option value="voice">Voice Only</option>
+            <option value="text">Text Only</option>
+          </select>
+        </div>
+
+        <div className="aiConfig__field aiConfig__field--half">
+          <label className="aiConfig__label">Idle Timeout (seconds)</label>
+          <input
+            type="number"
+            className="aiConfig__input aiConfig__input--sm"
+            value={config.idleTimeoutSeconds}
+            onChange={(e) => setConfig({ ...config, idleTimeoutSeconds: parseInt(e.target.value, 10) || 60 })}
+            min={15}
+            max={300}
+          />
+        </div>
       </div>
 
       <button className="aiConfig__saveBtn" onClick={handleSave} disabled={saving}>
