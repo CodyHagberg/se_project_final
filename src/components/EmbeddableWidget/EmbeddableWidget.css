@@ -5,6 +5,13 @@
   justify-content: center;
   padding: 24px;
   box-sizing: border-box;
+  width: 100%;
+}
+
+@media (max-width: 540px) {
+  .embeddableWidget {
+    padding: 12px;
+  }
 }
 
 .embeddableWidget--standalone {
