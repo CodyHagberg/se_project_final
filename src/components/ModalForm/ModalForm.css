@@ -1,5 +1,6 @@
 .modalForm {
-  max-width: 460px;
+  width: 500px;
+  max-width: 100%;
   margin: 0 auto;
   background-color: #fff;
   border-radius: 16px;

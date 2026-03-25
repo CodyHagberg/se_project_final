@@ -23,7 +23,7 @@ import SupportConfig from "../SupportConfig/SupportConfig";
 import SupportBubble from "../SupportBubble/SupportBubble";
 import EmbeddableWidget from "../EmbeddableWidget/EmbeddableWidget";
 import WidgetCustomizer from "../WidgetCustomizer/WidgetCustomizer";
-import { DEMO_API_KEY } from "../../utils/constants";
+import { SITE_PUB_KEY } from "../../utils/constants";
 import "../../pages/Pages.css";
 import "./App.css";
 
@@ -104,7 +104,7 @@ function App() {
         </Routes>
       </main>
       {showFooter && <Footer />}
-      {showFooter && <SupportBubble apiKey={DEMO_API_KEY} />}
+      {showFooter && SITE_PUB_KEY && <SupportBubble apiKey={SITE_PUB_KEY} />}
     </div>
   );
 }

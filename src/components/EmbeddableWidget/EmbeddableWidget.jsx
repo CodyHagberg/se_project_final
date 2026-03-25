@@ -8,21 +8,21 @@ import VoiceChat from "../VoiceChat/VoiceChat";
 import "./EmbeddableWidget.css";
 
 /**
- * Chrome-free widget designed to be embedded in an iframe on third-party sites
- * or inside the Dojo preview panel.
+ * Chrome-free widget designed to be embedded in an iframe on third-party sites,
+ * inside the Dojo preview panel, or inline on the marketing site's Demo page.
  *
  * Flow:  Lead Form  ->  Mode Selector (text / voice)  ->  Chat
  *
- * The tenant's publishable key is read from the URL query string (?key=...)
- * and threaded into every child component so all API calls authenticate
- * against the correct tenant. Falls back to ?apiKey= for backwards compat.
+ * The tenant's key can be provided via:
+ *   1. The `apiKey` prop (used when rendered inline, e.g. DemoView)
+ *   2. The URL query string ?key=... or ?apiKey=... (used in iframes)
  *
  * On mount, fetches the tenant's widget customization (title, fields, button
  * text) from the public /api/widget/config endpoint and passes it to ModalForm.
  */
-function EmbeddableWidget() {
+function EmbeddableWidget({ apiKey: apiKeyProp }) {
   const [searchParams] = useSearchParams();
-  const widgetKey = searchParams.get("key") || searchParams.get("apiKey");
+  const widgetKey = apiKeyProp || searchParams.get("key") || searchParams.get("apiKey");
 
   const [showForm, setShowForm] = useState(true);
   const [leadData, setLeadData] = useState(null);
@@ -85,16 +85,18 @@ function EmbeddableWidget() {
     setMicError(null);
   };
 
+  const isStandalone = !apiKeyProp;
+
   if (!widgetKey) {
     return (
-      <div className="embeddableWidget">
+      <div className={`embeddableWidget${isStandalone ? " embeddableWidget--standalone" : ""}`}>
         <p className="embeddableWidget__error">Missing API key.</p>
       </div>
     );
   }
 
   return (
-    <div className="embeddableWidget">
+    <div className={`embeddableWidget${isStandalone ? " embeddableWidget--standalone" : ""}`}>
       {showForm && <ModalForm onSubmit={handleFormSubmit} apiKey={widgetKey} widgetConfig={widgetConfig} />}
 
       {leadData && !chatMode && (

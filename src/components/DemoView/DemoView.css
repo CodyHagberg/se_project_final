@@ -8,14 +8,7 @@
   font-size: 28px;
   font-weight: 500;
   color: #fff;
-}
-
-.demoWelcome {
-  margin-top: 16px;
-}
-
-.demoChatButton {
-  margin-top: 8px;
+  text-align: center;
 }
 
 @media (max-width: 480px) {

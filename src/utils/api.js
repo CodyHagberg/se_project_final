@@ -1,4 +1,4 @@
-import { BASE_URL, DEMO_API_KEY } from "./constants";
+import { BASE_URL } from "./constants";
 
 function keyHeader(key) {
   if (!key) return {};
@@ -12,7 +12,6 @@ async function request(endpoint, options = {}) {
   const response = await fetch(`${BASE_URL}${endpoint}`, {
     headers: {
       "Content-Type": "application/json",
-      "X-API-Key": DEMO_API_KEY,
       ...customHeaders,
     },
     ...restOptions,
@@ -173,7 +172,6 @@ export async function exportLeadsCSV() {
   const res = await fetch(`${BASE_URL}/api/dashboard/leads/export/csv`, {
     headers: {
       Authorization: `Bearer ${token}`,
-      "X-API-Key": DEMO_API_KEY,
     },
   });
   if (!res.ok) throw new Error("Failed to export leads");

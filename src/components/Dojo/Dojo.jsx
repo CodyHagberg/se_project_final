@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { fetchApiKey } from "../../utils/api";
-import { BASE_URL, DEMO_API_KEY } from "../../utils/constants";
+import { BASE_URL } from "../../utils/constants";
 import "./Dojo.css";
 
 /**
@@ -65,7 +65,8 @@ function Dojo() {
   const sendTestMessage = async (message, history) => {
     setIsLoading(true);
     try {
-      const key = apiKey || DEMO_API_KEY;
+      if (!apiKey) throw new Error("API key not loaded yet");
+      const key = apiKey;
       const res = await fetch(`${BASE_URL}/api/chat/message`, {
         method: "POST",
         headers: {

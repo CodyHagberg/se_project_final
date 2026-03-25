@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { WS_BASE_URL, DEMO_API_KEY } from "../../utils/constants";
+import { WS_BASE_URL, SITE_PUB_KEY } from "../../utils/constants";
 import logo from "../../assets/ALEI_Hidden.svg";
 import "./VoiceChat.css";
 
@@ -251,7 +251,7 @@ function VoiceChat({ leadId, userName, companyName, micStream, onClose, apiKey, 
         leadId,
         userName,
         companyName,
-        apiKey: apiKey || DEMO_API_KEY,
+        apiKey: apiKey || SITE_PUB_KEY,
       }));
     };
 
