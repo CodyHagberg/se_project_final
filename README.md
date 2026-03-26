@@ -1,44 +1,87 @@
 # ALEI Frontend
 
-React single-page application for the ALEI Sales Discovery Assistant. Provides the marketing landing page (About, Solutions, Pricing, FAQ) and the interactive demo flow where users fill out a lead form and chat with the AI assistant.
-
-## Github Pages Reviewer 
-- Open Github pages URL [LINK](https://codyhagberg.github.io/se_project_final/)
-- Download the Backend Directory [LINK](https://github.com/CodyHagberg/final_backend)
-- Follow instruction in the README.md file of the backend to get the api key set up and have dipendencies installed. 
-- Run the backend
+React single-page application for the ALEI (Agentic Lead Engagement Intelligence) platform. Provides the marketing landing page (About, Solutions, Pricing, FAQ), the interactive demo flow, and the vendor dashboard.
 
 ## Tech Stack
 
 - **Library:** React 19
 - **Build Tool:** Vite 7
 - **Routing:** React Router DOM 7
-- **Styling:** Vanilla CSS (component-scoped)       
+- **Styling:** Vanilla CSS (component-scoped)
 
-## Prerequisites
+---
+
+## Local Development
+
+### Prerequisites
 
 - [Node.js](https://nodejs.org/) v18+
-- The [ALEI backend](../alei-backend) running on `http://localhost:5000`
+- The backend (`../final_backend`) running on `http://localhost:5000`
+- A `.env` file in this directory (see below)
 
-## Getting Started
+### Environment Variables
 
-1. **Install dependencies:**
+Create a `.env` file in `se_project_final/`:
 
-   ```bash
-   npm install
-   ```
+```
+VITE_API_URL=http://localhost:5000
+VITE_WS_URL=ws://localhost:5000
+VITE_ALEI_PUB_KEY=alei_pub_prod_key_placeholder
+```
 
-2. **Start the development server:**
+> `.env` is gitignored and should never be committed.
 
-   ```bash
-   npm run dev
-   ```
+### Running Locally
 
-   The app will run on `http://localhost:5173`.
+```bash
+npm install
+npm run dev
+```
 
-3. **Make sure the backend is running** — the frontend calls `http://localhost:5000` for all API requests. The base URL is configured in `src/utils/api.js` if you need to change it.
+The app runs on `http://localhost:5173`.
 
+---
 
-### Video
-[ALEI Video](https://drive.google.com/file/d/1I3AyiIjxnq31sk7Bs7kqjdjjJenx0OML/view?usp=drive_link)
+## Deploying to Production (Google Cloud Run)
 
+The frontend is bundled with the backend into a single Docker image and deployed to Cloud Run. All three commands are run from the **project root** (`LEAI/`), one level above this folder.
+
+### 1. Build the Docker image
+
+```bash
+docker build \
+  --build-arg VITE_API_URL=https://alei-437855408671.us-central1.run.app \
+  --build-arg VITE_WS_URL=wss://alei-437855408671.us-central1.run.app \
+  --build-arg VITE_ALEI_PUB_KEY=alei_pub_prod_key_placeholder \
+  -t us-central1-docker.pkg.dev/alei-prod/alei/app:latest .
+```
+
+> If you have a custom domain, replace the URLs with your domain (e.g. `https://yourdomain.com` and `wss://yourdomain.com`).
+
+### 2. Push the image to Artifact Registry
+
+```bash
+docker push us-central1-docker.pkg.dev/alei-prod/alei/app:latest
+```
+
+### 3. Deploy to Cloud Run
+
+```bash
+gcloud run deploy alei \
+  --image us-central1-docker.pkg.dev/alei-prod/alei/app:latest \
+  --region us-central1 \
+  --platform managed \
+  --allow-unauthenticated \
+  --port 8080
+```
+
+The live site will be updated at: https://alei-437855408671.us-central1.run.app
+
+---
+
+## Notes
+
+- **`VITE_ALEI_PUB_KEY`** must match the `publishableKey` stored in the database for the ALEI business account. If the key is ever regenerated via the admin dashboard, a new build is required.
+- **Backend-only changes** (routes, AI config, etc.) only require steps 2 and 3 — no frontend rebuild needed.
+- **Frontend changes** always require all 3 steps.
+- The `Dockerfile` and `.dockerignore` live at the project root (`LEAI/`) and should not be moved.
