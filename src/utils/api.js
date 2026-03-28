@@ -20,7 +20,9 @@ async function request(endpoint, options = {}) {
   const data = await response.json();
 
   if (!response.ok || data.status === "Error") {
-    throw new Error(data.error || "Something went wrong");
+    const err = new Error(data.error || "Something went wrong");
+    err.status = response.status;
+    throw err;
   }
 
   return data;

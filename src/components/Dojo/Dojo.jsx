@@ -21,12 +21,14 @@ function Dojo() {
   const [error, setError] = useState("");
   const [iframeUrl, setIframeUrl] = useState("");
   const messagesEndRef = useRef(null);
+  const messagesBoxRef = useRef(null);
   // Prevents the auto-greeting from firing more than once
   const hasGreeted = useRef(false);
 
   // Keep the chat scrolled to the latest message
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    const box = messagesBoxRef.current;
+    if (box) box.scrollTop = box.scrollHeight;
   }, [messages]);
 
   // Fetch the tenant's API key on mount so we can authenticate all requests
@@ -174,7 +176,7 @@ function Dojo() {
               Reset
             </button>
           </div>
-          <div className="dojo__messages">
+          <div className="dojo__messages" ref={messagesBoxRef}>
             {messages.length === 0 && !isLoading && (
               <p className="dojo__emptyState">
                 Your AI will greet you using your system knowledge...

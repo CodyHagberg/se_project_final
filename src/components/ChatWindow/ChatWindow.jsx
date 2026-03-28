@@ -3,16 +3,19 @@ import { sendChatMessage } from "../../utils/api";
 import logo from "../../assets/ALEI_Hidden.svg";
 import "./ChatWindow.css";
 
-function ChatWindow({ isOpen, onClose, userName, companyName, leadId, apiKey, idleTimeoutSeconds = 60 }) {
+function ChatWindow({ isOpen, onClose, userName, companyName, leadId, apiKey, idleTimeoutSeconds = 60, maxMessages = 10 }) {
   const [messages, setMessages] = useState([]);
   const [inputValue, setInputValue] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [limitReached, setLimitReached] = useState(false);
   const messagesEndRef = useRef(null);
+  const messagesBoxRef = useRef(null);
   const hasGreeted = useRef(false);
   const idleTimerRef = useRef(null);
 
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    const box = messagesBoxRef.current;
+    if (box) box.scrollTop = box.scrollHeight;
   }, [messages]);
 
   useEffect(() => {
@@ -61,13 +64,15 @@ function ChatWindow({ isOpen, onClose, userName, companyName, leadId, apiKey, id
   };
 
   const handleSend = async () => {
-    if (!inputValue.trim() || isLoading) return;
+    if (!inputValue.trim() || isLoading || limitReached) return;
 
     const userMessage = {
       role: "user",
       content: inputValue.trim(),
       timestamp: new Date()
     };
+
+    const userCountAfter = messages.filter((m) => m.role === "user").length + 1;
 
     setMessages((prev) => [...prev, userMessage]);
     setInputValue("");
@@ -91,14 +96,20 @@ function ChatWindow({ isOpen, onClose, userName, companyName, leadId, apiKey, id
         ...prev,
         { role: "assistant", content: data.message, timestamp: new Date() },
       ]);
+
+      if (userCountAfter >= maxMessages) {
+        setLimitReached(true);
+        if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
+      }
     } catch (error) {
+      const errMsg = error.message || "Failed to connect to server";
+      if (error.status === 429 || errMsg.includes("message limit")) {
+        setLimitReached(true);
+        if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
+      }
       setMessages((prev) => [
         ...prev,
-        {
-          role: "assistant",
-          content: `Error: ${error.message || "Failed to connect to server"}`,
-          timestamp: new Date(),
-        },
+        { role: "assistant", content: errMsg, timestamp: new Date() },
       ]);
     } finally {
       setIsLoading(false);
@@ -137,7 +148,7 @@ function ChatWindow({ isOpen, onClose, userName, companyName, leadId, apiKey, id
           </button>
         </div>
 
-        <div className="chatWindowMessages">
+        <div className="chatWindowMessages" ref={messagesBoxRef}>
           {messages.length === 0 && (
             <div className="chatWindowEmptyState">
               Start a conversation with ALEI...
@@ -175,29 +186,35 @@ function ChatWindow({ isOpen, onClose, userName, companyName, leadId, apiKey, id
           <div ref={messagesEndRef} />
         </div>
 
-        <div className="chatWindowInputRow">
-          <input
-            type="text"
-            value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
-            onKeyDown={handleKeyPress}
-            placeholder="Type your message..."
-            disabled={isLoading}
-            className="chatWindowInput"
-          />
-          <button
-            onClick={handleSend}
-            disabled={!inputValue.trim() || isLoading}
-            className={[
-              "chatWindowSendButton",
-              !inputValue.trim() || isLoading
-                ? "chatWindowSendButtonDisabled"
-                : "chatWindowSendButtonEnabled"
-            ].join(" ")}
-          >
-            Send
-          </button>
-        </div>
+        {limitReached ? (
+          <div className="chatWindowLimitBanner">
+            Conversation limit reached. Thanks for chatting!
+          </div>
+        ) : (
+          <div className="chatWindowInputRow">
+            <input
+              type="text"
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
+              onKeyDown={handleKeyPress}
+              placeholder="Type your message..."
+              disabled={isLoading}
+              className="chatWindowInput"
+            />
+            <button
+              onClick={handleSend}
+              disabled={!inputValue.trim() || isLoading}
+              className={[
+                "chatWindowSendButton",
+                !inputValue.trim() || isLoading
+                  ? "chatWindowSendButtonDisabled"
+                  : "chatWindowSendButtonEnabled"
+              ].join(" ")}
+            >
+              Send
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

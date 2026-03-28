@@ -32,6 +32,7 @@ function EmbeddableWidget({ apiKey: apiKeyProp }) {
   const [widgetConfig, setWidgetConfig] = useState(null);
   const [chatModes, setChatModes] = useState("both");
   const [idleTimeoutSeconds, setIdleTimeoutSeconds] = useState(60);
+  const [maxMessages, setMaxMessages] = useState(10);
 
   useEffect(() => {
     if (widgetKey) {
@@ -39,7 +40,8 @@ function EmbeddableWidget({ apiKey: apiKeyProp }) {
         .then((data) => {
           setWidgetConfig(data.widgetConfig);
           if (data.chatModes) setChatModes(data.chatModes);
-          if (data.idleTimeoutSeconds) setIdleTimeoutSeconds(data.idleTimeoutSeconds);
+          if (data.idleTimeoutSeconds != null) setIdleTimeoutSeconds(data.idleTimeoutSeconds);
+          if (data.maxMessages != null) setMaxMessages(data.maxMessages);
         })
         .catch(() => {});
     }
@@ -119,6 +121,7 @@ function EmbeddableWidget({ apiKey: apiKeyProp }) {
           leadId={leadData?.id}
           apiKey={widgetKey}
           idleTimeoutSeconds={idleTimeoutSeconds}
+          maxMessages={maxMessages}
         />
       )}
 

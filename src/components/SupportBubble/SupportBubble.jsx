@@ -12,10 +12,12 @@ function SupportBubble({ apiKey: apiKeyProp }) {
   const [inputValue, setInputValue] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef(null);
+  const messagesBoxRef = useRef(null);
   const hasGreeted = useRef(false);
 
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    const box = messagesBoxRef.current;
+    if (box) box.scrollTop = box.scrollHeight;
   }, [messages]);
 
   useEffect(() => {
@@ -99,7 +101,7 @@ function SupportBubble({ apiKey: apiKeyProp }) {
               &times;
             </button>
           </div>
-          <div className="supportBubble__messages">
+          <div className="supportBubble__messages" ref={messagesBoxRef}>
             {messages.map((msg, i) => (
               <div
                 key={i}

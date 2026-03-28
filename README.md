@@ -26,7 +26,7 @@ Create a `.env` file in `se_project_final/`:
 ```
 VITE_API_URL=http://localhost:5000
 VITE_WS_URL=ws://localhost:5000
-VITE_ALEI_PUB_KEY=alei_pub_prod_key_placeholder
+VITE_ALEI_PUB_KEY=alei_pub_9f27f257515ece024c7a7336efe01858
 ```
 
 > `.env` is gitignored and should never be committed.
@@ -50,13 +50,11 @@ The frontend is bundled with the backend into a single Docker image and deployed
 
 ```bash
 docker build \
-  --build-arg VITE_API_URL=https://alei-437855408671.us-central1.run.app \
-  --build-arg VITE_WS_URL=wss://alei-437855408671.us-central1.run.app \
-  --build-arg VITE_ALEI_PUB_KEY=alei_pub_prod_key_placeholder \
+  --build-arg VITE_API_URL=https://alei.ai \
+  --build-arg VITE_WS_URL=wss://alei.ai \
+  --build-arg VITE_ALEI_PUB_KEY=alei_pub_9f27f257515ece024c7a7336efe01858 \
   -t us-central1-docker.pkg.dev/alei-prod/alei/app:latest .
 ```
-
-> If you have a custom domain, replace the URLs with your domain (e.g. `https://yourdomain.com` and `wss://yourdomain.com`).
 
 ### 2. Push the image to Artifact Registry
 
@@ -75,7 +73,7 @@ gcloud run deploy alei \
   --port 8080
 ```
 
-The live site will be updated at: https://alei-437855408671.us-central1.run.app
+The live site will be updated at: https://alei.ai
 
 ---
 

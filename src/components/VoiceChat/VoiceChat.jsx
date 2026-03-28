@@ -21,6 +21,7 @@ function arrayBufferToBase64(buffer) {
 function VoiceChat({ leadId, userName, companyName, micStream, onClose, apiKey, idleTimeoutSeconds = 60 }) {
   const [isConnected, setIsConnected] = useState(false);
   const [isAiSpeaking, setIsAiSpeaking] = useState(false);
+  const [isThinking, setIsThinking] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
   const [transcript, setTranscript] = useState([]);
   const [error, setError] = useState(null);
@@ -35,6 +36,7 @@ function VoiceChat({ leadId, userName, companyName, micStream, onClose, apiKey, 
   const playbackQueueRef = useRef([]);     // Queued AudioBuffers waiting to be scheduled
   const isPlayingRef = useRef(false);
   const nextPlayTimeRef = useRef(0);       // Tracks the end-time of the last scheduled buffer for gapless playback
+  const transcriptBoxRef = useRef(null);   // Scrollable transcript container
   const transcriptEndRef = useRef(null);   // Invisible element at the bottom of the transcript for auto-scroll
   const isMutedRef = useRef(false);        // Mirror of isMuted state so the audio processor callback can read it synchronously
   const idleTimerRef = useRef(null);
@@ -54,7 +56,11 @@ function VoiceChat({ leadId, userName, companyName, micStream, onClose, apiKey, 
   };
 
   useEffect(() => {
-    transcriptEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    // Use scrollTop instead of scrollIntoView to keep scroll contained
+    // within the transcript div — scrollIntoView propagates to the parent
+    // page in iframes, scrolling the widget off-screen and killing mic capture.
+    const box = transcriptBoxRef.current;
+    if (box) box.scrollTop = box.scrollHeight;
   }, [transcript]);
 
   // These refs hold the latest closures so the WebSocket onmessage handler
@@ -215,6 +221,7 @@ function VoiceChat({ leadId, userName, companyName, micStream, onClose, apiKey, 
       if (wsRef.current?.readyState !== WebSocket.OPEN) return;
 
       const float32 = e.inputBuffer.getChannelData(0);
+
       const int16 = new Int16Array(float32.length);
       for (let i = 0; i < float32.length; i++) {
         const s = Math.max(-1, Math.min(1, float32[i]));
@@ -226,7 +233,6 @@ function VoiceChat({ leadId, userName, companyName, micStream, onClose, apiKey, 
         type: "audio",
         data: base64,
       }));
-      resetIdleTimer();
     };
 
     source.connect(processor);
@@ -269,6 +275,7 @@ function VoiceChat({ leadId, userName, companyName, micStream, onClose, apiKey, 
 
           case "audio":
             if (data.data) {
+              setIsThinking(false);
               playAudioChunk(data.data);
             }
             break;
@@ -281,6 +288,9 @@ function VoiceChat({ leadId, userName, companyName, micStream, onClose, apiKey, 
             break;
 
           case "turn_complete":
+            resetIdleTimer();
+            if (data.role === "user") setIsThinking(true);
+            if (data.role === "model") setIsThinking(false);
             finalizeRef.current?.();
             break;
 
@@ -353,16 +363,18 @@ function VoiceChat({ leadId, userName, companyName, micStream, onClose, apiKey, 
           <button className="voiceChatCloseBtn" onClick={handleEndCall} title="End conversation">×</button>
         </div>
         <div className="voiceChatVisual">
-          <div className={`voiceChatOrb ${isAiSpeaking ? "voiceChatOrbSpeaking" : isConnected ? "voiceChatOrbListening" : "voiceChatOrbConnecting"}`}>
+          <div className={`voiceChatOrb ${isThinking ? "voiceChatOrbThinking" : isAiSpeaking ? "voiceChatOrbSpeaking" : isConnected ? "voiceChatOrbListening" : "voiceChatOrbConnecting"}`}>
             <div className="voiceChatOrbInner" />
           </div>
-          <p className="voiceChatStatus">{status}</p>
+          <p className="voiceChatStatus">
+            {isThinking ? "Thinking..." : isAiSpeaking ? "Speaking..." : isConnected ? "Listening..." : status}
+          </p>
           {timeWarning && (
             <p className="voiceChatTimeWarning">{timeWarning}</p>
           )}
         </div>
 
-        <div className="voiceChatTranscript">
+        <div className="voiceChatTranscript" ref={transcriptBoxRef}>
           <div className="voiceChatTranscriptInner">
             {transcript.length === 0 && isConnected && (
               <p className="voiceChatTranscriptEmpty">
