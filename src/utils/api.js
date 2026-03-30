@@ -169,6 +169,16 @@ export async function fetchWidgetConfig(apiKey) {
   return data;
 }
 
+export async function fetchSalesforceStatus() {
+  return authRequest("/api/integrations/salesforce/status");
+}
+
+export async function disconnectSalesforce() {
+  return authRequest("/api/integrations/salesforce/disconnect", {
+    method: "POST",
+  });
+}
+
 export async function exportLeadsCSV() {
   const token = localStorage.getItem("token");
   const res = await fetch(`${BASE_URL}/api/dashboard/leads/export/csv`, {

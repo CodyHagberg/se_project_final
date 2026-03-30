@@ -23,6 +23,7 @@ import SupportConfig from "../SupportConfig/SupportConfig";
 import SupportBubble from "../SupportBubble/SupportBubble";
 import EmbeddableWidget from "../EmbeddableWidget/EmbeddableWidget";
 import WidgetCustomizer from "../WidgetCustomizer/WidgetCustomizer";
+import Integrations from "../../pages/Integrations/Integrations";
 import { SITE_PUB_KEY } from "../../utils/constants";
 import "../../pages/Pages.css";
 import "./App.css";
@@ -84,6 +85,7 @@ function App() {
             <Route path="dojo" element={<Dojo />} />
             <Route path="widget-customizer" element={<WidgetCustomizer />} />
             <Route path="support-config" element={<SupportConfig />} />
+            <Route path="integrations" element={<Integrations />} />
             <Route
               path="admin/businesses"
               element={

@@ -91,6 +91,14 @@ function DashboardLayout() {
                   Widget Customizer
                 </NavLink>
                 <NavLink
+                  to="/dashboard/integrations"
+                  className={({ isActive }) =>
+                    `dashboard__navLink ${isActive ? "dashboard__navLink--active" : ""}`
+                  }
+                >
+                  Integrations
+                </NavLink>
+                <NavLink
                   to="/dashboard/dojo"
                   className={({ isActive }) =>
                     `dashboard__navLink ${isActive ? "dashboard__navLink--active" : ""}`

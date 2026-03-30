@@ -26,7 +26,7 @@ Create a `.env` file in `se_project_final/`:
 ```
 VITE_API_URL=http://localhost:5000
 VITE_WS_URL=ws://localhost:5000
-VITE_ALEI_PUB_KEY=alei_pub_9f27f257515ece024c7a7336efe01858
+VITE_ALEI_PUB_KEY=alei_pub_ea4555281c96e9de7def64d678974746
 ```
 
 > `.env` is gitignored and should never be committed.
@@ -52,7 +52,7 @@ The frontend is bundled with the backend into a single Docker image and deployed
 docker build \
   --build-arg VITE_API_URL=https://alei.ai \
   --build-arg VITE_WS_URL=wss://alei.ai \
-  --build-arg VITE_ALEI_PUB_KEY=alei_pub_9f27f257515ece024c7a7336efe01858 \
+  --build-arg VITE_ALEI_PUB_KEY=alei_pub_ea4555281c96e9de7def64d678974746 \
   -t us-central1-docker.pkg.dev/alei-prod/alei/app:latest .
 ```
 
