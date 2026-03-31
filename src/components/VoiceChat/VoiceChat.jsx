@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { WS_BASE_URL, SITE_PUB_KEY } from "../../utils/constants";
-import logo from "../../assets/ALEI_Hidden.svg";
+import logo from "../../assets/ALEI_Logo.svg";
 import "./VoiceChat.css";
 
 const WS_VOICE_URL = `${WS_BASE_URL}/ws/voice`;

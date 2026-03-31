@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 import "./Header.css";
-import logo from "../../assets/ALEI_Hidden.svg";
+import logo from "../../assets/ALEI_Logo.svg";
 import backgroundImage from "../../assets/nav.svg";
 
 function Header() {

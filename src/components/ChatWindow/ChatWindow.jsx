@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { sendChatMessage } from "../../utils/api";
-import logo from "../../assets/ALEI_Hidden.svg";
+import logo from "../../assets/ALEI_Logo.svg";
 import "./ChatWindow.css";
 
 function ChatWindow({ isOpen, onClose, userName, companyName, leadId, apiKey, idleTimeoutSeconds = 60, maxMessages = 10 }) {
