@@ -13,43 +13,46 @@ function PricingCards() {
       title: "Individual",
       image: individualBg,
       features: [
-        "Up to 10 conversations per month",
-        "Basic industry qualification",
+        "25 conversations per month",
+        "Additional conversations billed as you go",
+        "Industry knowledge",
+        "Analytics dashboard",
         "Email support",
-        "Standard response time"
+        "1 Seat"
       ]
     },
     {
       title: "Small Business",
       image: smallBusinessBg,
       features: [
-        "Up to 50 conversations per month",
-        "Advanced industry qualification",
-        "Priority email support",
-        "Custom greeting templates",
-        "Analytics dashboard"
+        "50 conversations per month",
+        "Additional conversations billed as you go",
+        "Industry knowledge",
+        "Analytics dashboard",
+        "Kickoff call",
+        "Rep support",
+        "5 Seats"
       ]
     },
     {
       title: "Enterprise",
       image: enterpriseBg,
       features: [
-        "Unlimited conversations",
-        "Full industry qualification suite",
-        "Dedicated account manager",
+        "Hundreds of conversations per month",
+        "AI Support widget",
         "Custom integration support",
-        "Advanced analytics & reporting",
+        "Dedicated account manager",
         "API access"
       ]
     },
     {
-      title: "Enterprise +",
+      title: "Enterprise+",
       image: enterprisePlusBg,
       features: [
         "Everything in Enterprise",
         "White-label solution",
-        "On-premise deployment option",
         "Custom AI model training",
+        "On-premise deployment option",
         "24/7 phone support",
         "SLA guarantee"
       ]
