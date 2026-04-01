@@ -81,6 +81,11 @@
   color: #0a7c3e;
 }
 
+.integrations__badge--info {
+  background: #e8f0fe;
+  color: #4285f4;
+}
+
 .integrations__cardDesc {
   margin: 0 0 20px;
   font-size: 14px;

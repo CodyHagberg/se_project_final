@@ -18,8 +18,6 @@
 
 .embeddableWidget--standalone {
   min-height: 100vh;
-  height: auto;
-  overflow: visible;
 }
 
 .embeddableWidget__error {

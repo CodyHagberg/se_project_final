@@ -33,6 +33,7 @@ function EmbeddableWidget({ apiKey: apiKeyProp }) {
   const [chatModes, setChatModes] = useState("both");
   const [idleTimeoutSeconds, setIdleTimeoutSeconds] = useState(60);
   const [maxMessages, setMaxMessages] = useState(10);
+  const [appointmentUrl, setAppointmentUrl] = useState("");
 
   useEffect(() => {
     if (widgetKey) {
@@ -42,6 +43,7 @@ function EmbeddableWidget({ apiKey: apiKeyProp }) {
           if (data.chatModes) setChatModes(data.chatModes);
           if (data.idleTimeoutSeconds != null) setIdleTimeoutSeconds(data.idleTimeoutSeconds);
           if (data.maxMessages != null) setMaxMessages(data.maxMessages);
+          if (data.appointmentUrl) setAppointmentUrl(data.appointmentUrl);
         })
         .catch(() => {});
     }
@@ -122,6 +124,7 @@ function EmbeddableWidget({ apiKey: apiKeyProp }) {
           apiKey={widgetKey}
           idleTimeoutSeconds={idleTimeoutSeconds}
           maxMessages={maxMessages}
+          appointmentUrl={appointmentUrl}
         />
       )}
 
@@ -134,6 +137,7 @@ function EmbeddableWidget({ apiKey: apiKeyProp }) {
           onClose={handleBackToModeSelect}
           apiKey={widgetKey}
           idleTimeoutSeconds={idleTimeoutSeconds}
+          appointmentUrl={appointmentUrl}
         />
       )}
     </div>

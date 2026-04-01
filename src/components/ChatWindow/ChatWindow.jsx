@@ -1,13 +1,16 @@
 import { useState, useEffect, useRef } from "react";
 import { sendChatMessage } from "../../utils/api";
+import ConversationEnd from "../ConversationEnd/ConversationEnd";
 import logo from "../../assets/ALEI_Logo.svg";
 import "./ChatWindow.css";
 
-function ChatWindow({ isOpen, onClose, userName, companyName, leadId, apiKey, idleTimeoutSeconds = 60, maxMessages = 10 }) {
+function ChatWindow({ isOpen, onClose, userName, companyName, leadId, apiKey, idleTimeoutSeconds = 60, maxMessages = 10, appointmentUrl = "" }) {
   const [messages, setMessages] = useState([]);
   const [inputValue, setInputValue] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [limitReached, setLimitReached] = useState(false);
+  const [conversationEnded, setConversationEnded] = useState(false);
+  const [endReason, setEndReason] = useState(null);
   const messagesEndRef = useRef(null);
   const messagesBoxRef = useRef(null);
   const hasGreeted = useRef(false);
@@ -28,11 +31,8 @@ function ChatWindow({ isOpen, onClose, userName, companyName, leadId, apiKey, id
   const resetIdleTimer = () => {
     if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
     idleTimerRef.current = setTimeout(() => {
-      setMessages((prev) => [
-        ...prev,
-        { role: "assistant", content: "Session timed out due to inactivity.", timestamp: new Date() },
-      ]);
-      setTimeout(() => onClose(), 2500);
+      setLimitReached(true);
+      setTimeout(() => { setConversationEnded(true); setEndReason("idle"); }, 3000);
     }, idleTimeoutSeconds * 1000);
   };
 
@@ -92,20 +92,27 @@ function ChatWindow({ isOpen, onClose, userName, companyName, leadId, apiKey, id
         })),
       });
 
+      const safeMessage = (data.message || "").replace(/\[OPEN_CALENDAR\]/g, "").trim();
       setMessages((prev) => [
         ...prev,
-        { role: "assistant", content: data.message, timestamp: new Date() },
+        { role: "assistant", content: safeMessage, timestamp: new Date() },
       ]);
 
-      if (userCountAfter >= maxMessages) {
-        setLimitReached(true);
+      if (data.action === "open_calendar") {
         if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
+        setLimitReached(true);
+        setTimeout(() => { setConversationEnded(true); setEndReason("calendar"); }, 3000);
+      } else if (userCountAfter >= maxMessages) {
+        if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
+        setLimitReached(true);
+        setTimeout(() => { setConversationEnded(true); setEndReason("limit"); }, 3000);
       }
     } catch (error) {
       const errMsg = error.message || "Failed to connect to server";
       if (error.status === 429 || errMsg.includes("message limit")) {
-        setLimitReached(true);
         if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
+        setLimitReached(true);
+        setTimeout(() => { setConversationEnded(true); setEndReason("limit"); }, 3000);
       }
       setMessages((prev) => [
         ...prev,
@@ -186,7 +193,12 @@ function ChatWindow({ isOpen, onClose, userName, companyName, leadId, apiKey, id
           <div ref={messagesEndRef} />
         </div>
 
-        {limitReached ? (
+        {conversationEnded ? (
+          <ConversationEnd
+            appointmentUrl={(endReason === "calendar" || endReason === "limit") ? appointmentUrl : ""}
+            reason={endReason}
+          />
+        ) : limitReached ? (
           <div className="chatWindowLimitBanner">
             Conversation limit reached. Thanks for chatting!
           </div>

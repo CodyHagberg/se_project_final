@@ -17,6 +17,7 @@ function WidgetCustomizer() {
   const [modeSelectorTitle, setModeSelectorTitle] = useState("");
   const [modeSelectorDescription, setModeSelectorDescription] = useState("");
   const [fields, setFields] = useState(DEFAULT_FIELDS);
+  const [appointmentUrl, setAppointmentUrl] = useState("");
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState("");
@@ -37,6 +38,9 @@ function WidgetCustomizer() {
         setModeSelectorDescription(wc.modeSelectorDescription || "");
         if (wc.fields?.length) setFields(wc.fields);
       }
+      if (data.config?.appointmentUrl != null) {
+        setAppointmentUrl(data.config.appointmentUrl);
+      }
     } catch (err) {
       setError(err.message);
     } finally {
@@ -49,7 +53,7 @@ function WidgetCustomizer() {
     setMessage("");
     setError("");
     try {
-      await updateConfig({ widgetConfig: { formTitle, submitButtonText, modeSelectorTitle, modeSelectorDescription, fields } });
+      await updateConfig({ widgetConfig: { formTitle, submitButtonText, modeSelectorTitle, modeSelectorDescription, fields }, appointmentUrl });
       setMessage("Widget configuration saved successfully");
     } catch (err) {
       setError(err.message);
@@ -140,6 +144,24 @@ function WidgetCustomizer() {
             value={modeSelectorDescription}
             onChange={(e) => setModeSelectorDescription(e.target.value)}
             placeholder="How would you like to chat with our AI assistant?"
+          />
+        </div>
+
+        <hr className="wc__divider" />
+        <h3 className="wc__sectionTitle">Appointment Scheduling</h3>
+        <p className="wc__sectionHint">
+          When a conversation ends, a "Book a Call" button will appear if a link is set.
+          Works with Google Calendar, Calendly, or any scheduling URL.
+        </p>
+
+        <div className="wc__field">
+          <label className="wc__label">Appointment Booking Link</label>
+          <input
+            type="url"
+            className="wc__input"
+            value={appointmentUrl}
+            onChange={(e) => setAppointmentUrl(e.target.value)}
+            placeholder="Paste your Google Calendar appointment scheduling link"
           />
         </div>
 

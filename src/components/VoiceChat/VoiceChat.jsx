@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { WS_BASE_URL, SITE_PUB_KEY } from "../../utils/constants";
+import ConversationEnd from "../ConversationEnd/ConversationEnd";
 import logo from "../../assets/ALEI_Logo.svg";
 import "./VoiceChat.css";
 
@@ -18,7 +19,7 @@ function arrayBufferToBase64(buffer) {
   return btoa(binary);
 }
 
-function VoiceChat({ leadId, userName, companyName, micStream, onClose, apiKey, idleTimeoutSeconds = 60 }) {
+function VoiceChat({ leadId, userName, companyName, micStream, onClose, apiKey, idleTimeoutSeconds = 60, appointmentUrl = "" }) {
   const [isConnected, setIsConnected] = useState(false);
   const [isAiSpeaking, setIsAiSpeaking] = useState(false);
   const [isThinking, setIsThinking] = useState(false);
@@ -27,6 +28,8 @@ function VoiceChat({ leadId, userName, companyName, micStream, onClose, apiKey, 
   const [error, setError] = useState(null);
   const [status, setStatus] = useState("Connecting...");
   const [timeWarning, setTimeWarning] = useState(null);
+  const [conversationEnded, setConversationEnded] = useState(false);
+  const [endReason, setEndReason] = useState(null);
 
   const wsRef = useRef(null);             // WebSocket connection to the voice server
   const audioContextRef = useRef(null);    // AudioContext for mic capture (16kHz)
@@ -50,8 +53,8 @@ function VoiceChat({ leadId, userName, companyName, micStream, onClose, apiKey, 
     if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
     idleTimerRef.current = setTimeout(() => {
       if (cleanedUpRef.current) return;
-      setError("Session timed out due to inactivity.");
       cleanupAll();
+      setTimeout(() => { setConversationEnded(true); setEndReason("idle"); }, 3000);
     }, idleTimeoutSeconds * 1000);
   };
 
@@ -74,14 +77,16 @@ function VoiceChat({ leadId, userName, companyName, micStream, onClose, apiKey, 
     // Append streamed text to the current partial transcript entry,
     // or create a new entry if the speaker changed.
     addTranscriptRef.current = (role, content) => {
+      const safe = content.replace(/\[OPEN_CALENDAR\]/g, "");
+      if (!safe) return;
       setTranscript((prev) => {
         const last = prev[prev.length - 1];
         if (last && last.role === role && last.partial) {
           const updated = [...prev];
-          updated[updated.length - 1] = { ...last, content: last.content + content };
+          updated[updated.length - 1] = { ...last, content: last.content + safe };
           return updated;
         }
-        return [...prev, { role, content, timestamp: new Date(), partial: true }];
+        return [...prev, { role, content: safe, timestamp: new Date(), partial: true }];
       });
     };
 
@@ -298,9 +303,16 @@ function VoiceChat({ leadId, userName, companyName, micStream, onClose, apiKey, 
             setTimeWarning(data.message || "You have 1 minute remaining.");
             break;
 
+          case "action":
+            if (data.action === "open_calendar") {
+              cleanupAll();
+              setTimeout(() => { setConversationEnded(true); setEndReason("calendar"); }, 3000);
+            }
+            break;
+
           case "rate_limit":
-            setError(data.message || "Voice time limit reached. Thanks for trying ALEI!");
             cleanupAll();
+            setTimeout(() => { setConversationEnded(true); setEndReason("limit"); }, 3000);
             break;
 
           case "error":
@@ -338,6 +350,17 @@ function VoiceChat({ leadId, userName, companyName, micStream, onClose, apiKey, 
   const toggleMute = () => {
     setIsMuted((prev) => !prev);
   };
+
+  if (conversationEnded) {
+    return (
+      <div className="voiceChat">
+        <ConversationEnd
+          appointmentUrl={(endReason === "calendar" || endReason === "limit") ? appointmentUrl : ""}
+          reason={endReason}
+        />
+      </div>
+    );
+  }
 
   if (error) {
     return (
