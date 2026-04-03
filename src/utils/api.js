@@ -148,6 +148,13 @@ export async function updateGeminiKey(userId, geminiApiKey) {
   });
 }
 
+export async function updateMonthlyLeadLimit(userId, monthlyLeadLimit) {
+  return authRequest(`/api/admin/lead-limit/${userId}`, {
+    method: "PUT",
+    body: JSON.stringify({ monthlyLeadLimit }),
+  });
+}
+
 export async function fetchApiKey() {
   return authRequest("/api/dashboard/api-key");
 }

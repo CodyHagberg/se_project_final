@@ -1,6 +1,14 @@
 import { useState, useEffect } from "react";
-import { fetchBusinesses, regeneratePublishableKey, updateAllowedDomains, updateGeminiKey } from "../../utils/api";
+import { fetchBusinesses, regeneratePublishableKey, updateAllowedDomains, updateGeminiKey, updateMonthlyLeadLimit } from "../../utils/api";
 import "./AdminBusinesses.css";
+
+const PLAN_DISPLAY = {
+  individual: "Individual",
+  small_business: "Small Business",
+  enterprise: "Enterprise",
+  free: "Free",
+  pro: "Pro",
+};
 
 function AdminBusinesses() {
   const [businesses, setBusinesses] = useState([]);
@@ -62,6 +70,19 @@ function AdminBusinesses() {
     }
   };
 
+  const handleLeadLimitChange = async (userId, value) => {
+    try {
+      const data = await updateMonthlyLeadLimit(userId, Number(value));
+      setBusinesses((prev) =>
+        prev.map((b) => (b.id === userId ? { ...b, monthlyLeadLimit: data.monthlyLeadLimit } : b))
+      );
+      setActionMsg("Monthly lead limit updated");
+      setTimeout(() => setActionMsg(""), 2000);
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
   const handleEditDomains = (biz) => {
     setEditingDomains(biz.id);
     setDomainInput((biz.allowedDomains || []).join(", "));
@@ -101,7 +122,24 @@ function AdminBusinesses() {
             <div key={biz.id} className="adminBiz__card">
               <div className="adminBiz__cardHeader">
                 <h3 className="adminBiz__company">{biz.companyName}</h3>
-                <span className="adminBiz__plan">{biz.plan}</span>
+                <span className="adminBiz__plan">{PLAN_DISPLAY[biz.plan] || biz.plan}</span>
+              </div>
+
+              <div className="adminBiz__leadLimitSection">
+                <span className="adminBiz__keyLabel">Monthly Lead Limit</span>
+                <select
+                  className="adminBiz__leadLimitSelect"
+                  value={biz.monthlyLeadLimit ?? 25}
+                  onChange={(e) => handleLeadLimitChange(biz.id, e.target.value)}
+                >
+                  <option value={25}>25</option>
+                  <option value={50}>50</option>
+                  <option value={100}>100</option>
+                  <option value={250}>250</option>
+                  <option value={500}>500</option>
+                  <option value={1000}>1,000</option>
+                  <option value={-1}>Unlimited</option>
+                </select>
               </div>
 
               <div className="adminBiz__meta">

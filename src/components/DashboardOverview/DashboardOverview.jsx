@@ -9,7 +9,14 @@ import {
   Tooltip,
 } from "recharts";
 import { fetchLeads } from "../../utils/api";
+import { useAuth } from "../../contexts/AuthContext";
 import "./DashboardOverview.css";
+
+const PLAN_DISPLAY = {
+  individual: "Individual",
+  small_business: "Small Business",
+  enterprise: "Enterprise",
+};
 
 const DATE_RANGES = [
   { label: "7D", days: 7 },
@@ -67,6 +74,7 @@ function buildActivityData(leads, rangeDays) {
 }
 
 function DashboardOverview() {
+  const { user } = useAuth();
   const [stats, setStats] = useState(null);
   const [allLeads, setAllLeads] = useState([]);
   const [chartData, setChartData] = useState([]);
@@ -113,6 +121,16 @@ function DashboardOverview() {
     { label: "Closed", value: stats.closed, className: "overview__card--closed" },
   ];
 
+  const plan = user?.plan || "individual";
+  const rawLimit = user?.monthlyLeadLimit ?? 25;
+  const isUnlimited = rawLimit === -1;
+  const limit = isUnlimited ? Infinity : rawLimit;
+  const now = new Date();
+  const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+  const monthlyCount = allLeads.filter((l) => new Date(l.createdAt) >= monthStart).length;
+  const pct = isUnlimited ? 0 : Math.min((monthlyCount / limit) * 100, 100);
+  const barColor = pct >= 100 ? "#e74c3c" : pct >= 80 ? "#f39c12" : "#5fbdca";
+
   return (
     <div className="overview">
       <h2 className="overview__title">Overview</h2>
@@ -123,6 +141,29 @@ function DashboardOverview() {
             <span className="overview__cardLabel">{card.label}</span>
           </div>
         ))}
+      </div>
+
+      <div className="overview__usage">
+        <div className="overview__usageHeader">
+          <h3 className="overview__usageTitle">Monthly Usage</h3>
+          <span className="overview__usagePlan">{PLAN_DISPLAY[plan] || plan}</span>
+        </div>
+        <div className="overview__usageInfo">
+          <span>{monthlyCount}{isUnlimited ? "" : ` / ${limit}`} conversations this month</span>
+          {!isUnlimited && (
+            <span className="overview__usagePct" style={{ color: barColor }}>{Math.round(pct)}%</span>
+          )}
+        </div>
+        {!isUnlimited ? (
+          <div className="overview__usageBar">
+            <div
+              className="overview__usageBarFill"
+              style={{ width: `${pct}%`, backgroundColor: barColor }}
+            />
+          </div>
+        ) : (
+          <p className="overview__usageUnlimited">Unlimited conversations on your plan.</p>
+        )}
       </div>
 
       <div className="overview__chartSection">

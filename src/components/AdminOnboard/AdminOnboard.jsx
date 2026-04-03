@@ -7,7 +7,7 @@ function AdminOnboard() {
     email: "",
     companyName: "",
     tempPassword: "",
-    plan: "free",
+    plan: "individual",
     allowedDomains: "",
     geminiApiKey: "",
   });
@@ -30,7 +30,7 @@ function AdminOnboard() {
           .filter(Boolean),
       });
       setResult(data.business);
-      setForm({ email: "", companyName: "", tempPassword: "", plan: "free", allowedDomains: "", geminiApiKey: "" });
+      setForm({ email: "", companyName: "", tempPassword: "", plan: "individual", allowedDomains: "", geminiApiKey: "" });
     } catch (err) {
       setError(err.message);
     } finally {
@@ -99,8 +99,8 @@ function AdminOnboard() {
             value={form.plan}
             onChange={(e) => setForm({ ...form, plan: e.target.value })}
           >
-            <option value="free">Free</option>
-            <option value="pro">Pro</option>
+            <option value="individual">Individual</option>
+            <option value="small_business">Small Business</option>
             <option value="enterprise">Enterprise</option>
           </select>
         </label>
