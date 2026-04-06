@@ -57,6 +57,14 @@ export async function sendChatMessage({ message, userName, companyName, history,
   });
 }
 
+export async function endConversation(leadId, apiKey) {
+  return request("/api/chat/end", {
+    method: "POST",
+    body: JSON.stringify({ leadId }),
+    headers: apiKey ? keyHeader(apiKey) : {},
+  });
+}
+
 export async function login(email, password) {
   return request("/api/auth/login", {
     method: "POST",

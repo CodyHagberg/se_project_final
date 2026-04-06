@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { sendChatMessage } from "../../utils/api";
+import { sendChatMessage, endConversation } from "../../utils/api";
 import ConversationEnd from "../ConversationEnd/ConversationEnd";
 import logo from "../../assets/ALEI_Logo.svg";
 import "./ChatWindow.css";
@@ -40,6 +40,14 @@ function ChatWindow({ isOpen, onClose, userName, companyName, leadId, apiKey, id
     if (isOpen) resetIdleTimer();
     return () => { if (idleTimerRef.current) clearTimeout(idleTimerRef.current); };
   }, [isOpen]);
+
+  useEffect(() => {
+    if (conversationEnded && leadId) {
+      endConversation(leadId, apiKey).catch((err) =>
+        console.error("End conversation signal failed:", err.message)
+      );
+    }
+  }, [conversationEnded]);
 
   const sendInitialGreeting = async () => {
     setIsLoading(true);
@@ -92,16 +100,16 @@ function ChatWindow({ isOpen, onClose, userName, companyName, leadId, apiKey, id
         })),
       });
 
-      const safeMessage = (data.message || "").replace(/\[OPEN_CALENDAR\]/g, "").trim();
+      const safeMessage = (data.message || "").replace(/\[END_CONVERSATION\]/g, "").trim();
       setMessages((prev) => [
         ...prev,
         { role: "assistant", content: safeMessage, timestamp: new Date() },
       ]);
 
-      if (data.action === "open_calendar") {
+      if (data.action === "end_conversation") {
         if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
         setLimitReached(true);
-        setTimeout(() => { setConversationEnded(true); setEndReason("calendar"); }, 3000);
+        setTimeout(() => { setConversationEnded(true); setEndReason("ai_complete"); }, 3000);
       } else if (userCountAfter >= maxMessages) {
         if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
         setLimitReached(true);
@@ -195,7 +203,7 @@ function ChatWindow({ isOpen, onClose, userName, companyName, leadId, apiKey, id
 
         {conversationEnded ? (
           <ConversationEnd
-            appointmentUrl={(endReason === "calendar" || endReason === "limit") ? appointmentUrl : ""}
+            appointmentUrl={appointmentUrl}
             reason={endReason}
           />
         ) : limitReached ? (

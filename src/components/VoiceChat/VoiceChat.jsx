@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { endConversation } from "../../utils/api";
 import { WS_BASE_URL, SITE_PUB_KEY } from "../../utils/constants";
 import ConversationEnd from "../ConversationEnd/ConversationEnd";
 import logo from "../../assets/ALEI_Logo.svg";
@@ -49,6 +50,14 @@ function VoiceChat({ leadId, userName, companyName, micStream, onClose, apiKey, 
     isMutedRef.current = isMuted;
   }, [isMuted]);
 
+  useEffect(() => {
+    if (conversationEnded && leadId) {
+      endConversation(leadId, apiKey || SITE_PUB_KEY).catch((err) =>
+        console.error("End conversation signal failed:", err.message)
+      );
+    }
+  }, [conversationEnded]);
+
   const resetIdleTimer = () => {
     if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
     idleTimerRef.current = setTimeout(() => {
@@ -77,7 +86,7 @@ function VoiceChat({ leadId, userName, companyName, micStream, onClose, apiKey, 
     // Append streamed text to the current partial transcript entry,
     // or create a new entry if the speaker changed.
     addTranscriptRef.current = (role, content) => {
-      const safe = content.replace(/\[OPEN_CALENDAR\]/g, "");
+      const safe = content.replace(/\[END_CONVERSATION\]/g, "");
       if (!safe) return;
       setTranscript((prev) => {
         const last = prev[prev.length - 1];
@@ -304,9 +313,9 @@ function VoiceChat({ leadId, userName, companyName, micStream, onClose, apiKey, 
             break;
 
           case "action":
-            if (data.action === "open_calendar") {
+            if (data.action === "end_conversation") {
               cleanupAll();
-              setTimeout(() => { setConversationEnded(true); setEndReason("calendar"); }, 3000);
+              setTimeout(() => { setConversationEnded(true); setEndReason("ai_complete"); }, 3000);
             }
             break;
 
@@ -355,7 +364,7 @@ function VoiceChat({ leadId, userName, companyName, micStream, onClose, apiKey, 
     return (
       <div className="voiceChat">
         <ConversationEnd
-          appointmentUrl={(endReason === "calendar" || endReason === "limit") ? appointmentUrl : ""}
+          appointmentUrl={appointmentUrl}
           reason={endReason}
         />
       </div>
