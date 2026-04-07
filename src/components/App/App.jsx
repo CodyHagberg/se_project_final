@@ -24,6 +24,9 @@ import SupportBubble from "../SupportBubble/SupportBubble";
 import EmbeddableWidget from "../EmbeddableWidget/EmbeddableWidget";
 import WidgetCustomizer from "../WidgetCustomizer/WidgetCustomizer";
 import Integrations from "../../pages/Integrations/Integrations";
+import Terms from "../Terms/Terms";
+import TermsOfService from "../Terms/TermsOfService";
+import PrivacyPolicy from "../Terms/PrivacyPolicy";
 import { SITE_PUB_KEY } from "../../utils/constants";
 import "../../pages/Pages.css";
 import "./App.css";
@@ -63,6 +66,9 @@ function App() {
             }
           />
           <Route path="/demo" element={<DemoView />} />
+          <Route path="/terms" element={<Terms />} />
+          <Route path="/terms-of-service" element={<TermsOfService />} />
+          <Route path="/privacy" element={<PrivacyPolicy />} />
           <Route path="/support-bubble" element={<SupportBubble />} />
           <Route path="/widget" element={<EmbeddableWidget />} />
           <Route path="/login" element={<Login />} />

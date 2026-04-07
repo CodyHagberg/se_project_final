@@ -22,12 +22,23 @@
   line-height: 20px;
 }
 
-.footer__date {
-  opacity: 0.8;
-  white-space: nowrap;
+.footer__links {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.footer__link {
+  color: rgba(255, 255, 255, 0.8);
+  text-decoration: none;
   font-weight: 500;
   font-size: 14px;
   line-height: 20px;
+  white-space: nowrap;
+}
+
+.footer__link:hover {
+  text-decoration: underline;
 }
 
 @media (max-width: 480px) {
@@ -40,7 +51,7 @@
     font-size: 13px;
   }
 
-  .footer__date {
+  .footer__link {
     font-size: 13px;
   }
 }
