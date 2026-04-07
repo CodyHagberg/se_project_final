@@ -99,9 +99,10 @@ function DashboardOverview() {
       setAllLeads(leads);
       setStats({
         total: leads.length,
-        newLeads: leads.filter((l) => l.status === "new").length,
-        qualified: leads.filter((l) => l.status === "qualified").length,
-        closed: leads.filter((l) => l.status === "closed").length,
+        newLeads: leads.filter((l) => !l.status || l.status === "new").length,
+        contacted: leads.filter((l) => l.status === "contacted" || l.status === "qualified").length,
+        won: leads.filter((l) => l.status === "won").length,
+        lost: leads.filter((l) => l.status === "lost" || l.status === "closed").length,
       });
       setChartData(buildActivityData(leads, 30));
     } catch (err) {
@@ -117,8 +118,9 @@ function DashboardOverview() {
   const cards = [
     { label: "Total Leads", value: stats.total, className: "overview__card--total" },
     { label: "New", value: stats.newLeads, className: "overview__card--new" },
-    { label: "Qualified", value: stats.qualified, className: "overview__card--qualified" },
-    { label: "Closed", value: stats.closed, className: "overview__card--closed" },
+    { label: "Contacted", value: stats.contacted, className: "overview__card--contacted" },
+    { label: "Won", value: stats.won, className: "overview__card--won" },
+    { label: "Lost", value: stats.lost, className: "overview__card--lost" },
   ];
 
   const plan = user?.plan || "individual";

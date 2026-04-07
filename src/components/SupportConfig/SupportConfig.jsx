@@ -57,7 +57,7 @@ function SupportConfig() {
 
   return (
     <div className="aiConfig">
-      <h2 className="aiConfig__title">Support Knowledge</h2>
+      <h2 className="aiConfig__title">AI Support Config</h2>
       <p className="aiConfig__subtitle">
         Configure the AI that powers your customer support chat bubble — FAQs, help docs, and support tone.
       </p>

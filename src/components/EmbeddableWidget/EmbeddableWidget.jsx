@@ -9,7 +9,7 @@ import "./EmbeddableWidget.css";
 
 /**
  * Chrome-free widget designed to be embedded in an iframe on third-party sites,
- * inside the Dojo preview panel, or inline on the marketing site's Demo page.
+ * inside the Testing Center preview panel, or inline on the marketing site's Demo page.
  *
  * Flow:  Lead Form  ->  Mode Selector (text / voice)  ->  Chat
  *

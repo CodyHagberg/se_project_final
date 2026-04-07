@@ -138,7 +138,7 @@ function Dojo() {
   return (
     <div className="dojo">
       <div className="dojo__header">
-        <h2 className="dojo__title">Dojo</h2>
+        <h2 className="dojo__title">Testing Center</h2>
         <p className="dojo__subtitle">
           Preview your widget and test your AI configuration in real time.
         </p>

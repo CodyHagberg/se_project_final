@@ -18,7 +18,7 @@
 
 .overview__grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
   gap: 20px;
 }
 
@@ -41,12 +41,16 @@
   border-left-color: #3498db;
 }
 
-.overview__card--qualified {
+.overview__card--contacted {
   border-left-color: #f39c12;
 }
 
-.overview__card--closed {
+.overview__card--won {
   border-left-color: #27ae60;
+}
+
+.overview__card--lost {
+  border-left-color: #e74c3c;
 }
 
 .overview__cardValue {

@@ -40,8 +40,8 @@ function WidgetSetup() {
 
   const snippet = activeTab === "sales" ? salesSnippet : supportSnippet;
   const description = activeTab === "sales"
-    ? "Embed the ALEI sales chat widget on your website. This uses your Sales AI Config to qualify leads."
-    : "Embed the ALEI support chat bubble on your website. This uses your Support Knowledge config for FAQs and customer help.";
+    ? "Embed the ALEI sales chat widget on your website. This uses your AI Sales Config to qualify leads."
+    : "Embed the ALEI support chat bubble on your website. This uses your AI Support Config for FAQs and customer help.";
 
   return (
     <div className="widgetSetup">
@@ -91,7 +91,7 @@ function WidgetSetup() {
           <li>
             {activeTab === "sales"
               ? "Leads and conversations will appear in your Leads dashboard"
-              : "Support conversations use your Support Knowledge configuration"}
+              : "Support conversations use your AI Support Config"}
           </li>
         </ol>
       </div>

@@ -57,13 +57,18 @@
   color: #0277bd;
 }
 
-.leadDetail__tag--qualified {
+.leadDetail__tag--contacted {
+  background: #fff8e1;
+  color: #f57f17;
+}
+
+.leadDetail__tag--won {
   background: #e8f5e9;
   color: #2e7d32;
 }
 
-.leadDetail__tag--closed {
-  background: #fce4ec;
+.leadDetail__tag--lost {
+  background: #ffebee;
   color: #c62828;
 }
 
@@ -86,16 +91,22 @@
   border-color: #b3dff5;
 }
 
-.leadDetail__statusSelect--qualified {
+.leadDetail__statusSelect--contacted {
+  background: #fff8e1;
+  color: #f57f17;
+  border-color: #ffe082;
+}
+
+.leadDetail__statusSelect--won {
   background: #e8f5e9;
   color: #2e7d32;
   border-color: #a5d6a7;
 }
 
-.leadDetail__statusSelect--closed {
-  background: #fce4ec;
+.leadDetail__statusSelect--lost {
+  background: #ffebee;
   color: #c62828;
-  border-color: #f8bbd0;
+  border-color: #ef9a9a;
 }
 
 .leadDetail__statusSelect:disabled {

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { fetchLeadDetail, updateLeadStatus } from "../../utils/api";
+import { normalizeLeadStatus } from "../../utils/leadStatus";
 import "./LeadDetail.css";
 
 function LeadDetail() {
@@ -43,8 +44,8 @@ function LeadDetail() {
           <div className="leadDetail__tags">
             {lead.industry && <span className="leadDetail__tag">{lead.industry}</span>}
             <select
-              className={`leadDetail__statusSelect leadDetail__statusSelect--${lead.status || "new"}`}
-              value={lead.status || "new"}
+              className={`leadDetail__statusSelect leadDetail__statusSelect--${normalizeLeadStatus(lead.status)}`}
+              value={normalizeLeadStatus(lead.status)}
               disabled={statusSaving}
               onChange={async (e) => {
                 const newStatus = e.target.value;
@@ -60,8 +61,9 @@ function LeadDetail() {
               }}
             >
               <option value="new">New</option>
-              <option value="qualified">Qualified</option>
-              <option value="closed">Closed</option>
+              <option value="contacted">Contacted</option>
+              <option value="won">Won</option>
+              <option value="lost">Lost</option>
             </select>
           </div>
         </div>

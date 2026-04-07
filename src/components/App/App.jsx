@@ -82,7 +82,8 @@ function App() {
             <Route path="leads/:id" element={<LeadDetail />} />
             <Route path="ai-config" element={<AIConfig />} />
             <Route path="widget" element={<WidgetSetup />} />
-            <Route path="dojo" element={<Dojo />} />
+            <Route path="testing-center" element={<Dojo />} />
+            <Route path="dojo" element={<Navigate to="/dashboard/testing-center" replace />} />
             <Route path="widget-customizer" element={<WidgetCustomizer />} />
             <Route path="support-config" element={<SupportConfig />} />
             <Route path="integrations" element={<Integrations />} />

@@ -75,7 +75,7 @@ function AIConfig() {
 
   return (
     <div className="aiConfig">
-      <h2 className="aiConfig__title">AI Configuration</h2>
+      <h2 className="aiConfig__title">AI Sales Config</h2>
       <p className="aiConfig__subtitle">
         Customize how your AI sales assistant behaves with leads.
       </p>

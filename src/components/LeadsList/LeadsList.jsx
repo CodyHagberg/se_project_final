@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { fetchLeads, exportLeadsCSV } from "../../utils/api";
+import { fetchLeads, exportLeadsCSV, updateLeadStatus } from "../../utils/api";
+import { normalizeLeadStatus } from "../../utils/leadStatus";
 import "./LeadsList.css";
 
 function LeadsList() {
@@ -76,10 +77,30 @@ function LeadsList() {
                 <td>{lead.email}</td>
                 <td>{lead.companyName}</td>
                 <td>{lead.industry || "--"}</td>
-                <td>
-                  <span className={`leadsList__status leadsList__status--${lead.status || "new"}`}>
-                    {lead.status || "new"}
-                  </span>
+                <td
+                  className="leadsList__statusCell"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <select
+                    className={`leadsList__statusSelect leadsList__statusSelect--${normalizeLeadStatus(lead.status)}`}
+                    value={normalizeLeadStatus(lead.status)}
+                    onChange={async (e) => {
+                      const newStatus = e.target.value;
+                      try {
+                        await updateLeadStatus(lead._id, newStatus);
+                        setLeads((prev) =>
+                          prev.map((l) => (l._id === lead._id ? { ...l, status: newStatus } : l))
+                        );
+                      } catch (err) {
+                        setError(err.message);
+                      }
+                    }}
+                  >
+                    <option value="new">New</option>
+                    <option value="contacted">Contacted</option>
+                    <option value="won">Won</option>
+                    <option value="lost">Lost</option>
+                  </select>
                 </td>
                 <td>{new Date(lead.createdAt).toLocaleDateString()}</td>
               </tr>
