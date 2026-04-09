@@ -9,7 +9,7 @@ import {
   Tooltip,
 } from "recharts";
 import { fetchLeads } from "../../utils/api";
-import { useAuth } from "../../contexts/AuthContext";
+import { useAuth } from "../../contexts/useAuth";
 import "./DashboardOverview.css";
 
 const PLAN_DISPLAY = {

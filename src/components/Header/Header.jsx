@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../contexts/AuthContext";
+import { useAuth } from "../../contexts/useAuth";
 import "./Header.css";
 import logo from "../../assets/ALEI_Logo.svg";
 import backgroundImage from "../../assets/nav.svg";
