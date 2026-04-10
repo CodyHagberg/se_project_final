@@ -428,6 +428,9 @@ function VoiceChat({ leadId, userName, companyName, micStream, onClose, apiKey, 
           </div>
         </div>
 
+        {/* voiceChatControls: fixed bottom bar for primary call actions (layout/spacing via CSS).
+            Round button = mic mute — toggles whether we send audio upstream (see toggleMute).
+            Hang-up button = end session — tears down WebSocket/audio and runs handleEndCall (same outcome as header ×). */}
         <div className="voiceChatControls">
           <button
             className={`voiceChatBtn voiceChatBtnRound ${isMuted ? "voiceChatBtnMuted" : ""}`}
