@@ -34,6 +34,9 @@ function EmbeddableWidget({ apiKey: apiKeyProp }) {
   const [idleTimeoutSeconds, setIdleTimeoutSeconds] = useState(60);
   const [maxMessages, setMaxMessages] = useState(10);
   const [appointmentUrl, setAppointmentUrl] = useState("");
+  const [aiEnabled, setAiEnabled] = useState(true);
+  const [disabledReason, setDisabledReason] = useState("");
+  const [showThankYou, setShowThankYou] = useState(false);
 
   useEffect(() => {
     if (widgetKey) {
@@ -44,6 +47,13 @@ function EmbeddableWidget({ apiKey: apiKeyProp }) {
           if (data.idleTimeoutSeconds != null) setIdleTimeoutSeconds(data.idleTimeoutSeconds);
           if (data.maxMessages != null) setMaxMessages(data.maxMessages);
           if (data.appointmentUrl) setAppointmentUrl(data.appointmentUrl);
+          if (data.aiEnabled === false) {
+            setAiEnabled(false);
+            setDisabledReason(data.disabledReason || "");
+          } else {
+            setAiEnabled(true);
+            setDisabledReason("");
+          }
         })
         .catch(() => {});
     }
@@ -52,6 +62,9 @@ function EmbeddableWidget({ apiKey: apiKeyProp }) {
   const handleFormSubmit = (lead) => {
     setLeadData(lead);
     setShowForm(false);
+    if (chatModes === "none" || aiEnabled === false) {
+      setShowThankYou(true);
+    }
   };
 
   const handleModeSelect = async (mode) => {
@@ -103,7 +116,17 @@ function EmbeddableWidget({ apiKey: apiKeyProp }) {
     <div className={`embeddableWidget${isStandalone ? " embeddableWidget--standalone" : ""}`}>
       {showForm && <ModalForm onSubmit={handleFormSubmit} apiKey={widgetKey} widgetConfig={widgetConfig} />}
 
-      {leadData && !chatMode && (
+      {showThankYou && (
+        <div className="embeddableWidget__thankYou">
+          <h3 className="embeddableWidget__thankYouTitle">Thanks!</h3>
+          <p className="embeddableWidget__thankYouText">Someone will be in contact shortly.</p>
+          {disabledReason && (
+            <p className="embeddableWidget__thankYouReason">{disabledReason}</p>
+          )}
+        </div>
+      )}
+
+      {leadData && !chatMode && !showThankYou && (
         <ChatModeSelector
           userName={leadData.name}
           onSelect={handleModeSelect}

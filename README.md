@@ -64,6 +64,9 @@ docker push us-central1-docker.pkg.dev/alei-prod/alei/app:latest
 
 ### 3. Deploy to Cloud Run
 
+**Important (Windows):** run this step from **Command Prompt** or **PowerShell**.  
+Running `gcloud` from Git Bash can fail/hang due to Python resolution on Windows.
+
 ```bash
 gcloud run deploy alei \
   --image us-central1-docker.pkg.dev/alei-prod/alei/app:latest \

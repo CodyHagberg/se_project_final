@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { fetchBusinesses, regeneratePublishableKey, updateAllowedDomains, updateGeminiKey, updateMonthlyLeadLimit } from "../../utils/api";
+import { fetchBusinesses, regeneratePublishableKey, updateAllowedDomains, updateGeminiKey, updateMonthlyLeadLimit, updateOverageSettings } from "../../utils/api";
 import "./AdminBusinesses.css";
 
 const PLAN_DISPLAY = {
@@ -83,6 +83,33 @@ function AdminBusinesses() {
     }
   };
 
+  const handleOveragePriceChange = async (userId, dollars) => {
+    try {
+      const cents = Math.round(Number(dollars) * 100);
+      const data = await updateOverageSettings(userId, { overagePriceCents: cents });
+      setBusinesses((prev) =>
+        prev.map((b) => (b.id === userId ? { ...b, overagePriceCents: data.overagePriceCents } : b))
+      );
+      setActionMsg("Overage price updated");
+      setTimeout(() => setActionMsg(""), 2000);
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
+  const handleOverageToggle = async (userId, enabled) => {
+    try {
+      const data = await updateOverageSettings(userId, { overageEnabled: enabled });
+      setBusinesses((prev) =>
+        prev.map((b) => (b.id === userId ? { ...b, overageEnabled: data.overageEnabled } : b))
+      );
+      setActionMsg(`Overages ${data.overageEnabled ? "enabled" : "disabled"}`);
+      setTimeout(() => setActionMsg(""), 2000);
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
   const handleEditDomains = (biz) => {
     setEditingDomains(biz.id);
     setDomainInput((biz.allowedDomains || []).join(", "));
@@ -139,6 +166,33 @@ function AdminBusinesses() {
                   <option value={500}>500</option>
                   <option value={1000}>1,000</option>
                   <option value={-1}>Unlimited</option>
+                </select>
+              </div>
+
+              <div className="adminBiz__leadLimitSection">
+                <span className="adminBiz__keyLabel">Overage Price</span>
+                <select
+                  className="adminBiz__leadLimitSelect"
+                  value={((biz.overagePriceCents ?? 10) / 100).toFixed(2)}
+                  onChange={(e) => handleOveragePriceChange(biz.id, e.target.value)}
+                >
+                  {Array.from({ length: 10 }, (_, i) => ((i + 1) * 0.1).toFixed(2)).map((val) => (
+                    <option key={val} value={val}>
+                      ${val} / lead
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="adminBiz__leadLimitSection">
+                <span className="adminBiz__keyLabel">Overages</span>
+                <select
+                  className="adminBiz__leadLimitSelect"
+                  value={biz.overageEnabled ? "enabled" : "disabled"}
+                  onChange={(e) => handleOverageToggle(biz.id, e.target.value === "enabled")}
+                >
+                  <option value="disabled">Disabled</option>
+                  <option value="enabled">Enabled</option>
                 </select>
               </div>
 

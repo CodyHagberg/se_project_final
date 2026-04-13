@@ -8,7 +8,7 @@ import {
   CartesianGrid,
   Tooltip,
 } from "recharts";
-import { fetchLeads } from "../../utils/api";
+import { fetchLeads, fetchUsage, enableOverages, disableOverages } from "../../utils/api";
 import { useAuth } from "../../contexts/useAuth";
 import "./DashboardOverview.css";
 
@@ -74,13 +74,16 @@ function buildActivityData(leads, rangeDays) {
 }
 
 function DashboardOverview() {
-  const { user } = useAuth();
+  const { user, updateUser } = useAuth();
   const [stats, setStats] = useState(null);
   const [allLeads, setAllLeads] = useState([]);
+  const [usage, setUsage] = useState(null);
   const [chartData, setChartData] = useState([]);
   const [range, setRange] = useState(30);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [enablingOverages, setEnablingOverages] = useState(false);
+  const [disablingOverages, setDisablingOverages] = useState(false);
 
   useEffect(() => {
     loadStats();
@@ -94,9 +97,10 @@ function DashboardOverview() {
 
   const loadStats = async () => {
     try {
-      const data = await fetchLeads();
+      const [data, usageRes] = await Promise.all([fetchLeads(), fetchUsage()]);
       const leads = data.leads || [];
       setAllLeads(leads);
+      setUsage(usageRes.usage);
       setStats({
         total: leads.length,
         newLeads: leads.filter((l) => !l.status || l.status === "new").length,
@@ -109,6 +113,32 @@ function DashboardOverview() {
       setError(err.message);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleEnableOverages = async () => {
+    setEnablingOverages(true);
+    try {
+      await enableOverages();
+      setUsage((prev) => (prev ? { ...prev, overageEnabled: true } : prev));
+      updateUser({ overageEnabled: true });
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setEnablingOverages(false);
+    }
+  };
+
+  const handleDisableOverages = async () => {
+    setDisablingOverages(true);
+    try {
+      await disableOverages();
+      setUsage((prev) => (prev ? { ...prev, overageEnabled: false } : prev));
+      updateUser({ overageEnabled: false });
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setDisablingOverages(false);
     }
   };
 
@@ -132,6 +162,9 @@ function DashboardOverview() {
   const monthlyCount = allLeads.filter((l) => new Date(l.createdAt) >= monthStart).length;
   const pct = isUnlimited ? 0 : Math.min((monthlyCount / limit) * 100, 100);
   const barColor = pct >= 100 ? "#e74c3c" : pct >= 80 ? "#f39c12" : "#5fbdca";
+  const isOverLimit = !isUnlimited && monthlyCount >= limit;
+  const overageEnabled = usage?.overageEnabled ?? user?.overageEnabled ?? false;
+  const overagePriceCents = usage?.overagePriceCents ?? user?.overagePriceCents ?? 10;
 
   return (
     <div className="overview">
@@ -165,6 +198,41 @@ function DashboardOverview() {
           </div>
         ) : (
           <p className="overview__usageUnlimited">Unlimited conversations on your plan.</p>
+        )}
+
+        {!isUnlimited && !overageEnabled && (
+          <div className="overview__usageInfo" style={{ marginTop: 10, justifyContent: "space-between" }}>
+            <span>
+              {isOverLimit
+                ? `AI chat is paused at your limit. Enable overages to continue at $${(overagePriceCents / 100).toFixed(2)}/lead.`
+                : `Enable overages to continue past your limit at $${(overagePriceCents / 100).toFixed(2)}/lead.`}
+            </span>
+            <button
+              className="overview__rangeBtn overview__rangeBtn--active"
+              onClick={handleEnableOverages}
+              disabled={enablingOverages}
+            >
+              {enablingOverages ? "Enabling..." : "Enable overages"}
+            </button>
+          </div>
+        )}
+
+        {!isUnlimited && overageEnabled && usage && (
+          <div className="overview__usageInfo" style={{ marginTop: 10, justifyContent: "space-between" }}>
+            <span>
+              Overages enabled: {usage.overageCount} overage leads (${(usage.overageAmountCents / 100).toFixed(2)}) this month.
+            </span>
+            <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+              <span>Price ${(overagePriceCents / 100).toFixed(2)}/lead</span>
+              <button
+                className="overview__rangeBtn"
+                onClick={handleDisableOverages}
+                disabled={disablingOverages}
+              >
+                {disablingOverages ? "Disabling..." : "Disable overages"}
+              </button>
+            </div>
+          </div>
         )}
       </div>
 

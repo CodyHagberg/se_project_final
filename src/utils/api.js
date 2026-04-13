@@ -163,8 +163,31 @@ export async function updateMonthlyLeadLimit(userId, monthlyLeadLimit) {
   });
 }
 
+export async function updateOverageSettings(userId, { overagePriceCents, overageEnabled }) {
+  return authRequest(`/api/admin/overage/${userId}`, {
+    method: "PUT",
+    body: JSON.stringify({ overagePriceCents, overageEnabled }),
+  });
+}
+
 export async function fetchApiKey() {
   return authRequest("/api/dashboard/api-key");
+}
+
+export async function fetchUsage() {
+  return authRequest("/api/dashboard/usage");
+}
+
+export async function enableOverages() {
+  return authRequest("/api/dashboard/overage/enable", {
+    method: "POST",
+  });
+}
+
+export async function disableOverages() {
+  return authRequest("/api/dashboard/overage/disable", {
+    method: "POST",
+  });
 }
 
 export async function fetchWidgetConfig(apiKey) {
