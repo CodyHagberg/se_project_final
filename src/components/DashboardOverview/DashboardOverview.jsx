@@ -194,8 +194,8 @@ function DashboardOverview() {
     ? !!tenantFromUsage.overageEnabled
     : usage?.overageEnabled ?? user?.overageEnabled ?? false;
   const overagePriceCents = actingBusinessId && tenantFromUsage
-    ? tenantFromUsage.overagePriceCents ?? 10
-    : usage?.overagePriceCents ?? user?.overagePriceCents ?? 10;
+    ? tenantFromUsage.overagePriceCents ?? 200
+    : usage?.overagePriceCents ?? user?.overagePriceCents ?? 200;
 
   return (
     <div className="overview">

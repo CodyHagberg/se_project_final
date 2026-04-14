@@ -191,10 +191,10 @@ function AdminBusinesses() {
                 <span className="adminBiz__keyLabel">Overage Price</span>
                 <select
                   className="adminBiz__leadLimitSelect"
-                  value={((biz.overagePriceCents ?? 10) / 100).toFixed(2)}
+                  value={((biz.overagePriceCents ?? 200) / 100).toFixed(2)}
                   onChange={(e) => handleOveragePriceChange(biz.id, e.target.value)}
                 >
-                  {Array.from({ length: 10 }, (_, i) => ((i + 1) * 0.1).toFixed(2)).map((val) => (
+                  {Array.from({ length: 20 }, (_, i) => ((i + 1) * 0.1).toFixed(2)).map((val) => (
                     <option key={val} value={val}>
                       ${val} / lead
                     </option>
