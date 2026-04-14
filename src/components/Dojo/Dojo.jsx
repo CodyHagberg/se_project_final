@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { fetchApiKey } from "../../utils/api";
+import { useActingBusinessId } from "../../hooks/useActingBusinessId";
 import { BASE_URL } from "../../utils/constants";
 import "./Dojo.css";
 
@@ -14,6 +15,7 @@ import "./Dojo.css";
  *                  knowledge without filling out the lead form each time.
  */
 function Dojo() {
+  const { actingBusinessId } = useActingBusinessId();
   const [apiKey, setApiKey] = useState(null);
   const [messages, setMessages] = useState([]);
   const [inputValue, setInputValue] = useState("");
@@ -33,12 +35,16 @@ function Dojo() {
 
   // Fetch the tenant's API key on mount so we can authenticate all requests
   useEffect(() => {
+    hasGreeted.current = false;
+    setMessages([]);
+    setApiKey(null);
+    setError("");
     loadApiKey();
-  }, []);
+  }, [actingBusinessId]);
 
   const loadApiKey = async () => {
     try {
-      const data = await fetchApiKey();
+      const data = await fetchApiKey(actingBusinessId || undefined);
       setApiKey(data.apiKey);
       const widgetKey = data.publishableKey || data.apiKey;
       setIframeUrl(`${window.location.origin}/widget?key=${widgetKey}`);

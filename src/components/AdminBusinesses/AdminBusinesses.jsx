@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { fetchBusinesses, regeneratePublishableKey, updateAllowedDomains, updateGeminiKey, updateMonthlyLeadLimit, updateOverageSettings } from "../../utils/api";
+import { useActingBusinessId } from "../../hooks/useActingBusinessId";
 import "./AdminBusinesses.css";
 
 const PLAN_DISPLAY = {
@@ -11,6 +13,8 @@ const PLAN_DISPLAY = {
 };
 
 function AdminBusinesses() {
+  const navigate = useNavigate();
+  const { setActingTenant } = useActingBusinessId();
   const [businesses, setBusinesses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -115,6 +119,11 @@ function AdminBusinesses() {
     setDomainInput((biz.allowedDomains || []).join(", "));
   };
 
+  const openTenantDashboard = (biz) => {
+    setActingTenant(biz.id, biz.companyName);
+    navigate(`/dashboard/overview?businessId=${encodeURIComponent(biz.id)}`);
+  };
+
   const handleSaveDomains = async (userId) => {
     try {
       const domains = domainInput
@@ -148,8 +157,17 @@ function AdminBusinesses() {
           {businesses.map((biz) => (
             <div key={biz.id} className="adminBiz__card">
               <div className="adminBiz__cardHeader">
-                <h3 className="adminBiz__company">{biz.companyName}</h3>
-                <span className="adminBiz__plan">{PLAN_DISPLAY[biz.plan] || biz.plan}</span>
+                <div className="adminBiz__cardTitleBlock">
+                  <h3 className="adminBiz__company">{biz.companyName}</h3>
+                  <span className="adminBiz__plan">{PLAN_DISPLAY[biz.plan] || biz.plan}</span>
+                </div>
+                <button
+                  type="button"
+                  className="adminBiz__tenantDashBtn"
+                  onClick={() => openTenantDashboard(biz)}
+                >
+                  Open tenant dashboard
+                </button>
               </div>
 
               <div className="adminBiz__leadLimitSection">

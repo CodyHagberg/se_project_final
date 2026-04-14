@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { fetchConfig, updateConfig } from "../../utils/api";
+import { useActingBusinessId } from "../../hooks/useActingBusinessId";
 import { FIELD_CATALOG } from "../../utils/fieldCatalog";
 import "./WidgetCustomizer.css";
 
@@ -12,6 +13,7 @@ const DEFAULT_FIELDS = [
 const CORE_KEYS = ["name", "email"];
 
 function WidgetCustomizer() {
+  const { actingBusinessId } = useActingBusinessId();
   const [formTitle, setFormTitle] = useState("Get Started");
   const [submitButtonText, setSubmitButtonText] = useState("Submit");
   const [modeSelectorTitle, setModeSelectorTitle] = useState("");
@@ -25,11 +27,11 @@ function WidgetCustomizer() {
 
   useEffect(() => {
     loadConfig();
-  }, []);
+  }, [actingBusinessId]);
 
   const loadConfig = async () => {
     try {
-      const data = await fetchConfig();
+      const data = await fetchConfig(actingBusinessId || undefined);
       if (data.config?.widgetConfig) {
         const wc = data.config.widgetConfig;
         setFormTitle(wc.formTitle || "Get Started");
@@ -53,7 +55,10 @@ function WidgetCustomizer() {
     setMessage("");
     setError("");
     try {
-      await updateConfig({ widgetConfig: { formTitle, submitButtonText, modeSelectorTitle, modeSelectorDescription, fields }, appointmentUrl });
+      await updateConfig(
+        { widgetConfig: { formTitle, submitButtonText, modeSelectorTitle, modeSelectorDescription, fields }, appointmentUrl },
+        actingBusinessId || undefined
+      );
       setMessage("Widget configuration saved successfully");
     } catch (err) {
       setError(err.message);

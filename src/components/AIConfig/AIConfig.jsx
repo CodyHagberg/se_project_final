@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
 import { fetchConfig, updateConfig, fetchDefaultTemplate } from "../../utils/api";
+import { useActingBusinessId } from "../../hooks/useActingBusinessId";
 import "./AIConfig.css";
 
 function AIConfig() {
+  const { actingBusinessId } = useActingBusinessId();
   const [config, setConfig] = useState({
     assistantName: "",
     systemInstruction: "",
@@ -21,11 +23,11 @@ function AIConfig() {
 
   useEffect(() => {
     loadConfig();
-  }, []);
+  }, [actingBusinessId]);
 
   const loadConfig = async () => {
     try {
-      const data = await fetchConfig();
+      const data = await fetchConfig(actingBusinessId || undefined);
       if (data.config) {
         setConfig({
           assistantName: data.config.assistantName || "",
@@ -52,7 +54,7 @@ function AIConfig() {
     setError("");
 
     try {
-      await updateConfig(config);
+      await updateConfig(config, actingBusinessId || undefined);
       setMessage("Configuration saved successfully");
     } catch (err) {
       setError(err.message);
@@ -63,7 +65,7 @@ function AIConfig() {
 
   const handleLoadTemplate = async () => {
     try {
-      const data = await fetchDefaultTemplate();
+      const data = await fetchDefaultTemplate(actingBusinessId || undefined);
       setConfig((prev) => ({ ...prev, systemInstruction: data.template }));
       setMessage("Template loaded -- customize it for your business");
     } catch (err) {

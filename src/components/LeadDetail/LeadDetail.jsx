@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { fetchLeadDetail, updateLeadStatus } from "../../utils/api";
+import { useActingBusinessId } from "../../hooks/useActingBusinessId";
 import { normalizeLeadStatus } from "../../utils/leadStatus";
 import "./LeadDetail.css";
 
 function LeadDetail() {
+  const { actingBusinessId } = useActingBusinessId();
   const { id } = useParams();
   const navigate = useNavigate();
   const [lead, setLead] = useState(null);
@@ -14,11 +16,11 @@ function LeadDetail() {
 
   useEffect(() => {
     loadLead();
-  }, [id]);
+  }, [id, actingBusinessId]);
 
   const loadLead = async () => {
     try {
-      const data = await fetchLeadDetail(id);
+      const data = await fetchLeadDetail(id, actingBusinessId || undefined);
       setLead(data.lead);
     } catch (err) {
       setError(err.message);
@@ -51,7 +53,7 @@ function LeadDetail() {
                 const newStatus = e.target.value;
                 setStatusSaving(true);
                 try {
-                  await updateLeadStatus(id, newStatus);
+                  await updateLeadStatus(id, newStatus, actingBusinessId || undefined);
                   setLead((prev) => ({ ...prev, status: newStatus }));
                 } catch (err) {
                   setError(err.message);

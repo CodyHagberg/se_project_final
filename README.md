@@ -44,7 +44,11 @@ The app runs on `http://localhost:5173`.
 
 ## Deploying to Production (Google Cloud Run)
 
-The frontend is bundled with the backend into a single Docker image and deployed to Cloud Run. All three commands are run from the **project root** (`LEAI/`), one level above this folder.
+This is the **only** canonical production flow. The frontend and backend ship in **one** Docker image ([`Dockerfile`](../Dockerfile) at repo root). All commands below run from the **project root** (`LEAI/`), one directory above this folder.
+
+**Prerequisites:** Docker; `gcloud` CLI; for push, run once per machine: `gcloud auth configure-docker us-central1-docker.pkg.dev`.
+
+For releases, a **Cursor agent can run steps 1–2** when you ask to deploy (build + push from `LEAI/`). **Step 3** (`gcloud run deploy`) is usually run **locally** so your GCP credentials roll the service.
 
 ### 1. Build the Docker image
 
@@ -64,25 +68,18 @@ docker push us-central1-docker.pkg.dev/alei-prod/alei/app:latest
 
 ### 3. Deploy to Cloud Run
 
-**Important (Windows):** run this step from **Command Prompt** or **PowerShell**.  
-Running `gcloud` from Git Bash can fail/hang due to Python resolution on Windows.
+**Important (Windows):** use **Command Prompt**, **PowerShell**, or **Google Cloud SDK Shell**. `gcloud` may fail or hang from Git Bash.
 
 ```bash
-gcloud run deploy alei \
-  --image us-central1-docker.pkg.dev/alei-prod/alei/app:latest \
-  --region us-central1 \
-  --platform managed \
-  --allow-unauthenticated \
-  --port 8080
+gcloud run deploy alei --project=alei-prod --image=us-central1-docker.pkg.dev/alei-prod/alei/app:latest --region=us-central1 --platform=managed --allow-unauthenticated --port=8080
 ```
 
-The live site will be updated at: https://alei.ai
+The live site: https://alei.ai
 
 ---
 
 ## Notes
 
-- **`VITE_ALEI_PUB_KEY`** must match the `publishableKey` stored in the database for the ALEI business account. If the key is ever regenerated via the admin dashboard, a new build is required.
-- **Backend-only changes** (routes, AI config, etc.) only require steps 2 and 3 — no frontend rebuild needed.
-- **Frontend changes** always require all 3 steps.
+- **`VITE_ALEI_PUB_KEY`** must match the `publishableKey` stored in the database for the ALEI business account. If it is regenerated in the admin dashboard, run a **new** `docker build` (step 1) before push and deploy.
+- **Any code change** that should go live needs a **new image**: steps **1** and **2**, then step **3** to point Cloud Run at that image.
 - The `Dockerfile` and `.dockerignore` live at the project root (`LEAI/`) and should not be moved.

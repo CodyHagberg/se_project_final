@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { fetchLeads, exportLeadsCSV, updateLeadStatus } from "../../utils/api";
+import { useActingBusinessId } from "../../hooks/useActingBusinessId";
 import { normalizeLeadStatus } from "../../utils/leadStatus";
 import "./LeadsList.css";
 
 function LeadsList() {
+  const { actingBusinessId } = useActingBusinessId();
   const [leads, setLeads] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -12,11 +14,11 @@ function LeadsList() {
 
   useEffect(() => {
     loadLeads();
-  }, []);
+  }, [actingBusinessId]);
 
   const loadLeads = async () => {
     try {
-      const data = await fetchLeads();
+      const data = await fetchLeads(actingBusinessId || undefined);
       setLeads(data.leads);
     } catch (err) {
       setError(err.message);
@@ -27,7 +29,7 @@ function LeadsList() {
 
   const handleExport = async () => {
     try {
-      const blob = await exportLeadsCSV();
+      const blob = await exportLeadsCSV(actingBusinessId || undefined);
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;

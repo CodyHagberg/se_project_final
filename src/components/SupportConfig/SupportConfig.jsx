@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
 import { fetchSupportConfig, updateSupportConfig } from "../../utils/api";
+import { useActingBusinessId } from "../../hooks/useActingBusinessId";
 import "../AIConfig/AIConfig.css";
 
 function SupportConfig() {
+  const { actingBusinessId } = useActingBusinessId();
   const [config, setConfig] = useState({
     assistantName: "",
     systemInstruction: "",
@@ -17,11 +19,11 @@ function SupportConfig() {
 
   useEffect(() => {
     loadConfig();
-  }, []);
+  }, [actingBusinessId]);
 
   const loadConfig = async () => {
     try {
-      const data = await fetchSupportConfig();
+      const data = await fetchSupportConfig(actingBusinessId || undefined);
       if (data.config) {
         setConfig({
           assistantName: data.config.assistantName || "",
@@ -44,7 +46,7 @@ function SupportConfig() {
     setError("");
 
     try {
-      await updateSupportConfig(config);
+      await updateSupportConfig(config, actingBusinessId || undefined);
       setMessage("Support configuration saved successfully");
     } catch (err) {
       setError(err.message);

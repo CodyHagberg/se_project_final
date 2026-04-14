@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import { fetchSalesforceStatus, disconnectSalesforce } from "../../utils/api";
+import { useActingBusinessId } from "../../hooks/useActingBusinessId";
 import { BASE_URL } from "../../utils/constants";
 import "./Integrations.css";
 
 function Integrations() {
+  const { actingBusinessId } = useActingBusinessId();
   const [connected, setConnected] = useState(false);
   const [loading, setLoading] = useState(true);
   const [disconnecting, setDisconnecting] = useState(false);
@@ -13,8 +15,6 @@ function Integrations() {
   const [searchParams, setSearchParams] = useSearchParams();
 
   useEffect(() => {
-    loadStatus();
-
     if (searchParams.get("connected") === "true") {
       setToast("Salesforce connected successfully!");
       setSearchParams({}, { replace: true });
@@ -23,7 +23,12 @@ function Integrations() {
       setError(`Connection failed: ${searchParams.get("error")}`);
       setSearchParams({}, { replace: true });
     }
-  }, []);
+  }, [searchParams, setSearchParams]);
+
+  useEffect(() => {
+    setLoading(true);
+    loadStatus();
+  }, [actingBusinessId]);
 
   useEffect(() => {
     if (!toast) return;
@@ -33,7 +38,7 @@ function Integrations() {
 
   const loadStatus = async () => {
     try {
-      const data = await fetchSalesforceStatus();
+      const data = await fetchSalesforceStatus(actingBusinessId || undefined);
       setConnected(data.salesforceConnected);
     } catch (err) {
       setError(err.message);
@@ -44,13 +49,14 @@ function Integrations() {
 
   const handleConnect = () => {
     const token = localStorage.getItem("token");
-    window.location.href = `${BASE_URL}/api/integrations/salesforce/connect?token=${token}`;
+    const bid = actingBusinessId ? `&businessId=${encodeURIComponent(actingBusinessId)}` : "";
+    window.location.href = `${BASE_URL}/api/integrations/salesforce/connect?token=${encodeURIComponent(token)}${bid}`;
   };
 
   const handleDisconnect = async () => {
     setDisconnecting(true);
     try {
-      await disconnectSalesforce();
+      await disconnectSalesforce(actingBusinessId || undefined);
       setConnected(false);
       setToast("Salesforce disconnected.");
     } catch (err) {

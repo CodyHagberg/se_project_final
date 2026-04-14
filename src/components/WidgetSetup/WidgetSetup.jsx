@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
 import { fetchWidgetSnippet } from "../../utils/api";
+import { useActingBusinessId } from "../../hooks/useActingBusinessId";
 import "./WidgetSetup.css";
 
 function WidgetSetup() {
+  const { actingBusinessId } = useActingBusinessId();
   const [salesSnippet, setSalesSnippet] = useState("");
   const [supportSnippet, setSupportSnippet] = useState("");
   const [loading, setLoading] = useState(true);
@@ -12,11 +14,11 @@ function WidgetSetup() {
 
   useEffect(() => {
     loadSnippets();
-  }, []);
+  }, [actingBusinessId]);
 
   const loadSnippets = async () => {
     try {
-      const data = await fetchWidgetSnippet();
+      const data = await fetchWidgetSnippet(actingBusinessId || undefined);
       setSalesSnippet(data.snippet);
       setSupportSnippet(data.supportSnippet || "");
     } catch (err) {

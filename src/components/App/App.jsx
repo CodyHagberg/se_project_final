@@ -1,5 +1,6 @@
 import { Routes, Route, useLocation, Navigate } from "react-router-dom";
 import { useAuth } from "../../contexts/useAuth";
+import { useActingBusinessId } from "../../hooks/useActingBusinessId";
 import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
 import About from "../About/About";
@@ -33,7 +34,19 @@ import "./App.css";
 
 function DashboardRedirect() {
   const { user } = useAuth();
-  if (user?.role === "admin") return <Navigate to="/dashboard/admin/businesses" replace />;
+  const { actingBusinessId } = useActingBusinessId();
+
+  if (user?.role === "admin" && actingBusinessId) {
+    return (
+      <Navigate
+        to={`/dashboard/overview?businessId=${encodeURIComponent(actingBusinessId)}`}
+        replace
+      />
+    );
+  }
+  if (user?.role === "admin") {
+    return <Navigate to="/dashboard/admin/businesses" replace />;
+  }
   return <Navigate to="/dashboard/overview" replace />;
 }
 

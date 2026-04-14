@@ -41,6 +41,13 @@ function authRequest(endpoint, options = {}) {
   });
 }
 
+/** Admin acting-as-tenant: append ?businessId= to dashboard/config calls. */
+function withActingBusiness(path, businessId) {
+  if (!businessId) return path;
+  const sep = path.includes("?") ? "&" : "?";
+  return `${path}${sep}businessId=${encodeURIComponent(businessId)}`;
+}
+
 export async function createLead(formData, apiKey) {
   return request("/api/leads", {
     method: "POST",
@@ -84,42 +91,42 @@ export async function fetchLeads(businessId) {
   return authRequest(`/api/dashboard/leads${query}`);
 }
 
-export async function fetchLeadDetail(id) {
-  return authRequest(`/api/dashboard/leads/${id}`);
+export async function fetchLeadDetail(id, businessId) {
+  return authRequest(withActingBusiness(`/api/dashboard/leads/${id}`, businessId));
 }
 
-export async function updateLeadStatus(id, status) {
-  return authRequest(`/api/dashboard/leads/${id}/status`, {
+export async function updateLeadStatus(id, status, businessId) {
+  return authRequest(withActingBusiness(`/api/dashboard/leads/${id}/status`, businessId), {
     method: "PATCH",
     body: JSON.stringify({ status }),
   });
 }
 
-export async function fetchWidgetSnippet() {
-  return authRequest("/api/dashboard/widget-snippet");
+export async function fetchWidgetSnippet(businessId) {
+  return authRequest(withActingBusiness("/api/dashboard/widget-snippet", businessId));
 }
 
-export async function fetchConfig() {
-  return authRequest("/api/config");
+export async function fetchConfig(businessId) {
+  return authRequest(withActingBusiness("/api/config", businessId));
 }
 
-export async function updateConfig(configData) {
-  return authRequest("/api/config", {
+export async function updateConfig(configData, businessId) {
+  return authRequest(withActingBusiness("/api/config", businessId), {
     method: "PUT",
     body: JSON.stringify(configData),
   });
 }
 
-export async function fetchDefaultTemplate() {
-  return authRequest("/api/config/template");
+export async function fetchDefaultTemplate(businessId) {
+  return authRequest(withActingBusiness("/api/config/template", businessId));
 }
 
-export async function fetchSupportConfig() {
-  return authRequest("/api/config/support");
+export async function fetchSupportConfig(businessId) {
+  return authRequest(withActingBusiness("/api/config/support", businessId));
 }
 
-export async function updateSupportConfig(configData) {
-  return authRequest("/api/config/support", {
+export async function updateSupportConfig(configData, businessId) {
+  return authRequest(withActingBusiness("/api/config/support", businessId), {
     method: "PUT",
     body: JSON.stringify(configData),
   });
@@ -170,22 +177,22 @@ export async function updateOverageSettings(userId, { overagePriceCents, overage
   });
 }
 
-export async function fetchApiKey() {
-  return authRequest("/api/dashboard/api-key");
+export async function fetchApiKey(businessId) {
+  return authRequest(withActingBusiness("/api/dashboard/api-key", businessId));
 }
 
-export async function fetchUsage() {
-  return authRequest("/api/dashboard/usage");
+export async function fetchUsage(businessId) {
+  return authRequest(withActingBusiness("/api/dashboard/usage", businessId));
 }
 
-export async function enableOverages() {
-  return authRequest("/api/dashboard/overage/enable", {
+export async function enableOverages(businessId) {
+  return authRequest(withActingBusiness("/api/dashboard/overage/enable", businessId), {
     method: "POST",
   });
 }
 
-export async function disableOverages() {
-  return authRequest("/api/dashboard/overage/disable", {
+export async function disableOverages(businessId) {
+  return authRequest(withActingBusiness("/api/dashboard/overage/disable", businessId), {
     method: "POST",
   });
 }
@@ -207,19 +214,20 @@ export async function fetchWidgetConfig(apiKey) {
   return data;
 }
 
-export async function fetchSalesforceStatus() {
-  return authRequest("/api/integrations/salesforce/status");
+export async function fetchSalesforceStatus(businessId) {
+  return authRequest(withActingBusiness("/api/integrations/salesforce/status", businessId));
 }
 
-export async function disconnectSalesforce() {
-  return authRequest("/api/integrations/salesforce/disconnect", {
+export async function disconnectSalesforce(businessId) {
+  return authRequest(withActingBusiness("/api/integrations/salesforce/disconnect", businessId), {
     method: "POST",
   });
 }
 
-export async function exportLeadsCSV() {
+export async function exportLeadsCSV(businessId) {
   const token = localStorage.getItem("token");
-  const res = await fetch(`${BASE_URL}/api/dashboard/leads/export/csv`, {
+  const path = withActingBusiness("/api/dashboard/leads/export/csv", businessId);
+  const res = await fetch(`${BASE_URL}${path}`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },

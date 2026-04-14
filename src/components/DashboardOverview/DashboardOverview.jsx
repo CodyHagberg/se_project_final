@@ -10,6 +10,7 @@ import {
 } from "recharts";
 import { fetchLeads, fetchUsage, enableOverages, disableOverages } from "../../utils/api";
 import { useAuth } from "../../contexts/useAuth";
+import { useActingBusinessId } from "../../hooks/useActingBusinessId";
 import "./DashboardOverview.css";
 
 const PLAN_DISPLAY = {
@@ -75,6 +76,7 @@ function buildActivityData(leads, rangeDays) {
 
 function DashboardOverview() {
   const { user, updateUser } = useAuth();
+  const { actingBusinessId } = useActingBusinessId();
   const [stats, setStats] = useState(null);
   const [allLeads, setAllLeads] = useState([]);
   const [usage, setUsage] = useState(null);
@@ -87,7 +89,7 @@ function DashboardOverview() {
 
   useEffect(() => {
     loadStats();
-  }, []);
+  }, [actingBusinessId]);
 
   useEffect(() => {
     if (allLeads.length) {
@@ -96,8 +98,12 @@ function DashboardOverview() {
   }, [range, allLeads]);
 
   const loadStats = async () => {
+    setLoading(true);
     try {
-      const [data, usageRes] = await Promise.all([fetchLeads(), fetchUsage()]);
+      const [data, usageRes] = await Promise.all([
+        fetchLeads(actingBusinessId || undefined),
+        fetchUsage(actingBusinessId || undefined),
+      ]);
       const leads = data.leads || [];
       setAllLeads(leads);
       setUsage(usageRes.usage);
@@ -119,9 +125,17 @@ function DashboardOverview() {
   const handleEnableOverages = async () => {
     setEnablingOverages(true);
     try {
-      await enableOverages();
-      setUsage((prev) => (prev ? { ...prev, overageEnabled: true } : prev));
-      updateUser({ overageEnabled: true });
+      await enableOverages(actingBusinessId || undefined);
+      setUsage((prev) =>
+        prev
+          ? {
+              ...prev,
+              overageEnabled: true,
+              tenant: prev.tenant ? { ...prev.tenant, overageEnabled: true } : prev.tenant,
+            }
+          : prev
+      );
+      if (!actingBusinessId) updateUser({ overageEnabled: true });
     } catch (err) {
       setError(err.message);
     } finally {
@@ -132,9 +146,17 @@ function DashboardOverview() {
   const handleDisableOverages = async () => {
     setDisablingOverages(true);
     try {
-      await disableOverages();
-      setUsage((prev) => (prev ? { ...prev, overageEnabled: false } : prev));
-      updateUser({ overageEnabled: false });
+      await disableOverages(actingBusinessId || undefined);
+      setUsage((prev) =>
+        prev
+          ? {
+              ...prev,
+              overageEnabled: false,
+              tenant: prev.tenant ? { ...prev.tenant, overageEnabled: false } : prev.tenant,
+            }
+          : prev
+      );
+      if (!actingBusinessId) updateUser({ overageEnabled: false });
     } catch (err) {
       setError(err.message);
     } finally {
@@ -153,8 +175,13 @@ function DashboardOverview() {
     { label: "Lost", value: stats.lost, className: "overview__card--lost" },
   ];
 
-  const plan = user?.plan || "individual";
-  const rawLimit = user?.monthlyLeadLimit ?? 25;
+  const tenantFromUsage = usage?.tenant;
+  const plan =
+    actingBusinessId && tenantFromUsage?.plan ? tenantFromUsage.plan : user?.plan || "individual";
+  const rawLimit =
+    actingBusinessId && tenantFromUsage
+      ? tenantFromUsage.monthlyLeadLimit ?? 25
+      : user?.monthlyLeadLimit ?? 25;
   const isUnlimited = rawLimit === -1;
   const limit = isUnlimited ? Infinity : rawLimit;
   const now = new Date();
@@ -163,8 +190,12 @@ function DashboardOverview() {
   const pct = isUnlimited ? 0 : Math.min((monthlyCount / limit) * 100, 100);
   const barColor = pct >= 100 ? "#e74c3c" : pct >= 80 ? "#f39c12" : "#5fbdca";
   const isOverLimit = !isUnlimited && monthlyCount >= limit;
-  const overageEnabled = usage?.overageEnabled ?? user?.overageEnabled ?? false;
-  const overagePriceCents = usage?.overagePriceCents ?? user?.overagePriceCents ?? 10;
+  const overageEnabled = actingBusinessId && tenantFromUsage
+    ? !!tenantFromUsage.overageEnabled
+    : usage?.overageEnabled ?? user?.overageEnabled ?? false;
+  const overagePriceCents = actingBusinessId && tenantFromUsage
+    ? tenantFromUsage.overagePriceCents ?? 10
+    : usage?.overagePriceCents ?? user?.overagePriceCents ?? 10;
 
   return (
     <div className="overview">
