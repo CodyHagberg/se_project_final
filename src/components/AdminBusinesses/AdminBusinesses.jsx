@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { fetchBusinesses, regeneratePublishableKey, updateAllowedDomains, updateGeminiKey, updateMonthlyLeadLimit, updateOverageSettings } from "../../utils/api";
+import { fetchBusinesses, regeneratePublishableKey, updateAllowedDomains, updateGeminiKey, updateMonthlyLeadLimit, updateOverageSettings, updateSeatLimit } from "../../utils/api";
 import { useActingBusinessId } from "../../hooks/useActingBusinessId";
 import "./AdminBusinesses.css";
 
@@ -114,6 +114,23 @@ function AdminBusinesses() {
     }
   };
 
+  const handleSeatLimitChange = async (userId, value) => {
+    try {
+      const data = await updateSeatLimit(userId, Number(value));
+      setBusinesses((prev) =>
+        prev.map((b) =>
+          b.id === userId
+            ? { ...b, seatLimit: data.seatLimit, seatsUsed: data.seatsUsed ?? b.seatsUsed }
+            : b
+        )
+      );
+      setActionMsg("Seat limit updated");
+      setTimeout(() => setActionMsg(""), 2000);
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
   const handleEditDomains = (biz) => {
     setEditingDomains(biz.id);
     setDomainInput((biz.allowedDomains || []).join(", "));
@@ -184,6 +201,24 @@ function AdminBusinesses() {
                   <option value={500}>500</option>
                   <option value={1000}>1,000</option>
                   <option value={-1}>Unlimited</option>
+                </select>
+              </div>
+
+              <div className="adminBiz__leadLimitSection">
+                <span className="adminBiz__keyLabel">
+                  Seats{" "}
+                  <span style={{ fontWeight: 400, opacity: 0.75 }}>
+                    ({biz.seatsUsed ?? "—"} used)
+                  </span>
+                </span>
+                <select
+                  className="adminBiz__leadLimitSelect"
+                  value={biz.seatLimit ?? 1}
+                  onChange={(e) => handleSeatLimitChange(biz.id, e.target.value)}
+                >
+                  <option value={1}>1</option>
+                  <option value={5}>5</option>
+                  <option value={10}>10</option>
                 </select>
               </div>
 

@@ -14,8 +14,24 @@ const TENANT_NAV = [
   { path: "/dashboard/testing-center", label: "Testing Center" },
 ];
 
+const TENANT_OWNER_NAV = [{ path: "/dashboard/users", label: "Team" }];
+
 function TenantNavLinks({ searchSuffix, navClassName }) {
   return TENANT_NAV.map(({ path, label }) => (
+    <NavLink
+      key={path}
+      to={`${path}${searchSuffix}`}
+      className={({ isActive }) =>
+        `${navClassName} ${isActive ? `${navClassName}--active` : ""}`
+      }
+    >
+      {label}
+    </NavLink>
+  ));
+}
+
+function TenantOwnerNavLinks({ searchSuffix, navClassName }) {
+  return TENANT_OWNER_NAV.map(({ path, label }) => (
     <NavLink
       key={path}
       to={`${path}${searchSuffix}`}
@@ -117,8 +133,13 @@ function DashboardLayout() {
                 </NavLink>
               </>
             )}
-            {user?.role === "business" && (
-              <TenantNavLinks searchSuffix="" navClassName="dashboard__navLink" />
+            {(user?.role === "business" || user?.role === "member") && (
+              <>
+                <TenantNavLinks searchSuffix="" navClassName="dashboard__navLink" />
+                {user?.role === "business" && (
+                  <TenantOwnerNavLinks searchSuffix="" navClassName="dashboard__navLink" />
+                )}
+              </>
             )}
           </nav>
         </div>

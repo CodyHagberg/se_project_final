@@ -24,6 +24,7 @@ import SupportConfig from "../SupportConfig/SupportConfig";
 import SupportBubble from "../SupportBubble/SupportBubble";
 import EmbeddableWidget from "../EmbeddableWidget/EmbeddableWidget";
 import WidgetCustomizer from "../WidgetCustomizer/WidgetCustomizer";
+import TenantUsers from "../TenantUsers/TenantUsers";
 import Integrations from "../../pages/Integrations/Integrations";
 import Terms from "../Terms/Terms";
 import TermsOfService from "../Terms/TermsOfService";
@@ -106,6 +107,14 @@ function App() {
             <Route path="widget-customizer" element={<WidgetCustomizer />} />
             <Route path="support-config" element={<SupportConfig />} />
             <Route path="integrations" element={<Integrations />} />
+            <Route
+              path="users"
+              element={
+                <ProtectedRoute requiredRole="business">
+                  <TenantUsers />
+                </ProtectedRoute>
+              }
+            />
             <Route
               path="admin/businesses"
               element={

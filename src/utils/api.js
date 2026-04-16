@@ -177,6 +177,37 @@ export async function updateOverageSettings(userId, { overagePriceCents, overage
   });
 }
 
+export async function updateSeatLimit(userId, seatLimit) {
+  return authRequest(`/api/admin/seats/${userId}`, {
+    method: "PUT",
+    body: JSON.stringify({ seatLimit }),
+  });
+}
+
+export async function fetchTenantUsers() {
+  return authRequest("/api/tenant/users");
+}
+
+export async function createTenantUser({ email, tempPassword }) {
+  return authRequest("/api/tenant/users", {
+    method: "POST",
+    body: JSON.stringify({ email, tempPassword }),
+  });
+}
+
+export async function deleteTenantUser(userId) {
+  return authRequest(`/api/tenant/users/${userId}`, {
+    method: "DELETE",
+  });
+}
+
+export async function resetTenantUserPassword(userId, tempPassword) {
+  return authRequest(`/api/tenant/users/${userId}/reset-password`, {
+    method: "POST",
+    body: JSON.stringify({ tempPassword }),
+  });
+}
+
 export async function fetchApiKey(businessId) {
   return authRequest(withActingBusiness("/api/dashboard/api-key", businessId));
 }
