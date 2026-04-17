@@ -82,6 +82,18 @@ function AIConfig() {
         Customize how your AI sales assistant behaves with leads.
       </p>
 
+      {saving && (
+        <div className="aiConfig__savingStatus" role="status" aria-live="polite">
+          <div className="aiConfig__savingTrack" aria-hidden>
+            <div className="aiConfig__savingIndicator" />
+          </div>
+          <div className="aiConfig__savingRow">
+            <span className="aiConfig__savingSpinner" aria-hidden />
+            <span className="aiConfig__savingText">Saving your configuration…</span>
+          </div>
+        </div>
+      )}
+
       {message && <p className="aiConfig__success">{message}</p>}
       {error && <p className="aiConfig__error">{error}</p>}
 
