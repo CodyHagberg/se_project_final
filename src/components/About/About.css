@@ -105,6 +105,121 @@
   border-color: rgba(255, 255, 255, 0.4);
 }
 
+.howItWorks {
+  margin-top: 72px;
+  padding-top: 56px;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.howItWorksHeader {
+  text-align: center;
+  margin-bottom: 56px;
+}
+
+.howItWorksTitle {
+  margin: 0 0 14px;
+  font-size: 34px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -0.5px;
+}
+
+.howItWorksSubtitle {
+  margin: 0 auto;
+  max-width: 620px;
+  font-size: 16px;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.howItWorksList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+}
+
+.howItWorksStep {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+  gap: 40px;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 20px;
+  padding: 32px;
+  transition: background 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
+}
+
+.howItWorksStep:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.22);
+  transform: translateY(-2px);
+}
+
+.howItWorksStep:nth-child(even) {
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+}
+
+.howItWorksStep:nth-child(even) .howItWorksCopy {
+  order: 2;
+}
+
+.howItWorksStep:nth-child(even) .howItWorksImageWrap {
+  order: 1;
+}
+
+.howItWorksCopy {
+  min-width: 0;
+}
+
+.howItWorksStepNumber {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.14);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+
+.howItWorksStepTitle {
+  margin: 0 0 12px;
+  font-size: 24px;
+  font-weight: 600;
+  color: #fff;
+  letter-spacing: -0.3px;
+}
+
+.howItWorksStepDesc {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.75;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.howItWorksImageWrap {
+  min-width: 0;
+  border-radius: 14px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
+  aspect-ratio: 16 / 10;
+}
+
+.howItWorksImage {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+}
+
 @media (max-width: 768px) {
   .aboutTitle {
     font-size: 32px;
@@ -116,6 +231,34 @@
 
   .aboutFeatureCard {
     padding: 22px;
+  }
+
+  .howItWorks {
+    margin-top: 56px;
+    padding-top: 40px;
+  }
+
+  .howItWorksTitle {
+    font-size: 28px;
+  }
+
+  .howItWorksStep,
+  .howItWorksStep:nth-child(even) {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    padding: 24px;
+  }
+
+  .howItWorksStep:nth-child(even) .howItWorksCopy {
+    order: 0;
+  }
+
+  .howItWorksStep:nth-child(even) .howItWorksImageWrap {
+    order: 0;
+  }
+
+  .howItWorksStepTitle {
+    font-size: 20px;
   }
 }
 
@@ -151,6 +294,23 @@
   }
 
   .aboutFeatureDesc {
+    font-size: 14px;
+  }
+
+  .howItWorksStep,
+  .howItWorksStep:nth-child(even) {
+    padding: 20px;
+  }
+
+  .howItWorksTitle {
+    font-size: 24px;
+  }
+
+  .howItWorksStepTitle {
+    font-size: 18px;
+  }
+
+  .howItWorksStepDesc {
     font-size: 14px;
   }
 }

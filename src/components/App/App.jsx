@@ -92,7 +92,7 @@ function App() {
             path="/about"
             element={
               <div className="page">
-                <About />
+                <About showHowItWorks />
               </div>
             }
           />
