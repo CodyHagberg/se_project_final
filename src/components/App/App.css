@@ -32,6 +32,13 @@
   color: #fff;
 }
 
+.appHome .nav-link--active {
+  color: #fff;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
 .appHome .header__loginBtn {
   background-color: rgba(255, 255, 255, 0.15);
   backdrop-filter: blur(12px);

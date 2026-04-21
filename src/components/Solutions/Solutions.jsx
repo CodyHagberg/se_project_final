@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import "./Solutions.css";
 
 const teamSolutions = [
@@ -55,7 +56,7 @@ const buyerSolutions = [
   },
 ];
 
-function Solutions() {
+function Solutions({ showLearnMoreCta = false }) {
   const [view, setView] = useState("team");
   const solutions = view === "team" ? teamSolutions : buyerSolutions;
 
@@ -99,6 +100,13 @@ function Solutions() {
           </div>
         ))}
       </div>
+      {showLearnMoreCta && (
+        <div className="solutionsLearnMoreWrap">
+          <Link to="/solutions" className="solutionsLearnMore">
+            Learn more
+          </Link>
+        </div>
+      )}
     </section>
   );
 }

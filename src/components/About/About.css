@@ -78,6 +78,33 @@
   color: rgba(255, 255, 255, 0.75);
 }
 
+.aboutLearnMoreWrap {
+  display: flex;
+  justify-content: center;
+  margin-top: 28px;
+  padding-top: 8px;
+}
+
+.aboutLearnMore {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 22px;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: none;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.aboutLearnMore:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
 @media (max-width: 768px) {
   .aboutTitle {
     font-size: 32px;

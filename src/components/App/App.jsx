@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Routes, Route, useLocation, Navigate } from "react-router-dom";
 import { useAuth } from "../../contexts/useAuth";
 import { useActingBusinessId } from "../../hooks/useActingBusinessId";
@@ -63,6 +64,14 @@ function App() {
 
   const hasGradient = !isDashboard && !isSupportBubble && !isWidget;
 
+  useEffect(() => {
+    if (location.pathname !== "/" || !location.hash) return;
+    const id = location.hash.slice(1);
+    if (!id) return;
+    const run = () => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+    requestAnimationFrame(run);
+  }, [location.pathname, location.hash]);
+
   return (
     <div className={hasGradient ? "appHome" : undefined}>
       {showHeader && <Header />}
@@ -72,10 +81,26 @@ function App() {
             path="/"
             element={
               <div className="page">
-                <About />
-                <Solutions />
+                <About showLearnMoreCta />
+                <Solutions showLearnMoreCta />
                 <Pricing />
                 <FAQ />
+              </div>
+            }
+          />
+          <Route
+            path="/about"
+            element={
+              <div className="page">
+                <About />
+              </div>
+            }
+          />
+          <Route
+            path="/solutions"
+            element={
+              <div className="page">
+                <Solutions />
               </div>
             }
           />

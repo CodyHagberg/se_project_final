@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import "./About.css";
 
 const capabilities = [
@@ -23,7 +24,7 @@ const capabilities = [
   },
 ];
 
-function About() {
+function About({ showLearnMoreCta = false }) {
   return (
     <section id="about" className="about">
       <div className="aboutHero">
@@ -43,6 +44,13 @@ function About() {
           </div>
         ))}
       </div>
+      {showLearnMoreCta && (
+        <div className="aboutLearnMoreWrap">
+          <Link to="/about" className="aboutLearnMore">
+            Learn more
+          </Link>
+        </div>
+      )}
     </section>
   );
 }
