@@ -7,6 +7,7 @@ import Footer from "../Footer/Footer";
 import About from "../About/About";
 import Solutions from "../Solutions/Solutions";
 import Pricing from "../Pricing/Pricing";
+import HowItWorks from "../HowItWorks/HowItWorks";
 import FAQ from "../FAQ/FAQ";
 import DemoView from "../DemoView/DemoView";
 import Login from "../Login/Login";
@@ -72,6 +73,13 @@ function App() {
     requestAnimationFrame(run);
   }, [location.pathname, location.hash]);
 
+  // Start every new page at the top. Skip when a hash is present so in-page
+  // anchor scrolls (e.g. "/#pricing", "/#faq") still work.
+  useEffect(() => {
+    if (location.hash) return;
+    window.scrollTo(0, 0);
+  }, [location.pathname, location.hash]);
+
   return (
     <div className={hasGradient ? "appHome" : undefined}>
       {showHeader && <Header />}
@@ -83,7 +91,7 @@ function App() {
               <div className="page">
                 <About showLearnMoreCta />
                 <Solutions showLearnMoreCta />
-                <Pricing />
+                <Pricing showLearnMoreCta />
                 <FAQ />
               </div>
             }
@@ -92,7 +100,7 @@ function App() {
             path="/about"
             element={
               <div className="page">
-                <About showHowItWorks />
+                <About />
               </div>
             }
           />
@@ -101,6 +109,15 @@ function App() {
             element={
               <div className="page">
                 <Solutions />
+              </div>
+            }
+          />
+          <Route
+            path="/pricing"
+            element={
+              <div className="page">
+                <Pricing />
+                <HowItWorks />
               </div>
             }
           />

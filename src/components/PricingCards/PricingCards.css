@@ -1,7 +1,7 @@
 .pricingCards {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
 }
 
 .pricingCard {
@@ -22,18 +22,19 @@
 }
 
 .pricingCardHeader {
-  padding: 24px 24px 0;
+  padding: 20px 18px 0;
 }
 
 .pricingCardTitle {
   margin: 0;
-  font-size: 22px;
+  font-size: 19px;
   font-weight: 600;
   color: #fff;
+  letter-spacing: -0.2px;
 }
 
 .pricingCardImage {
-  height: 150px;
+  height: 120px;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -41,7 +42,7 @@
 }
 
 .pricingCardBody {
-  padding: 20px 24px 24px;
+  padding: 16px 18px 20px;
   display: flex;
   flex-direction: column;
   flex: 1;
@@ -50,16 +51,16 @@
 .pricingCardFeatures {
   list-style: none;
   padding: 0;
-  margin: 0 0 24px;
+  margin: 0 0 20px;
   flex: 1;
 }
 
 .pricingCardFeature {
-  padding: 7px 0;
-  padding-left: 24px;
+  padding: 6px 0;
+  padding-left: 20px;
   position: relative;
   color: rgba(255, 255, 255, 0.8);
-  font-size: 14px;
+  font-size: 13px;
   line-height: 1.5;
 }
 
@@ -72,12 +73,12 @@
 }
 
 .pricingCardButton {
-  padding: 12px 24px;
+  padding: 10px 20px;
   background-color: rgba(255, 255, 255, 0.2);
   color: #fff;
   border: 1px solid rgba(255, 255, 255, 0.3);
   border-radius: 10px;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -90,6 +91,13 @@
 
 .pricingCardButton:active {
   transform: scale(0.98);
+}
+
+@media (max-width: 900px) {
+  .pricingCards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
 }
 
 @media (max-width: 600px) {

@@ -34,9 +34,14 @@ function Header() {
           >
             Solutions
           </NavLink>
-          <Link to="/#pricing" className="nav-link">
+          <NavLink
+            to="/pricing"
+            className={({ isActive }) =>
+              `nav-link${isActive ? " nav-link--active" : ""}`
+            }
+          >
             Pricing
-          </Link>
+          </NavLink>
           <Link to="/#faq" className="nav-link">
             FAQ
           </Link>
