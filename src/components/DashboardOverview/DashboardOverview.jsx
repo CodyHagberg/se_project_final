@@ -101,14 +101,15 @@ function DashboardOverview() {
     setLoading(true);
     try {
       const [data, usageRes] = await Promise.all([
-        fetchLeads(actingBusinessId || undefined),
+        fetchLeads(actingBusinessId || undefined, { page: 1, limit: 100 }),
         fetchUsage(actingBusinessId || undefined),
       ]);
       const leads = data.leads || [];
+      const totalCount = data.total ?? leads.length;
       setAllLeads(leads);
       setUsage(usageRes.usage);
       setStats({
-        total: leads.length,
+        total: totalCount,
         newLeads: leads.filter((l) => !l.status || l.status === "new").length,
         contacted: leads.filter((l) => l.status === "contacted" || l.status === "qualified").length,
         won: leads.filter((l) => l.status === "won").length,

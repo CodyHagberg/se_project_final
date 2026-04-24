@@ -86,8 +86,9 @@ export async function changePassword(currentPassword, newPassword) {
   });
 }
 
-export async function fetchLeads(businessId) {
-  const query = businessId ? `?businessId=${businessId}` : "";
+export async function fetchLeads(businessId, { page = 1, limit = 25 } = {}) {
+  let query = `?page=${page}&limit=${limit}`;
+  if (businessId) query += `&businessId=${encodeURIComponent(businessId)}`;
   return authRequest(`/api/dashboard/leads${query}`);
 }
 
