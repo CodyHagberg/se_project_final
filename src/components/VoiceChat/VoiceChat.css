@@ -193,6 +193,57 @@
   color: #333;
 }
 
+.voiceChatOfferBanner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background: linear-gradient(135deg, rgba(95, 189, 202, 0.1), rgba(95, 189, 202, 0.05));
+  border-top: 1px solid rgba(95, 189, 202, 0.25);
+  animation: offerSlideIn 0.3s ease-out;
+}
+
+@keyframes offerSlideIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.voiceChatOfferBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 20px;
+  border: 1px solid #5fbdca;
+  border-radius: 20px;
+  background: #fff;
+  color: #5fbdca;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.voiceChatOfferBtn:hover {
+  background: #5fbdca;
+  color: #fff;
+}
+
+.voiceChatOfferDismiss {
+  background: none;
+  border: none;
+  color: #999;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 0 4px;
+  line-height: 1;
+}
+
+.voiceChatOfferDismiss:hover {
+  color: #666;
+}
+
 .voiceChatControls {
   display: flex;
   justify-content: center;

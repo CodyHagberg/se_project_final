@@ -31,6 +31,7 @@ function VoiceChat({ leadId, userName, companyName, micStream, onClose, apiKey, 
   const [timeWarning, setTimeWarning] = useState(null);
   const [conversationEnded, setConversationEnded] = useState(false);
   const [endReason, setEndReason] = useState(null);
+  const [contentOffer, setContentOffer] = useState(null);
 
   const wsRef = useRef(null);             // WebSocket connection to the voice server
   const audioContextRef = useRef(null);    // AudioContext for mic capture (16kHz)
@@ -319,6 +320,12 @@ function VoiceChat({ leadId, userName, companyName, micStream, onClose, apiKey, 
             }
             break;
 
+          case "content_offer":
+            if (data.contentOffer) {
+              setContentOffer(data.contentOffer);
+            }
+            break;
+
           case "time_warning":
             setTimeWarning(data.message || "You have 1 minute remaining.");
             break;
@@ -439,9 +446,32 @@ function VoiceChat({ leadId, userName, companyName, micStream, onClose, apiKey, 
           </div>
         </div>
 
-        {/* voiceChatControls: fixed bottom bar for primary call actions (layout/spacing via CSS).
-            Round button = mic mute — toggles whether we send audio upstream (see toggleMute).
-            Hang-up button = end session — tears down WebSocket/audio and runs handleEndCall (same outcome as header ×). */}
+        {contentOffer && (
+          <div className="voiceChatOfferBanner">
+            <button
+              className="voiceChatOfferBtn"
+              onClick={() => {
+                onShowContentRef.current?.({ type: "show_content", ...contentOffer });
+                setContentOffer(null);
+              }}
+            >
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width="16" height="16">
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+                <circle cx="8.5" cy="8.5" r="1.5" />
+                <polyline points="21 15 16 10 5 21" />
+              </svg>
+              View {contentOffer.name}
+            </button>
+            <button
+              className="voiceChatOfferDismiss"
+              onClick={() => setContentOffer(null)}
+              title="Dismiss"
+            >
+              &times;
+            </button>
+          </div>
+        )}
+
         <div className="voiceChatControls">
           <button
             className={`voiceChatBtn voiceChatBtnRound ${isMuted ? "voiceChatBtnMuted" : ""}`}
