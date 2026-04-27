@@ -15,6 +15,7 @@ function AIConfig() {
     maxVoiceOverageMinutes: 6,
     chatModes: "both",
     idleTimeoutSeconds: 60,
+    visualContentSets: [],
   });
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -39,6 +40,7 @@ function AIConfig() {
           maxVoiceOverageMinutes: data.config.maxVoiceOverageMinutes ?? 6,
           chatModes: data.config.chatModes || "both",
           idleTimeoutSeconds: data.config.idleTimeoutSeconds ?? 60,
+          visualContentSets: data.config.visualContentSets || [],
         });
       }
     } catch (err) {
@@ -71,6 +73,68 @@ function AIConfig() {
     } catch (err) {
       setError(err.message);
     }
+  };
+
+  const addContentSet = () => {
+    setConfig((prev) => ({
+      ...prev,
+      visualContentSets: [
+        ...prev.visualContentSets,
+        { name: "", triggerHint: "", items: [] },
+      ],
+    }));
+  };
+
+  const removeContentSet = (sIdx) => {
+    setConfig((prev) => ({
+      ...prev,
+      visualContentSets: prev.visualContentSets.filter((_, i) => i !== sIdx),
+    }));
+  };
+
+  const updateContentSet = (sIdx, field, value) => {
+    setConfig((prev) => ({
+      ...prev,
+      visualContentSets: prev.visualContentSets.map((s, i) =>
+        i === sIdx ? { ...s, [field]: value } : s
+      ),
+    }));
+  };
+
+  const addContentItem = (sIdx) => {
+    setConfig((prev) => ({
+      ...prev,
+      visualContentSets: prev.visualContentSets.map((s, i) =>
+        i === sIdx
+          ? { ...s, items: [...s.items, { title: "", description: "", imageUrl: "", price: "" }] }
+          : s
+      ),
+    }));
+  };
+
+  const removeContentItem = (sIdx, iIdx) => {
+    setConfig((prev) => ({
+      ...prev,
+      visualContentSets: prev.visualContentSets.map((s, i) =>
+        i === sIdx ? { ...s, items: s.items.filter((_, j) => j !== iIdx) } : s
+      ),
+    }));
+  };
+
+  const updateContentItem = (sIdx, iIdx, field, value) => {
+    setConfig((prev) => ({
+      ...prev,
+      visualContentSets: prev.visualContentSets.map((s, i) =>
+        i === sIdx
+          ? {
+              ...s,
+              items: s.items.map((item, j) =>
+                j === iIdx ? { ...item, [field]: value } : item
+              ),
+            }
+          : s
+      ),
+    }));
   };
 
   if (loading) return <p className="aiConfig__loading">Loading configuration...</p>;
@@ -217,9 +281,121 @@ function AIConfig() {
         </div>
       </div>
 
-      <button className="aiConfig__saveBtn" onClick={handleSave} disabled={saving}>
-        {saving ? "Saving..." : "Save Configuration"}
+      <hr className="aiConfig__divider" />
+      <h3 className="aiConfig__sectionTitle">Visual Content Sets</h3>
+      <p className="aiConfig__sectionDesc">
+        Define image/card collections that the AI can display inline during a conversation.
+        Each set needs a trigger hint so the AI knows when to show it.
+      </p>
+
+      {config.visualContentSets.map((set, sIdx) => (
+        <div key={set._id || sIdx} className="aiConfig__contentSet">
+          <div className="aiConfig__contentSetHeader">
+            <span className="aiConfig__contentSetLabel">
+              Set {sIdx + 1}{set.name ? `: ${set.name}` : ""}
+            </span>
+            <button
+              type="button"
+              className="aiConfig__removeBtn"
+              onClick={() => removeContentSet(sIdx)}
+            >
+              Remove Set
+            </button>
+          </div>
+
+          <div className="aiConfig__field">
+            <label className="aiConfig__label">Set Name</label>
+            <input
+              type="text"
+              className="aiConfig__input"
+              value={set.name}
+              onChange={(e) => updateContentSet(sIdx, "name", e.target.value)}
+              placeholder="e.g., Lunch Menu, Product Gallery"
+            />
+          </div>
+
+          <div className="aiConfig__field">
+            <label className="aiConfig__label">Trigger Hint</label>
+            <input
+              type="text"
+              className="aiConfig__input"
+              value={set.triggerHint}
+              onChange={(e) => updateContentSet(sIdx, "triggerHint", e.target.value)}
+              placeholder="e.g., When the customer asks about the menu"
+            />
+          </div>
+
+          <div className="aiConfig__contentItems">
+            <label className="aiConfig__label">Items</label>
+            {set.items.map((item, iIdx) => (
+              <div key={item._id || iIdx} className="aiConfig__contentItem">
+                <div className="aiConfig__row">
+                  <div className="aiConfig__field aiConfig__field--half">
+                    <input
+                      type="text"
+                      className="aiConfig__input"
+                      value={item.title}
+                      onChange={(e) => updateContentItem(sIdx, iIdx, "title", e.target.value)}
+                      placeholder="Title"
+                    />
+                  </div>
+                  <div className="aiConfig__field aiConfig__field--half">
+                    <input
+                      type="text"
+                      className="aiConfig__input"
+                      value={item.price}
+                      onChange={(e) => updateContentItem(sIdx, iIdx, "price", e.target.value)}
+                      placeholder="Price (optional)"
+                    />
+                  </div>
+                </div>
+                <div className="aiConfig__field">
+                  <input
+                    type="text"
+                    className="aiConfig__input"
+                    value={item.imageUrl}
+                    onChange={(e) => updateContentItem(sIdx, iIdx, "imageUrl", e.target.value)}
+                    placeholder="Image URL (Google Drive share link or direct URL)"
+                  />
+                </div>
+                <div className="aiConfig__field">
+                  <input
+                    type="text"
+                    className="aiConfig__input"
+                    value={item.description}
+                    onChange={(e) => updateContentItem(sIdx, iIdx, "description", e.target.value)}
+                    placeholder="Description (optional)"
+                  />
+                </div>
+                <button
+                  type="button"
+                  className="aiConfig__removeBtn aiConfig__removeBtn--sm"
+                  onClick={() => removeContentItem(sIdx, iIdx)}
+                >
+                  Remove Item
+                </button>
+              </div>
+            ))}
+            <button
+              type="button"
+              className="aiConfig__addBtn"
+              onClick={() => addContentItem(sIdx)}
+            >
+              + Add Item
+            </button>
+          </div>
+        </div>
+      ))}
+
+      <button type="button" className="aiConfig__addBtn" onClick={addContentSet}>
+        + Add Content Set
       </button>
+
+      <div style={{ marginTop: 24 }}>
+        <button className="aiConfig__saveBtn" onClick={handleSave} disabled={saving}>
+          {saving ? "Saving..." : "Save Configuration"}
+        </button>
+      </div>
     </div>
   );
 }

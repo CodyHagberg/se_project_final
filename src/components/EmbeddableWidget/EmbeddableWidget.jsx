@@ -5,6 +5,7 @@ import ModalForm from "../ModalForm/ModalForm";
 import ChatModeSelector from "../ChatModeSelector/ChatModeSelector";
 import ChatWindow from "../ChatWindow/ChatWindow";
 import VoiceChat from "../VoiceChat/VoiceChat";
+import ContentGalleryPanel from "../ContentGalleryPanel/ContentGalleryPanel";
 import "./EmbeddableWidget.css";
 
 /**
@@ -37,6 +38,8 @@ function EmbeddableWidget({ apiKey: apiKeyProp }) {
   const [aiEnabled, setAiEnabled] = useState(true);
   const [disabledReason, setDisabledReason] = useState("");
   const [showThankYou, setShowThankYou] = useState(false);
+  const [visualContentSets, setVisualContentSets] = useState([]);
+  const [activeContentSet, setActiveContentSet] = useState(null);
 
   useEffect(() => {
     if (widgetKey) {
@@ -47,6 +50,7 @@ function EmbeddableWidget({ apiKey: apiKeyProp }) {
           if (data.idleTimeoutSeconds != null) setIdleTimeoutSeconds(data.idleTimeoutSeconds);
           if (data.maxMessages != null) setMaxMessages(data.maxMessages);
           if (data.appointmentUrl) setAppointmentUrl(data.appointmentUrl);
+          if (data.visualContentSets) setVisualContentSets(data.visualContentSets);
           if (data.aiEnabled === false) {
             setAiEnabled(false);
             setDisabledReason(data.disabledReason || "");
@@ -102,6 +106,9 @@ function EmbeddableWidget({ apiKey: apiKeyProp }) {
     setMicError(null);
   };
 
+  const handleShowContent = (contentSet) => setActiveContentSet(contentSet);
+  const handleBackToChat = () => setActiveContentSet(null);
+
   const isStandalone = !apiKeyProp;
 
   if (!widgetKey) {
@@ -137,31 +144,45 @@ function EmbeddableWidget({ apiKey: apiKeyProp }) {
         />
       )}
 
-      {chatMode === "text" && (
-        <ChatWindow
-          isOpen={true}
-          onClose={handleBackToModeSelect}
-          userName={leadData?.name}
-          companyName={leadData?.companyName}
-          leadId={leadData?.id}
-          apiKey={widgetKey}
-          idleTimeoutSeconds={idleTimeoutSeconds}
-          maxMessages={maxMessages}
-          appointmentUrl={appointmentUrl}
+      {activeContentSet && (
+        <ContentGalleryPanel
+          contentSet={activeContentSet}
+          onBack={handleBackToChat}
+          mode={chatMode}
         />
       )}
 
+      {chatMode === "text" && (
+        <div style={activeContentSet ? { display: "none" } : { width: "100%", height: "100%" }}>
+          <ChatWindow
+            isOpen={true}
+            onClose={handleBackToModeSelect}
+            userName={leadData?.name}
+            companyName={leadData?.companyName}
+            leadId={leadData?.id}
+            apiKey={widgetKey}
+            idleTimeoutSeconds={idleTimeoutSeconds}
+            maxMessages={maxMessages}
+            appointmentUrl={appointmentUrl}
+            onShowContent={handleShowContent}
+          />
+        </div>
+      )}
+
       {chatMode === "voice" && (
-        <VoiceChat
-          leadId={leadData?.id}
-          userName={leadData?.name}
-          companyName={leadData?.companyName}
-          micStream={micStream}
-          onClose={handleBackToModeSelect}
-          apiKey={widgetKey}
-          idleTimeoutSeconds={idleTimeoutSeconds}
-          appointmentUrl={appointmentUrl}
-        />
+        <div style={activeContentSet ? { display: "none" } : { width: "100%", height: "100%" }}>
+          <VoiceChat
+            leadId={leadData?.id}
+            userName={leadData?.name}
+            companyName={leadData?.companyName}
+            micStream={micStream}
+            onClose={handleBackToModeSelect}
+            apiKey={widgetKey}
+            idleTimeoutSeconds={idleTimeoutSeconds}
+            appointmentUrl={appointmentUrl}
+            onShowContent={handleShowContent}
+          />
+        </div>
       )}
     </div>
   );

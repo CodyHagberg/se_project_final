@@ -216,3 +216,79 @@
   outline: none;
   border-color: #5fbdca;
 }
+
+.aiConfig__sectionDesc {
+  margin: 0 0 16px;
+  font-size: 13px;
+  color: #777;
+  line-height: 1.5;
+}
+
+.aiConfig__contentSet {
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  padding: 16px;
+  margin-bottom: 16px;
+  background: #fafbfc;
+}
+
+.aiConfig__contentSetHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.aiConfig__contentSetLabel {
+  font-size: 15px;
+  font-weight: 600;
+  color: #1a1a2e;
+}
+
+.aiConfig__contentItems {
+  margin-top: 8px;
+}
+
+.aiConfig__contentItem {
+  border: 1px solid #e8e8e8;
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 10px;
+  background: #fff;
+}
+
+.aiConfig__addBtn {
+  background: none;
+  border: 1px dashed #5fbdca;
+  color: #5fbdca;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 4px;
+}
+
+.aiConfig__addBtn:hover {
+  background: #e8f7fa;
+}
+
+.aiConfig__removeBtn {
+  background: none;
+  border: 1px solid #e57373;
+  color: #e57373;
+  padding: 4px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.aiConfig__removeBtn:hover {
+  background: #fee;
+}
+
+.aiConfig__removeBtn--sm {
+  font-size: 11px;
+  padding: 3px 10px;
+}

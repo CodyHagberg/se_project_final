@@ -4,7 +4,7 @@ import ConversationEnd from "../ConversationEnd/ConversationEnd";
 import logo from "../../assets/ALEI_Logo.svg";
 import "./ChatWindow.css";
 
-function ChatWindow({ isOpen, onClose, userName, companyName, leadId, apiKey, idleTimeoutSeconds = 60, maxMessages = 10, appointmentUrl = "" }) {
+function ChatWindow({ isOpen, onClose, userName, companyName, leadId, apiKey, idleTimeoutSeconds = 60, maxMessages = 10, appointmentUrl = "", onShowContent }) {
   const [messages, setMessages] = useState([]);
   const [inputValue, setInputValue] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -64,8 +64,16 @@ function ChatWindow({ isOpen, onClose, userName, companyName, leadId, apiKey, id
         content: data.message,
         timestamp: new Date(),
       }]);
+      if (data.contentAction && onShowContent) {
+        onShowContent(data.contentAction);
+      }
     } catch (error) {
       console.error("Initial greeting failed:", error);
+      setMessages([{
+        role: "assistant",
+        content: error.message || "Something went wrong loading the assistant. Please type a message to try again.",
+        timestamp: new Date(),
+      }]);
     } finally {
       setIsLoading(false);
     }
@@ -94,17 +102,22 @@ function ChatWindow({ isOpen, onClose, userName, companyName, leadId, apiKey, id
         companyName,
         leadId,
         apiKey,
-        history: messages.map((msg) => ({
-          role: msg.role === "user" ? "user" : "model",
-          parts: [{ text: msg.content }],
-        })),
+        history: messages
+          .filter((msg) => msg.role !== "content")
+          .map((msg) => ({
+            role: msg.role === "user" ? "user" : "model",
+            parts: [{ text: msg.content }],
+          })),
       });
 
-      const safeMessage = (data.message || "").replace(/\[END_CONVERSATION\]/g, "").trim();
-      setMessages((prev) => [
-        ...prev,
-        { role: "assistant", content: safeMessage, timestamp: new Date() },
-      ]);
+      const safeMessage = (data.message || "")
+        .replace(/\[END_CONVERSATION\]/g, "")
+        .replace(/\[SHOW_CONTENT:[^\]]*\]/g, "")
+        .trim();
+      setMessages((prev) => [...prev, { role: "assistant", content: safeMessage, timestamp: new Date() }]);
+      if (data.contentAction && onShowContent) {
+        onShowContent(data.contentAction);
+      }
 
       if (data.action === "end_conversation") {
         if (idleTimerRef.current) clearTimeout(idleTimerRef.current);

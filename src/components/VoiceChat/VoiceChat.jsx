@@ -20,7 +20,7 @@ function arrayBufferToBase64(buffer) {
   return btoa(binary);
 }
 
-function VoiceChat({ leadId, userName, companyName, micStream, onClose, apiKey, idleTimeoutSeconds = 60, appointmentUrl = "" }) {
+function VoiceChat({ leadId, userName, companyName, micStream, onClose, apiKey, idleTimeoutSeconds = 60, appointmentUrl = "", onShowContent }) {
   const [isConnected, setIsConnected] = useState(false);
   const [isAiSpeaking, setIsAiSpeaking] = useState(false);
   const [isThinking, setIsThinking] = useState(false);
@@ -49,6 +49,10 @@ function VoiceChat({ leadId, userName, companyName, micStream, onClose, apiKey, 
   useEffect(() => {
     isMutedRef.current = isMuted;
   }, [isMuted]);
+
+  useEffect(() => {
+    onShowContentRef.current = onShowContent;
+  }, [onShowContent]);
 
   useEffect(() => {
     if (conversationEnded && leadId) {
@@ -81,6 +85,7 @@ function VoiceChat({ leadId, userName, companyName, micStream, onClose, apiKey, 
   const addTranscriptRef = useRef(null);
   const finalizeRef = useRef(null);
   const drainQueueRef = useRef(null);
+  const onShowContentRef = useRef(onShowContent);
 
   useEffect(() => {
     // Append streamed text to the current partial transcript entry,
@@ -306,6 +311,12 @@ function VoiceChat({ leadId, userName, companyName, micStream, onClose, apiKey, 
             if (data.role === "user") setIsThinking(true);
             if (data.role === "model") setIsThinking(false);
             finalizeRef.current?.();
+            break;
+
+          case "content_action":
+            if (data.contentAction) {
+              onShowContentRef.current?.(data.contentAction);
+            }
             break;
 
           case "time_warning":
