@@ -80,6 +80,6 @@ The live site: https://alei.ai
 
 ## Notes
 
-- **`VITE_ALEI_PUB_KEY`** must match the `publishableKey` stored in the database for the ALEI business account. If it is regenerated in the admin dashboard, run a **new** `docker build` (step 1) before push and deploy.
+- **`VITE_ALEI_PUB_KEY`** must match the `publishableKey` stored in the database for the ALEI business account. The canonical value is `alei_pub_ea4555281c96e9de7def64d678974746`. If it is regenerated in the admin dashboard, run a **new** `docker build` (step 1) before push and deploy. Always use the key shown in step 1 above — do not substitute a different key from chat history.
 - **Any code change** that should go live needs a **new image**: steps **1** and **2**, then step **3** to point Cloud Run at that image.
 - The `Dockerfile` and `.dockerignore` live at the project root (`LEAI/`) and should not be moved.
