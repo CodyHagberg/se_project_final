@@ -38,7 +38,6 @@ function EmbeddableWidget({ apiKey: apiKeyProp }) {
   const [aiEnabled, setAiEnabled] = useState(true);
   const [disabledReason, setDisabledReason] = useState("");
   const [showThankYou, setShowThankYou] = useState(false);
-  const [visualContentSets, setVisualContentSets] = useState([]);
   const [activeContentSet, setActiveContentSet] = useState(null);
 
   useEffect(() => {
@@ -50,7 +49,6 @@ function EmbeddableWidget({ apiKey: apiKeyProp }) {
           if (data.idleTimeoutSeconds != null) setIdleTimeoutSeconds(data.idleTimeoutSeconds);
           if (data.maxMessages != null) setMaxMessages(data.maxMessages);
           if (data.appointmentUrl) setAppointmentUrl(data.appointmentUrl);
-          if (data.visualContentSets) setVisualContentSets(data.visualContentSets);
           if (data.aiEnabled === false) {
             setAiEnabled(false);
             setDisabledReason(data.disabledReason || "");
