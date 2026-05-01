@@ -13,12 +13,14 @@ import { useAuth } from "../../contexts/useAuth";
 import { useActingBusinessId } from "../../hooks/useActingBusinessId";
 import "./DashboardOverview.css";
 
+/** Maps internal plan keys to human-readable display names. */
 const PLAN_DISPLAY = {
   individual: "Individual",
   small_business: "Small Business",
   enterprise: "Enterprise",
 };
 
+/** Available date range filters for the lead activity chart. null days = all time. */
 const DATE_RANGES = [
   { label: "7D", days: 7 },
   { label: "30D", days: 30 },
@@ -26,6 +28,14 @@ const DATE_RANGES = [
   { label: "All", days: null },
 ];
 
+/**
+ * Converts a flat array of leads into a day-by-day series for the area chart.
+ * Fills in zero-count days so the chart line is continuous with no gaps.
+ *
+ * @param {object[]} leads    - Full lead array from the API.
+ * @param {number|null} rangeDays - How many past days to include; null = all time.
+ * @returns {{ date: string, leads: number }[]}
+ */
 function buildActivityData(leads, rangeDays) {
   if (!leads.length) return [];
 
@@ -39,6 +49,7 @@ function buildActivityData(leads, rangeDays) {
 
   if (!filtered.length) return [];
 
+  // Count leads per calendar day.
   const counts = {};
   filtered.forEach((lead) => {
     const date = new Date(lead.createdAt).toLocaleDateString("en-US", {
@@ -51,6 +62,8 @@ function buildActivityData(leads, rangeDays) {
   const now = new Date();
   now.setHours(0, 0, 0, 0);
 
+  // Determine the earliest day to show: either (today - rangeDays) or the
+  // oldest lead's date when viewing all time.
   const start = rangeDays
     ? new Date(now.getTime() - (rangeDays - 1) * 86400000)
     : new Date(
@@ -60,6 +73,7 @@ function buildActivityData(leads, rangeDays) {
       );
   start.setHours(0, 0, 0, 0);
 
+  // Walk day-by-day from start to today, inserting 0 for days with no leads.
   const data = [];
   const current = new Date(start);
   while (current <= now) {
@@ -74,29 +88,40 @@ function buildActivityData(leads, rangeDays) {
   return data;
 }
 
+/**
+ * Dashboard home page. Shows a lead status summary, monthly usage/overage
+ * controls, and an interactive area chart of lead activity over time.
+ *
+ * Admin users can act on behalf of a tenant via `actingBusinessId`; all API
+ * calls forward that ID so admins see tenant-specific data.
+ */
 function DashboardOverview() {
   const { user, updateUser } = useAuth();
   const { actingBusinessId } = useActingBusinessId();
-  const [stats, setStats] = useState(null);
-  const [allLeads, setAllLeads] = useState([]);
-  const [usage, setUsage] = useState(null);
-  const [chartData, setChartData] = useState([]);
-  const [range, setRange] = useState(30);
+
+  const [stats, setStats] = useState(null);         // Aggregated lead status counts
+  const [allLeads, setAllLeads] = useState([]);      // Raw lead array used for chart + monthly count
+  const [usage, setUsage] = useState(null);          // Usage/overage data from the API
+  const [chartData, setChartData] = useState([]);    // Processed day-by-day series for the chart
+  const [range, setRange] = useState(30);            // Currently selected chart date range (days)
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [enablingOverages, setEnablingOverages] = useState(false);
   const [disablingOverages, setDisablingOverages] = useState(false);
 
+  // Reload when switching between tenants in admin mode.
   useEffect(() => {
     loadStats();
   }, [actingBusinessId]);
 
+  // Rebuild chart data whenever the range filter or lead list changes.
   useEffect(() => {
     if (allLeads.length) {
       setChartData(buildActivityData(allLeads, range));
     }
   }, [range, allLeads]);
 
+  /** Fetches leads and usage in parallel and derives the stats summary. */
   const loadStats = async () => {
     setLoading(true);
     try {
@@ -123,6 +148,11 @@ function DashboardOverview() {
     }
   };
 
+  /**
+   * Enables overage billing so the AI widget keeps accepting leads after the
+   * monthly limit is reached. Optimistically updates local usage state so the
+   * UI reflects the change without a full reload.
+   */
   const handleEnableOverages = async () => {
     setEnablingOverages(true);
     try {
@@ -144,6 +174,7 @@ function DashboardOverview() {
     }
   };
 
+  /** Disables overage billing; AI widget will pause once the limit is reached. */
   const handleDisableOverages = async () => {
     setDisablingOverages(true);
     try {
@@ -176,6 +207,8 @@ function DashboardOverview() {
     { label: "Lost", value: stats.lost, className: "overview__card--lost" },
   ];
 
+  // When an admin is acting on behalf of a tenant, prefer the tenant's data
+  // from the usage response over the logged-in admin's own user record.
   const tenantFromUsage = usage?.tenant;
   const plan =
     actingBusinessId && tenantFromUsage?.plan ? tenantFromUsage.plan : user?.plan || "individual";
@@ -185,9 +218,13 @@ function DashboardOverview() {
       : user?.monthlyLeadLimit ?? 25;
   const isUnlimited = rawLimit === -1;
   const limit = isUnlimited ? Infinity : rawLimit;
+
+  // Count leads created since the start of the current calendar month.
   const now = new Date();
   const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
   const monthlyCount = allLeads.filter((l) => new Date(l.createdAt) >= monthStart).length;
+
+  // Derive progress bar fill percentage and color (green → amber → red).
   const pct = isUnlimited ? 0 : Math.min((monthlyCount / limit) * 100, 100);
   const barColor = pct >= 100 ? "#e74c3c" : pct >= 80 ? "#f39c12" : "#5fbdca";
   const isOverLimit = !isUnlimited && monthlyCount >= limit;
