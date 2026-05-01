@@ -3,6 +3,7 @@ import { useAuth } from "../../contexts/useAuth";
 import { useActingBusinessId } from "../../hooks/useActingBusinessId";
 import "./DashboardLayout.css";
 
+// Nav links available to all tenant roles (business owners and members).
 const TENANT_NAV = [
   { path: "/dashboard/overview", label: "Overview" },
   { path: "/dashboard/leads", label: "Leads" },
@@ -14,8 +15,14 @@ const TENANT_NAV = [
   { path: "/dashboard/testing-center", label: "Testing Center" },
 ];
 
+// Nav links exclusive to the business owner role (not visible to members).
 const TENANT_OWNER_NAV = [{ path: "/dashboard/users", label: "Team" }];
 
+/**
+ * Renders the standard tenant navigation links.
+ * `searchSuffix` is appended to each path so that an admin acting as a tenant
+ * carries the `?businessId=` query param across all nav transitions.
+ */
 function TenantNavLinks({ searchSuffix, navClassName }) {
   return TENANT_NAV.map(({ path, label }) => (
     <NavLink
@@ -30,6 +37,9 @@ function TenantNavLinks({ searchSuffix, navClassName }) {
   ));
 }
 
+/**
+ * Renders nav links that are only available to the business owner (e.g. Team management).
+ */
 function TenantOwnerNavLinks({ searchSuffix, navClassName }) {
   return TENANT_OWNER_NAV.map(({ path, label }) => (
     <NavLink
@@ -44,6 +54,19 @@ function TenantOwnerNavLinks({ searchSuffix, navClassName }) {
   ));
 }
 
+/**
+ * Shell layout for all authenticated dashboard routes.
+ *
+ * Renders a persistent sidebar with role-aware navigation and an <Outlet> for
+ * nested route content. Three navigation states are supported:
+ *   - Plain admin: only admin-level links (Businesses, Onboard Business).
+ *   - Admin acting as tenant: tenant links + admin links, with the active
+ *     tenant identified via the `?businessId=` query param on every link.
+ *   - Business owner / member: tenant links; owners additionally see Team.
+ *
+ * When an admin is impersonating a tenant, a dismissible banner is shown at
+ * the top of the main content area so the context is always visible.
+ */
 function DashboardLayout() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
@@ -54,6 +77,8 @@ function DashboardLayout() {
     clearActingTenant,
   } = useActingBusinessId();
 
+  // Build the query string that scopes all tenant API calls to the impersonated
+  // business. Empty string when the admin is not acting as a tenant.
   const actingSearch =
     actingBusinessId != null && actingBusinessId !== ""
       ? `?businessId=${encodeURIComponent(actingBusinessId)}`
@@ -64,11 +89,15 @@ function DashboardLayout() {
     navigate("/login");
   };
 
+  // Clears the impersonated tenant from context and returns the admin to the
+  // businesses list.
   const exitTenantView = () => {
     clearActingTenant();
     navigate("/dashboard/admin/businesses");
   };
 
+  // While an admin is acting as a tenant, show the tenant's company name and a
+  // contextual subtitle instead of the admin's own profile info.
   const sidebarTitle = isAdminActing
     ? actingCompanyName || "Tenant dashboard"
     : user?.companyName;
