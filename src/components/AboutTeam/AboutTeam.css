@@ -1,0 +1,160 @@
+.aboutTeam {
+  padding: 40px 36px;
+  margin-bottom: 24px;
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 24px;
+}
+
+.aboutTeamHeader {
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+.aboutTeamTitle {
+  margin: 0 0 14px;
+  font-size: 40px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -0.5px;
+}
+
+.aboutTeamSubtitle {
+  margin: 0 auto;
+  max-width: 540px;
+  font-size: 17px;
+  line-height: 1.8;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.aboutTeamGrid {
+  display: flex;
+  justify-content: center;
+  gap: 32px;
+  flex-wrap: wrap;
+}
+
+.aboutTeamCard {
+  display: flex;
+  gap: 36px;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 20px;
+  padding: 36px;
+  max-width: 780px;
+  width: 100%;
+  transition: background 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
+}
+
+.aboutTeamCard:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.22);
+  transform: translateY(-2px);
+}
+
+.aboutTeamImageWrap {
+  flex-shrink: 0;
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
+}
+
+.aboutTeamImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+}
+
+.aboutTeamInfo {
+  min-width: 0;
+}
+
+.aboutTeamName {
+  margin: 0 0 6px;
+  font-size: 24px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -0.3px;
+}
+
+.aboutTeamRole {
+  display: inline-block;
+  margin-bottom: 16px;
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.14);
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.aboutTeamBio {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.8;
+  color: rgba(255, 255, 255, 0.78);
+}
+
+@media (max-width: 768px) {
+  .aboutTeam {
+    padding: 32px 24px;
+  }
+
+  .aboutTeamTitle {
+    font-size: 32px;
+  }
+
+  .aboutTeamSubtitle {
+    font-size: 15px;
+  }
+
+  .aboutTeamCard {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 28px;
+    gap: 24px;
+  }
+
+  .aboutTeamImageWrap {
+    width: 140px;
+    height: 140px;
+  }
+}
+
+@media (max-width: 480px) {
+  .aboutTeam {
+    padding: 28px 20px;
+    border-radius: 18px;
+  }
+
+  .aboutTeamTitle {
+    font-size: 28px;
+  }
+
+  .aboutTeamCard {
+    padding: 24px;
+  }
+
+  .aboutTeamImageWrap {
+    width: 120px;
+    height: 120px;
+  }
+
+  .aboutTeamName {
+    font-size: 20px;
+  }
+
+  .aboutTeamBio {
+    font-size: 14px;
+  }
+}

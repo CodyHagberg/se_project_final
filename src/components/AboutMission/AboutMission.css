@@ -1,0 +1,132 @@
+.aboutMission {
+  padding: 40px 36px;
+  margin-bottom: 24px;
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 24px;
+}
+
+.aboutMissionHeader {
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+.aboutMissionTitle {
+  margin: 0 0 20px;
+  font-size: 40px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -0.5px;
+}
+
+.aboutMissionStatement {
+  margin: 0 auto;
+  max-width: 680px;
+  font-size: 19px;
+  line-height: 1.75;
+  color: rgba(255, 255, 255, 0.9);
+  font-style: italic;
+}
+
+.aboutMissionBody {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.aboutMissionBlock {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 20px;
+  padding: 32px;
+}
+
+.aboutMissionBlock--vision {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.aboutMissionBlockTitle {
+  margin: 0 0 20px;
+  font-size: 22px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -0.2px;
+}
+
+.aboutMissionBlockText {
+  margin: 0 0 16px;
+  font-size: 15px;
+  line-height: 1.8;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.aboutMissionBlockText:last-child {
+  margin-bottom: 0;
+}
+
+.aboutMissionBlockText--accent {
+  color: rgba(255, 255, 255, 0.95);
+  font-weight: 500;
+}
+
+.aboutMissionBlock--vision .aboutMissionBlockText {
+  font-size: 18px;
+  line-height: 1.75;
+  color: rgba(255, 255, 255, 0.9);
+  font-style: italic;
+}
+
+@media (max-width: 768px) {
+  .aboutMission {
+    padding: 32px 24px;
+  }
+
+  .aboutMissionTitle {
+    font-size: 32px;
+  }
+
+  .aboutMissionStatement {
+    font-size: 16px;
+  }
+
+  .aboutMissionBody {
+    grid-template-columns: 1fr;
+  }
+
+  .aboutMissionBlock {
+    padding: 24px;
+  }
+}
+
+@media (max-width: 480px) {
+  .aboutMission {
+    padding: 28px 20px;
+    border-radius: 18px;
+  }
+
+  .aboutMissionTitle {
+    font-size: 28px;
+  }
+
+  .aboutMissionStatement {
+    font-size: 15px;
+  }
+
+  .aboutMissionBlockTitle {
+    font-size: 19px;
+  }
+
+  .aboutMissionBlockText {
+    font-size: 14px;
+  }
+
+  .aboutMissionBlock--vision .aboutMissionBlockText {
+    font-size: 15px;
+  }
+}

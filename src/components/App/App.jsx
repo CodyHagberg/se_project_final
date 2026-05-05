@@ -29,6 +29,8 @@ import WidgetCustomizer from "../WidgetCustomizer/WidgetCustomizer";
 import TenantUsers from "../TenantUsers/TenantUsers";
 import Integrations from "../../pages/Integrations/Integrations";
 import SolutionsFeatures from "../SolutionsFeatures/SolutionsFeatures";
+import AboutMission from "../AboutMission/AboutMission";
+import AboutTeam from "../AboutTeam/AboutTeam";
 import Terms from "../Terms/Terms";
 import TermsOfService from "../Terms/TermsOfService";
 import PrivacyPolicy from "../Terms/PrivacyPolicy";
@@ -102,6 +104,8 @@ function App() {
             element={
               <div className="page">
                 <About />
+                <AboutMission />
+                <AboutTeam />
               </div>
             }
           />
