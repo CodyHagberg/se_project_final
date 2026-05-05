@@ -1,8 +1,8 @@
 import { useNavigate } from "react-router-dom";
-import individualBg from "../../assets/individual.svg";
-import smallBusinessBg from "../../assets/small business.svg";
-import enterpriseBg from "../../assets/enterprise.svg";
-import enterprisePlusBg from "../../assets/enterprise_plus.svg";
+import individualBg from "../../assets/ALEI_Tier_01_Individual.png";
+import smallBusinessBg from "../../assets/ALEI_Tier_02_SmallBusiness.png";
+import enterpriseBg from "../../assets/ALEI_Tier_03_Enterprise.png";
+import enterprisePlusBg from "../../assets/ALEI_Tier_04_EnterprisePlus.png";
 import "./PricingCards.css";
 
 function PricingCards() {
