@@ -7,7 +7,6 @@ import Footer from "../Footer/Footer";
 import About from "../About/About";
 import Solutions from "../Solutions/Solutions";
 import Pricing from "../Pricing/Pricing";
-import HowItWorks from "../HowItWorks/HowItWorks";
 import FAQ from "../FAQ/FAQ";
 import DemoView from "../DemoView/DemoView";
 import Login from "../Login/Login";
@@ -28,9 +27,8 @@ import EmbeddableWidget from "../EmbeddableWidget/EmbeddableWidget";
 import WidgetCustomizer from "../WidgetCustomizer/WidgetCustomizer";
 import TenantUsers from "../TenantUsers/TenantUsers";
 import Integrations from "../../pages/Integrations/Integrations";
-import SolutionsFeatures from "../SolutionsFeatures/SolutionsFeatures";
+import SolutionsDeepDive from "../SolutionsDeepDive/SolutionsDeepDive";
 import AboutMission from "../AboutMission/AboutMission";
-import AboutTeam from "../AboutTeam/AboutTeam";
 import Terms from "../Terms/Terms";
 import TermsOfService from "../Terms/TermsOfService";
 import PrivacyPolicy from "../Terms/PrivacyPolicy";
@@ -105,7 +103,6 @@ function App() {
               <div className="page">
                 <About />
                 <AboutMission />
-                <AboutTeam />
               </div>
             }
           />
@@ -114,7 +111,7 @@ function App() {
             element={
               <div className="page">
                 <Solutions />
-                <SolutionsFeatures />
+                <SolutionsDeepDive />
               </div>
             }
           />
@@ -123,7 +120,6 @@ function App() {
             element={
               <div className="page">
                 <Pricing />
-                <HowItWorks />
               </div>
             }
           />

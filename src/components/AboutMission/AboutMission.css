@@ -31,8 +31,8 @@
 }
 
 .aboutMissionBody {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
+  flex-direction: column;
   gap: 24px;
 }
 
@@ -44,9 +44,6 @@
 }
 
 .aboutMissionBlock--vision {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
   background: rgba(255, 255, 255, 0.1);
   border-color: rgba(255, 255, 255, 0.2);
 }
@@ -82,6 +79,73 @@
   font-style: italic;
 }
 
+/* Founder card */
+.aboutMissionFounder {
+  display: flex;
+  gap: 36px;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 20px;
+  padding: 32px;
+  transition: background 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
+}
+
+.aboutMissionFounder:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.22);
+  transform: translateY(-2px);
+}
+
+.aboutMissionFounderImageWrap {
+  flex-shrink: 0;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
+}
+
+.aboutMissionFounderImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+}
+
+.aboutMissionFounderInfo {
+  min-width: 0;
+}
+
+.aboutMissionFounderName {
+  margin: 0 0 6px;
+  font-size: 22px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -0.3px;
+}
+
+.aboutMissionFounderRole {
+  display: inline-block;
+  margin-bottom: 14px;
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.14);
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.aboutMissionFounderBio {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.8;
+  color: rgba(255, 255, 255, 0.78);
+}
+
 @media (max-width: 768px) {
   .aboutMission {
     padding: 32px 24px;
@@ -95,12 +159,21 @@
     font-size: 16px;
   }
 
-  .aboutMissionBody {
-    grid-template-columns: 1fr;
-  }
-
   .aboutMissionBlock {
     padding: 24px;
+  }
+
+  .aboutMissionFounder {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 28px;
+    gap: 20px;
+  }
+
+  .aboutMissionFounderImageWrap {
+    width: 130px;
+    height: 130px;
   }
 }
 
@@ -128,5 +201,22 @@
 
   .aboutMissionBlock--vision .aboutMissionBlockText {
     font-size: 15px;
+  }
+
+  .aboutMissionFounder {
+    padding: 22px;
+  }
+
+  .aboutMissionFounderImageWrap {
+    width: 110px;
+    height: 110px;
+  }
+
+  .aboutMissionFounderName {
+    font-size: 19px;
+  }
+
+  .aboutMissionFounderBio {
+    font-size: 14px;
   }
 }

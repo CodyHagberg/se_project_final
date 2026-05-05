@@ -1,4 +1,5 @@
 import "./AboutMission.css";
+import codyImg from "../../assets/cody-hagberg.png";
 
 function AboutMission() {
   return (
@@ -37,12 +38,26 @@ function AboutMission() {
           </p>
         </div>
 
-        <div className="aboutMissionBlock aboutMissionBlock--vision">
-          <h4 className="aboutMissionBlockTitle">Our Vision</h4>
-          <p className="aboutMissionBlockText">
-            A world where no lead is ever ignored, no rep ever starts cold, and
-            the first human conversation is always the right one.
-          </p>
+        <div className="aboutMissionFounder">
+          <div className="aboutMissionFounderImageWrap">
+            <img
+              src={codyImg}
+              alt="Cody Hagberg, Founder & CEO"
+              className="aboutMissionFounderImage"
+            />
+          </div>
+          <div className="aboutMissionFounderInfo">
+            <h4 className="aboutMissionFounderName">Cody Hagberg</h4>
+            <span className="aboutMissionFounderRole">Founder & CEO</span>
+            <p className="aboutMissionFounderBio">
+              Cody spent five years inside a fast-moving restaurant tech startup,
+              where he helped scale concepts to over 3,500 locations and shaped
+              an AI-powered marketing tool now used by hundreds of operators.
+              Working across marketing, operations, and onboarding, he watched
+              the lead-response problem play out at scale — and built ALEI to fix
+              it.
+            </p>
+          </div>
         </div>
       </div>
     </section>

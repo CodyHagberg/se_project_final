@@ -1,4 +1,4 @@
-.solutionsFeatures {
+.sdd {
   padding: 40px 36px;
   margin-bottom: 24px;
   background: rgba(255, 255, 255, 0.06);
@@ -8,28 +8,61 @@
   border-radius: 24px;
 }
 
-.solutionsFeaturesHeader {
+.sddHeader {
   text-align: center;
   margin-bottom: 48px;
 }
 
-.solutionsFeaturesTitle {
-  margin: 0 0 14px;
+.sddTitle {
+  margin: 0 0 16px;
   font-size: 40px;
   font-weight: 700;
   color: #fff;
   letter-spacing: -0.5px;
+  min-height: 1.2em;
 }
 
-.solutionsFeaturesSubtitle {
+.sddToggle {
+  display: inline-flex;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 10px;
+  padding: 4px;
+  margin-bottom: 16px;
+}
+
+.sddToggleBtn {
+  padding: 8px 20px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.sddToggleBtn:hover {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.sddToggleBtn--active {
+  background: rgba(255, 255, 255, 0.14);
+  color: #fff;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+}
+
+.sddSubtitle {
   margin: 0 auto;
   max-width: 620px;
   font-size: 17px;
   line-height: 1.8;
   color: rgba(255, 255, 255, 0.85);
+  min-height: 2em;
 }
 
-.solutionsFeaturesList {
+.sddList {
   list-style: none;
   margin: 0;
   padding: 0;
@@ -38,7 +71,7 @@
   gap: 48px;
 }
 
-.solutionsFeaturesStep {
+.sddStep {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
   gap: 40px;
@@ -50,29 +83,29 @@
   transition: background 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
 }
 
-.solutionsFeaturesStep:hover {
+.sddStep:hover {
   background: rgba(255, 255, 255, 0.12);
   border-color: rgba(255, 255, 255, 0.22);
   transform: translateY(-2px);
 }
 
-.solutionsFeaturesStep:nth-child(even) {
+.sddStep:nth-child(even) {
   grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
 }
 
-.solutionsFeaturesStep:nth-child(even) .solutionsFeaturesCopy {
+.sddStep:nth-child(even) .sddCopy {
   order: 2;
 }
 
-.solutionsFeaturesStep:nth-child(even) .solutionsFeaturesImageWrap {
+.sddStep:nth-child(even) .sddImageWrap {
   order: 1;
 }
 
-.solutionsFeaturesCopy {
+.sddCopy {
   min-width: 0;
 }
 
-.solutionsFeaturesLabel {
+.sddLabel {
   display: inline-block;
   padding: 6px 12px;
   border-radius: 999px;
@@ -85,7 +118,7 @@
   margin-bottom: 14px;
 }
 
-.solutionsFeaturesStepTitle {
+.sddStepTitle {
   margin: 0 0 12px;
   font-size: 24px;
   font-weight: 600;
@@ -93,14 +126,14 @@
   letter-spacing: -0.3px;
 }
 
-.solutionsFeaturesStepDesc {
+.sddStepDesc {
   margin: 0;
   font-size: 15px;
   line-height: 1.75;
   color: rgba(255, 255, 255, 0.8);
 }
 
-.solutionsFeaturesImageWrap {
+.sddImageWrap {
   min-width: 0;
   border-radius: 14px;
   overflow: hidden;
@@ -109,65 +142,70 @@
   box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
 }
 
-.solutionsFeaturesImage {
+.sddImage {
   display: block;
   width: 100%;
   height: auto;
 }
 
 @media (max-width: 768px) {
-  .solutionsFeatures {
+  .sdd {
     padding: 32px 24px;
   }
 
-  .solutionsFeaturesTitle {
+  .sddTitle {
     font-size: 32px;
   }
 
-  .solutionsFeaturesSubtitle {
+  .sddSubtitle {
     font-size: 15px;
   }
 
-  .solutionsFeaturesStep,
-  .solutionsFeaturesStep:nth-child(even) {
+  .sddStep,
+  .sddStep:nth-child(even) {
     grid-template-columns: 1fr;
     gap: 24px;
     padding: 24px;
   }
 
-  .solutionsFeaturesStep:nth-child(even) .solutionsFeaturesCopy {
+  .sddStep:nth-child(even) .sddCopy {
     order: 0;
   }
 
-  .solutionsFeaturesStep:nth-child(even) .solutionsFeaturesImageWrap {
+  .sddStep:nth-child(even) .sddImageWrap {
     order: 0;
   }
 
-  .solutionsFeaturesStepTitle {
+  .sddStepTitle {
     font-size: 20px;
   }
 }
 
 @media (max-width: 480px) {
-  .solutionsFeatures {
+  .sdd {
     padding: 28px 20px;
     border-radius: 18px;
   }
 
-  .solutionsFeaturesTitle {
+  .sddTitle {
     font-size: 28px;
   }
 
-  .solutionsFeaturesStep,
-  .solutionsFeaturesStep:nth-child(even) {
+  .sddToggleBtn {
+    font-size: 13px;
+    padding: 7px 14px;
+  }
+
+  .sddStep,
+  .sddStep:nth-child(even) {
     padding: 20px;
   }
 
-  .solutionsFeaturesStepTitle {
+  .sddStepTitle {
     font-size: 18px;
   }
 
-  .solutionsFeaturesStepDesc {
+  .sddStepDesc {
     font-size: 14px;
   }
 }

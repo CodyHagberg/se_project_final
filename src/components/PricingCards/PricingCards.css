@@ -34,11 +34,11 @@
 }
 
 .pricingCardImage {
-  height: 120px;
+  height: 140px;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  opacity: 0.85;
+  opacity: 0.92;
 }
 
 .pricingCardBody {
@@ -115,7 +115,7 @@
   }
 
   .pricingCardImage {
-    height: 110px;
+    height: 130px;
   }
 
   .pricingCardBody {
@@ -142,7 +142,7 @@
   }
 
   .pricingCardImage {
-    height: 130px;
+    height: 140px;
   }
 
   .pricingCardBody {
