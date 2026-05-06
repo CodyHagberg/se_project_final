@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import PricingCards from "../PricingCards/PricingCards";
+import pricingVideo from "../../assets/ALEI — Your Form Just Got a Brain (Flat Vector).mp4";
 import "./Pricing.css";
 
 function Pricing({ showLearnMoreCta = false }) {
@@ -12,6 +13,16 @@ function Pricing({ showLearnMoreCta = false }) {
           grow into Enterprise — no surprises, no gotchas.
         </p>
       </div>
+      {!showLearnMoreCta && (
+        <div className="pricingVideoWrap">
+          <video
+            className="pricingVideo"
+            src={pricingVideo}
+            controls
+            playsInline
+          />
+        </div>
+      )}
       <PricingCards />
       {showLearnMoreCta && (
         <div className="pricingLearnMoreWrap">

@@ -29,6 +29,18 @@
   color: rgba(255, 255, 255, 0.85);
 }
 
+.pricingVideoWrap {
+  max-width: 860px;
+  margin: 0 auto 40px;
+}
+
+.pricingVideo {
+  width: 100%;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  display: block;
+}
+
 .pricingLearnMoreWrap {
   display: flex;
   justify-content: center;
