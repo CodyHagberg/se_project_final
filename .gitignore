@@ -13,6 +13,11 @@ dist-ssr
 *.local
 .env
 
+# Cursor/Claude agent skill files (local tooling, not project code)
+.agents/
+.claude/
+skills-lock.json
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

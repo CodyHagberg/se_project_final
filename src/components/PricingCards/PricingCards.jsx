@@ -1,4 +1,7 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../contexts/useAuth";
+import { startCheckout } from "../../utils/api";
 import individualBg from "../../assets/tier-individual.png";
 import smallBusinessBg from "../../assets/tier-small-business.png";
 import enterpriseBg from "../../assets/tier-enterprise.png";
@@ -7,11 +10,15 @@ import "./PricingCards.css";
 
 function PricingCards() {
   const navigate = useNavigate();
+  const { user } = useAuth();
+  const [loadingPlan, setLoadingPlan] = useState(null);
+  const [checkoutError, setCheckoutError] = useState("");
 
   const pricingTiers = [
     {
       title: "Individual",
       image: individualBg,
+      planSlug: "individual",
       features: [
         "25 conversations per month",
         "Additional conversations billed as you go",
@@ -24,6 +31,7 @@ function PricingCards() {
     {
       title: "Small Business",
       image: smallBusinessBg,
+      planSlug: "small_business",
       features: [
         "50 conversations per month",
         "Additional conversations billed as you go",
@@ -37,6 +45,7 @@ function PricingCards() {
     {
       title: "Enterprise",
       image: enterpriseBg,
+      planSlug: null,
       features: [
         "Hundreds of conversations per month",
         "AI Support widget",
@@ -48,6 +57,7 @@ function PricingCards() {
     {
       title: "Enterprise+",
       image: enterprisePlusBg,
+      planSlug: null,
       features: [
         "Everything in Enterprise",
         "White-label solution",
@@ -59,8 +69,31 @@ function PricingCards() {
     }
   ];
 
+  async function handleGetStarted(planSlug) {
+    setCheckoutError("");
+
+    // Not logged in — send to signup so they can create an account first.
+    if (!user) {
+      navigate(`/signup?plan=${planSlug}`);
+      return;
+    }
+
+    try {
+      setLoadingPlan(planSlug);
+      const { url } = await startCheckout(planSlug);
+      window.location.href = url;
+    } catch (err) {
+      setCheckoutError(err.message || "Failed to start checkout. Please try again.");
+    } finally {
+      setLoadingPlan(null);
+    }
+  }
+
   return (
     <div className="pricingCards">
+      {checkoutError && (
+        <p className="pricingCardsError">{checkoutError}</p>
+      )}
       {pricingTiers.map((tier, index) => (
         <div key={index} className="pricingCard">
           <div className="pricingCardHeader">
@@ -78,12 +111,22 @@ function PricingCards() {
                 </li>
               ))}
             </ul>
-            <button
-              className="pricingCardButton"
-              onClick={() => navigate("/demo")}
-            >
-              Try Demo
-            </button>
+            {tier.planSlug ? (
+              <button
+                className="pricingCardButton"
+                onClick={() => handleGetStarted(tier.planSlug)}
+                disabled={loadingPlan === tier.planSlug}
+              >
+                {loadingPlan === tier.planSlug ? "Redirecting..." : "Get Started"}
+              </button>
+            ) : (
+              <button
+                className="pricingCardButton"
+                onClick={() => navigate("/demo")}
+              >
+                Contact Us
+              </button>
+            )}
           </div>
         </div>
       ))}

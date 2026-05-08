@@ -79,6 +79,13 @@ export async function login(email, password) {
   });
 }
 
+export async function register(email, password, companyName, plan) {
+  return request("/api/auth/register", {
+    method: "POST",
+    body: JSON.stringify({ email, password, companyName, plan }),
+  });
+}
+
 export async function changePassword(currentPassword, newPassword) {
   return authRequest("/api/auth/change-password", {
     method: "POST",
@@ -244,6 +251,32 @@ export async function fetchWidgetConfig(apiKey) {
     throw new Error(data.error || "Failed to fetch widget config");
   }
   return data;
+}
+
+export async function suspendAccount(userId, suspend) {
+  return authRequest(`/api/admin/suspend/${userId}`, {
+    method: "POST",
+    body: JSON.stringify({ suspend }),
+  });
+}
+
+export async function deleteAccount(userId) {
+  return authRequest(`/api/admin/users/${userId}`, {
+    method: "DELETE",
+  });
+}
+
+export async function startCheckout(plan) {
+  return authRequest("/api/billing/checkout", {
+    method: "POST",
+    body: JSON.stringify({ plan }),
+  });
+}
+
+export async function openBillingPortal() {
+  return authRequest("/api/billing/portal", {
+    method: "POST",
+  });
 }
 
 export async function fetchSalesforceStatus(businessId) {

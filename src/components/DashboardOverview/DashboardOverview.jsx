@@ -8,7 +8,7 @@ import {
   CartesianGrid,
   Tooltip,
 } from "recharts";
-import { fetchLeads, fetchUsage, enableOverages, disableOverages } from "../../utils/api";
+import { fetchLeads, fetchUsage, enableOverages, disableOverages, openBillingPortal } from "../../utils/api";
 import { useAuth } from "../../contexts/useAuth";
 import { useActingBusinessId } from "../../hooks/useActingBusinessId";
 import "./DashboardOverview.css";
@@ -108,6 +108,7 @@ function DashboardOverview() {
   const [error, setError] = useState("");
   const [enablingOverages, setEnablingOverages] = useState(false);
   const [disablingOverages, setDisablingOverages] = useState(false);
+  const [billingLoading, setBillingLoading] = useState(false);
 
   // Reload when switching between tenants in admin mode.
   useEffect(() => {
@@ -171,6 +172,18 @@ function DashboardOverview() {
       setError(err.message);
     } finally {
       setEnablingOverages(false);
+    }
+  };
+
+  /** Opens the Stripe Customer Portal so the user can manage or cancel their subscription. */
+  const handleManageBilling = async () => {
+    setBillingLoading(true);
+    try {
+      const { url } = await openBillingPortal();
+      window.location.href = url;
+    } catch (err) {
+      setError(err.message);
+      setBillingLoading(false);
     }
   };
 
@@ -304,6 +317,23 @@ function DashboardOverview() {
           </div>
         )}
       </div>
+
+      {/* Only show billing management to the business owner, not admins viewing a tenant */}
+      {user?.role === "business" && !actingBusinessId && (
+        <div className="overview__billing">
+          <div className="overview__billingInfo">
+            <span className="overview__billingLabel">Subscription</span>
+            <span className="overview__billingNote">Manage your plan, payment method, or cancel anytime.</span>
+          </div>
+          <button
+            className="overview__billingBtn"
+            onClick={handleManageBilling}
+            disabled={billingLoading}
+          >
+            {billingLoading ? "Loading..." : "Manage Billing"}
+          </button>
+        </div>
+      )}
 
       <div className="overview__chartSection">
         <div className="overview__chartHeader">

@@ -10,6 +10,7 @@ import Pricing from "../Pricing/Pricing";
 import FAQ from "../FAQ/FAQ";
 import DemoView from "../DemoView/DemoView";
 import Login from "../Login/Login";
+import Signup from "../Signup/Signup";
 import ChangePassword from "../ChangePassword/ChangePassword";
 import DashboardLayout from "../DashboardLayout/DashboardLayout";
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
@@ -57,7 +58,7 @@ function DashboardRedirect() {
 function App() {
   const location = useLocation();
   const isDashboard = location.pathname.startsWith("/dashboard");
-  const isAuthPage = location.pathname === "/login" || location.pathname === "/change-password";
+  const isAuthPage = location.pathname === "/login" || location.pathname === "/signup" || location.pathname === "/change-password";
   const isDemo = location.pathname === "/demo";
   const isSupportBubble = location.pathname === "/support-bubble";
   const isWidget = location.pathname === "/widget";
@@ -130,6 +131,7 @@ function App() {
           <Route path="/support-bubble" element={<SupportBubble />} />
           <Route path="/widget" element={<EmbeddableWidget />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
           <Route path="/change-password" element={<ChangePassword />} />
 
           <Route

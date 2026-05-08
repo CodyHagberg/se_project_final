@@ -198,3 +198,54 @@
 .overview__chart {
   width: 100%;
 }
+
+.overview__billing {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #f8f9fa;
+  border: 1px solid #e8ecef;
+  border-radius: 12px;
+  padding: 16px 20px;
+  margin-bottom: 24px;
+  gap: 16px;
+}
+
+.overview__billingInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.overview__billingLabel {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1a1a2e;
+}
+
+.overview__billingNote {
+  font-size: 13px;
+  color: #888;
+}
+
+.overview__billingBtn {
+  padding: 8px 20px;
+  background: #1a1a2e;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: opacity 0.2s;
+}
+
+.overview__billingBtn:hover {
+  opacity: 0.85;
+}
+
+.overview__billingBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

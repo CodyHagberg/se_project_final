@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { fetchBusinesses, regeneratePublishableKey, updateAllowedDomains, updateGeminiKey, updateMonthlyLeadLimit, updateOverageSettings, updateSeatLimit } from "../../utils/api";
+import { fetchBusinesses, regeneratePublishableKey, updateAllowedDomains, updateGeminiKey, updateMonthlyLeadLimit, updateOverageSettings, updateSeatLimit, suspendAccount, deleteAccount } from "../../utils/api";
 import { useActingBusinessId } from "../../hooks/useActingBusinessId";
 import "./AdminBusinesses.css";
 
@@ -114,6 +114,34 @@ function AdminBusinesses() {
     }
   };
 
+  const handleSuspendToggle = async (userId, currentlySuspended) => {
+    const action = currentlySuspended ? "reinstate" : "suspend";
+    if (!window.confirm(`Are you sure you want to ${action} this account? ${!currentlySuspended ? "Their widget will be disabled." : ""}`)) return;
+    try {
+      const data = await suspendAccount(userId, !currentlySuspended);
+      setBusinesses((prev) =>
+        prev.map((b) => (b.id === userId ? { ...b, paymentSuspended: data.paymentSuspended } : b))
+      );
+      setActionMsg(data.message);
+      setTimeout(() => setActionMsg(""), 3000);
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
+  const handleDelete = async (userId, companyName) => {
+    if (!window.confirm(`Permanently delete ${companyName} and ALL their data (leads, configs, usage history)? This cannot be undone.`)) return;
+    if (!window.confirm(`Second confirmation: this will delete every lead and configuration for ${companyName}. Continue?`)) return;
+    try {
+      await deleteAccount(userId);
+      setBusinesses((prev) => prev.filter((b) => b.id !== userId));
+      setActionMsg("Account and all data permanently deleted");
+      setTimeout(() => setActionMsg(""), 3000);
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
   const handleSeatLimitChange = async (userId, value) => {
     try {
       const data = await updateSeatLimit(userId, Number(value));
@@ -177,14 +205,37 @@ function AdminBusinesses() {
                 <div className="adminBiz__cardTitleBlock">
                   <h3 className="adminBiz__company">{biz.companyName}</h3>
                   <span className="adminBiz__plan">{PLAN_DISPLAY[biz.plan] || biz.plan}</span>
+                  {biz.paymentSuspended ? (
+                    <span className="adminBiz__subStatus adminBiz__subStatus--suspended" title="Subscription suspended">● Suspended</span>
+                  ) : biz.stripeSubscriptionId ? (
+                    <span className="adminBiz__subStatus adminBiz__subStatus--active" title="Subscription active">● Active</span>
+                  ) : (
+                    <span className="adminBiz__subStatus adminBiz__subStatus--none" title="No Stripe subscription">● No subscription</span>
+                  )}
                 </div>
-                <button
-                  type="button"
-                  className="adminBiz__tenantDashBtn"
-                  onClick={() => openTenantDashboard(biz)}
-                >
-                  Open tenant dashboard
-                </button>
+                <div className="adminBiz__cardActions">
+                  <button
+                    type="button"
+                    className="adminBiz__tenantDashBtn"
+                    onClick={() => openTenantDashboard(biz)}
+                  >
+                    Open tenant dashboard
+                  </button>
+                  <button
+                    type="button"
+                    className={biz.paymentSuspended ? "adminBiz__reinstateBtn" : "adminBiz__suspendBtn"}
+                    onClick={() => handleSuspendToggle(biz.id, biz.paymentSuspended)}
+                  >
+                    {biz.paymentSuspended ? "Reinstate" : "Suspend"}
+                  </button>
+                  <button
+                    type="button"
+                    className="adminBiz__deleteBtn"
+                    onClick={() => handleDelete(biz.id, biz.companyName)}
+                  >
+                    Delete
+                  </button>
+                </div>
               </div>
 
               <div className="adminBiz__leadLimitSection">
