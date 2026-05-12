@@ -17,6 +17,7 @@ function PricingCards() {
   const pricingTiers = [
     {
       title: "Individual",
+      price: "$25/mo",
       image: individualBg,
       planSlug: "individual",
       features: [
@@ -30,20 +31,21 @@ function PricingCards() {
     },
     {
       title: "Small Business",
+      price: "$50/mo",
       image: smallBusinessBg,
       planSlug: "small_business",
       features: [
-        "50 conversations per month",
+        "200 conversations per month",
         "Additional conversations billed as you go",
         "Industry knowledge",
         "Analytics dashboard",
-        "Kickoff call",
-        "Rep support",
+        "Email support",
         "5 Seats"
       ]
     },
     {
       title: "Enterprise",
+      price: "$$/mo",
       image: enterpriseBg,
       planSlug: null,
       features: [
@@ -56,6 +58,7 @@ function PricingCards() {
     },
     {
       title: "Enterprise+",
+      price: "$$$/mo",
       image: enterprisePlusBg,
       planSlug: null,
       features: [
@@ -98,6 +101,7 @@ function PricingCards() {
         <div key={index} className="pricingCard">
           <div className="pricingCardHeader">
             <h3 className="pricingCardTitle">{tier.title}</h3>
+            {tier.price && <span className="pricingCardPrice">{tier.price}</span>}
           </div>
           <div
             className="pricingCardImage"

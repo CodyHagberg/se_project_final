@@ -33,6 +33,13 @@
   letter-spacing: -0.2px;
 }
 
+.pricingCardPrice {
+  font-size: 15px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.8);
+  margin-top: 2px;
+}
+
 .pricingCardImage {
   height: 140px;
   background-size: cover;
