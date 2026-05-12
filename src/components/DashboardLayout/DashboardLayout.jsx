@@ -1,6 +1,8 @@
+import { useState, useEffect } from "react";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/useAuth";
 import { useActingBusinessId } from "../../hooks/useActingBusinessId";
+import WelcomeModal from "../WelcomeModal/WelcomeModal";
 import "./DashboardLayout.css";
 
 // Nav links available to all tenant roles (business owners and members).
@@ -77,6 +79,17 @@ function DashboardLayout() {
     clearActingTenant,
   } = useActingBusinessId();
 
+  const [showWelcome, setShowWelcome] = useState(false);
+
+  useEffect(() => {
+    if (user?.role === "business" && user?.id) {
+      const key = `leai_welcomed_${user.id}`;
+      if (!localStorage.getItem(key)) {
+        setShowWelcome(true);
+      }
+    }
+  }, [user?.id, user?.role]);
+
   // Build the query string that scopes all tenant API calls to the impersonated
   // business. Empty string when the admin is not acting as a tenant.
   const actingSearch =
@@ -107,6 +120,9 @@ function DashboardLayout() {
 
   return (
     <div className="dashboard">
+      {showWelcome && (
+        <WelcomeModal userId={user.id} onClose={() => setShowWelcome(false)} />
+      )}
       <aside className="dashboard__sidebar">
         <div className="dashboard__sidebarTop">
           <div className="dashboard__userInfo">

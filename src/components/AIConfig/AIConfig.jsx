@@ -68,8 +68,12 @@ function AIConfig() {
   const handleLoadTemplate = async () => {
     try {
       const data = await fetchDefaultTemplate(actingBusinessId || undefined);
-      setConfig((prev) => ({ ...prev, systemInstruction: data.template }));
-      setMessage("Template loaded -- customize it for your business");
+      setConfig((prev) => ({
+        ...prev,
+        systemInstruction: data.template,
+        ...(data.greetingTemplate ? { greetingTemplate: data.greetingTemplate } : {}),
+      }));
+      setMessage("Template loaded — customize the ABOUT THE BUSINESS section and remove the SETUP GUIDE before going live.");
     } catch (err) {
       setError(err.message);
     }
@@ -178,7 +182,15 @@ function AIConfig() {
           className="aiConfig__textarea aiConfig__textarea--sm"
           value={config.companyInfo}
           onChange={(e) => setConfig({ ...config, companyInfo: e.target.value })}
-          placeholder="Describe your company, products, and value proposition..."
+          placeholder="Welcome to your AI Sales Config! This is where you train your assistant.
+
+Start here — tell your assistant about your business:
+• Who you are and what you offer
+• Who your ideal customer is
+• What makes you different
+• Any pricing, service areas, or basics the AI should know upfront
+
+Write it like you're briefing a new team member. Remove any sections you don't need before going live."
           rows={4}
         />
       </div>
