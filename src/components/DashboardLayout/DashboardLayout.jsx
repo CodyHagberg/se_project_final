@@ -5,15 +5,18 @@ import { useActingBusinessId } from "../../hooks/useActingBusinessId";
 import WelcomeModal from "../WelcomeModal/WelcomeModal";
 import "./DashboardLayout.css";
 
+const ENTERPRISE_PLANS = ["enterprise"];
+
 // Nav links available to all tenant roles (business owners and members).
+// enterpriseOnly items are hidden for non-enterprise tenants.
 const TENANT_NAV = [
   { path: "/dashboard/overview", label: "Overview" },
   { path: "/dashboard/leads", label: "Leads" },
   { path: "/dashboard/ai-config", label: "AI Sales Config" },
-  { path: "/dashboard/support-config", label: "AI Support Config" },
+  { path: "/dashboard/support-config", label: "AI Support Config", enterpriseOnly: true },
   { path: "/dashboard/widget", label: "Widget Setup" },
   { path: "/dashboard/widget-customizer", label: "Widget Customizer" },
-  { path: "/dashboard/integrations", label: "Integrations" },
+  { path: "/dashboard/integrations", label: "Integrations", enterpriseOnly: true },
   { path: "/dashboard/testing-center", label: "Testing Center" },
 ];
 
@@ -24,9 +27,14 @@ const TENANT_OWNER_NAV = [{ path: "/dashboard/users", label: "Team" }];
  * Renders the standard tenant navigation links.
  * `searchSuffix` is appended to each path so that an admin acting as a tenant
  * carries the `?businessId=` query param across all nav transitions.
+ * `plan` filters out enterprise-only links for non-enterprise tenants;
+ * pass `"enterprise"` (or leave undefined for admins) to show all links.
  */
-function TenantNavLinks({ searchSuffix, navClassName }) {
-  return TENANT_NAV.map(({ path, label }) => (
+function TenantNavLinks({ searchSuffix, navClassName, plan }) {
+  const visibleNav = TENANT_NAV.filter(
+    ({ enterpriseOnly }) => !enterpriseOnly || ENTERPRISE_PLANS.includes(plan)
+  );
+  return visibleNav.map(({ path, label }) => (
     <NavLink
       key={path}
       to={`${path}${searchSuffix}`}
@@ -156,6 +164,7 @@ function DashboardLayout() {
                 <TenantNavLinks
                   searchSuffix={actingSearch}
                   navClassName="dashboard__navLink"
+                  plan="enterprise"
                 />
                 <div className="dashboard__navSectionLabel dashboard__navSectionLabel--spaced">
                   Admin
@@ -180,7 +189,7 @@ function DashboardLayout() {
             )}
             {(user?.role === "business" || user?.role === "member") && (
               <>
-                <TenantNavLinks searchSuffix="" navClassName="dashboard__navLink" />
+                <TenantNavLinks searchSuffix="" navClassName="dashboard__navLink" plan={user?.plan} />
                 {user?.role === "business" && (
                   <TenantOwnerNavLinks searchSuffix="" navClassName="dashboard__navLink" />
                 )}

@@ -1,10 +1,13 @@
 import { useState, useEffect } from "react";
 import { fetchWidgetSnippet } from "../../utils/api";
 import { useActingBusinessId } from "../../hooks/useActingBusinessId";
+import { useAuth } from "../../contexts/useAuth";
 import "./WidgetSetup.css";
 
 function WidgetSetup() {
-  const { actingBusinessId } = useActingBusinessId();
+  const { user } = useAuth();
+  const { actingBusinessId, isAdminActing } = useActingBusinessId();
+  const isEnterprise = isAdminActing || user?.role === "admin" || user?.plan === "enterprise";
   const [salesSnippet, setSalesSnippet] = useState("");
   const [supportSnippet, setSupportSnippet] = useState("");
   const [loading, setLoading] = useState(true);
@@ -57,12 +60,14 @@ function WidgetSetup() {
         >
           Sales Widget
         </button>
-        <button
-          className={`widgetSetup__tab ${activeTab === "support" ? "widgetSetup__tab--active" : ""}`}
-          onClick={() => setActiveTab("support")}
-        >
-          Support Widget
-        </button>
+        {isEnterprise && (
+          <button
+            className={`widgetSetup__tab ${activeTab === "support" ? "widgetSetup__tab--active" : ""}`}
+            onClick={() => setActiveTab("support")}
+          >
+            Support Widget
+          </button>
+        )}
       </div>
 
       {error && <p className="widgetSetup__error">{error}</p>}

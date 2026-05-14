@@ -37,6 +37,15 @@ import { SITE_PUB_KEY } from "../../utils/constants";
 import "../../pages/Pages.css";
 import "./App.css";
 
+/** Redirects non-enterprise (and non-admin) users to the overview page. */
+function EnterpriseRoute({ children }) {
+  const { user } = useAuth();
+  const { isAdminActing } = useActingBusinessId();
+  if (user?.role === "admin" || isAdminActing) return children;
+  if (user?.plan !== "enterprise") return <Navigate to="/dashboard/overview" replace />;
+  return children;
+}
+
 function DashboardRedirect() {
   const { user } = useAuth();
   const { actingBusinessId } = useActingBusinessId();
@@ -151,8 +160,8 @@ function App() {
             <Route path="testing-center" element={<Dojo />} />
             <Route path="dojo" element={<Navigate to="/dashboard/testing-center" replace />} />
             <Route path="widget-customizer" element={<WidgetCustomizer />} />
-            <Route path="support-config" element={<SupportConfig />} />
-            <Route path="integrations" element={<Integrations />} />
+            <Route path="support-config" element={<EnterpriseRoute><SupportConfig /></EnterpriseRoute>} />
+            <Route path="integrations" element={<EnterpriseRoute><Integrations /></EnterpriseRoute>} />
             <Route
               path="users"
               element={
