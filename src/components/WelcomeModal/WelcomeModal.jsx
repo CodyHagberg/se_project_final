@@ -12,7 +12,7 @@ export default function WelcomeModal({ userId, onClose }) {
   const goToConfig = () => {
     localStorage.setItem(`leai_welcomed_${userId}`, "1");
     onClose();
-    navigate("/dashboard/config");
+    navigate("/dashboard/ai-config");
   };
 
   return (
