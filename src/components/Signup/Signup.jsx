@@ -13,6 +13,7 @@ function Signup() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [companyName, setCompanyName] = useState("");
+  const [tosAccepted, setTosAccepted] = useState(false);
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const { login } = useAuth();
@@ -29,7 +30,12 @@ function Signup() {
 
     try {
       // Create the account and auto-login.
-      const data = await registerApi(email, password, companyName, plan);
+      const data = await registerApi(email, password, companyName, plan, {
+        tosVersion: "1.0",
+        privacyVersion: "1.0",
+        aupVersion: "1.0",
+        subprocessorsVersion: "1.0",
+      });
       login(data.token, data.user);
 
       // Immediately redirect to Stripe Checkout for the selected plan.
@@ -86,7 +92,19 @@ function Signup() {
           />
         </label>
 
-        <button type="submit" className="signup__button" disabled={isLoading}>
+        <label className="signup__consent">
+          <input
+            type="checkbox"
+            checked={tosAccepted}
+            onChange={(e) => setTosAccepted(e.target.checked)}
+          />
+          I have read and agree to ALEI&rsquo;s{" "}
+          <a href="/terms" target="_blank" rel="noopener noreferrer">Terms of Service</a>
+          {" "}and{" "}
+          <a href="/privacy" target="_blank" rel="noopener noreferrer">Privacy Policy</a>.
+        </label>
+
+        <button type="submit" className="signup__button" disabled={isLoading || !tosAccepted}>
           {isLoading ? "Setting up your account..." : "Continue to Payment"}
         </button>
 

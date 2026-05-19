@@ -8,21 +8,96 @@
   background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 16px;
-  padding: 28px;
+  padding: 40px 48px;
   backdrop-filter: blur(10px);
 }
 
 .legal__title {
   margin: 0 0 6px;
-  font-size: 26px;
+  font-size: 28px;
   font-weight: 700;
   color: rgba(255, 255, 255, 0.92);
 }
 
+.legal__subtitle {
+  margin: 0 0 4px;
+  font-size: 15px;
+  color: rgba(255, 255, 255, 0.55);
+  font-style: italic;
+}
+
 .legal__meta {
-  margin: 0 0 18px;
-  color: rgba(255, 255, 255, 0.65);
+  margin: 0 0 24px;
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 13px;
+}
+
+.legal__divider {
+  border: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  margin: 24px 0;
+}
+
+.legal__body {
+  color: rgba(255, 255, 255, 0.78);
   font-size: 14px;
+  line-height: 1.75;
+}
+
+.legal__section {
+  margin-bottom: 28px;
+}
+
+.legal__h2 {
+  margin: 32px 0 10px;
+  color: rgba(255, 255, 255, 0.92);
+  font-size: 17px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.legal__h3 {
+  margin: 20px 0 8px;
+  color: rgba(255, 255, 255, 0.88);
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.legal__p {
+  margin: 0 0 12px;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.legal__ul {
+  margin: 0 0 12px;
+  padding-left: 22px;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.legal__ul li {
+  margin-bottom: 6px;
+}
+
+.legal__table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 12px 0 20px;
+  font-size: 13px;
+}
+
+.legal__table th,
+.legal__table td {
+  padding: 10px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: rgba(255, 255, 255, 0.78);
+  vertical-align: top;
+}
+
+.legal__table th {
+  background: rgba(255, 255, 255, 0.07);
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.88);
 }
 
 .legal__link {
@@ -34,13 +109,19 @@
   color: rgba(255, 255, 255, 0.95);
 }
 
-.legal__h3 {
-  margin: 20px 0 10px;
-  color: rgba(255, 255, 255, 0.9);
-  font-size: 18px;
-  font-weight: 700;
+.legal__backLink {
+  display: inline-block;
+  margin-bottom: 28px;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.5);
+  text-decoration: none;
 }
 
+.legal__backLink:hover {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* Legacy pre block — kept for any old pages still using it */
 .legal__text {
   margin: 0;
   padding: 14px;
@@ -53,12 +134,47 @@
   white-space: pre-wrap;
 }
 
+/* Legal index cards */
+.legal__indexGrid {
+  display: grid;
+  gap: 14px;
+  margin-top: 8px;
+}
+
+.legal__indexCard {
+  display: block;
+  padding: 16px 20px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  text-decoration: none;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.legal__indexCard:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.legal__indexCard h3 {
+  margin: 0 0 4px;
+  font-size: 15px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.legal__indexCard p {
+  margin: 0;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.5);
+}
+
 @media (max-width: 480px) {
   .legal {
     padding: 32px 12px;
   }
   .legal__card {
-    padding: 18px;
+    padding: 24px 20px;
   }
   .legal__title {
     font-size: 22px;

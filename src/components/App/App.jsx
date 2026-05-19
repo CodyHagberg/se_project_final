@@ -30,9 +30,12 @@ import TenantUsers from "../TenantUsers/TenantUsers";
 import Integrations from "../../pages/Integrations/Integrations";
 import SolutionsDeepDive from "../SolutionsDeepDive/SolutionsDeepDive";
 import AboutMission from "../AboutMission/AboutMission";
-import Terms from "../Terms/Terms";
 import TermsOfService from "../Terms/TermsOfService";
 import PrivacyPolicy from "../Terms/PrivacyPolicy";
+import AUP from "../Terms/AUP";
+import SubProcessors from "../Terms/SubProcessors";
+import DPA from "../Terms/DPA";
+import LegalIndex from "../Terms/LegalIndex";
 import { SITE_PUB_KEY } from "../../utils/constants";
 import "../../pages/Pages.css";
 import "./App.css";
@@ -134,9 +137,13 @@ function App() {
             }
           />
           <Route path="/demo" element={<DemoView />} />
-          <Route path="/terms" element={<Terms />} />
-          <Route path="/terms-of-service" element={<TermsOfService />} />
+          <Route path="/legal" element={<LegalIndex />} />
+          <Route path="/terms" element={<TermsOfService />} />
+          <Route path="/terms-of-service" element={<Navigate to="/terms" replace />} />
           <Route path="/privacy" element={<PrivacyPolicy />} />
+          <Route path="/aup" element={<AUP />} />
+          <Route path="/sub-processors" element={<SubProcessors />} />
+          <Route path="/dpa" element={<DPA />} />
           <Route path="/support-bubble" element={<SupportBubble />} />
           <Route path="/widget" element={<EmbeddableWidget />} />
           <Route path="/login" element={<Login />} />

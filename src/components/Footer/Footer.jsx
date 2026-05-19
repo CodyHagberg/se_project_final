@@ -7,7 +7,8 @@ export default function Footer() {
     <div className="footer__content">
         <span className="footer__name">© ALEI 2026</span>
         <nav className="footer__links" aria-label="Legal links">
-          <Link className="footer__link" to="/terms-of-service">Terms of Service</Link>
+          <Link className="footer__link" to="/legal">Legal</Link>
+          <Link className="footer__link" to="/terms">Terms</Link>
           <Link className="footer__link" to="/privacy">Privacy Policy</Link>
         </nav>
     </div>

@@ -97,6 +97,34 @@
   cursor: not-allowed;
 }
 
+.signup__consent {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.7);
+  cursor: pointer;
+  line-height: 1.5;
+}
+
+.signup__consent input[type="checkbox"] {
+  flex-shrink: 0;
+  margin-top: 2px;
+  width: 16px;
+  height: 16px;
+  accent-color: rgba(255, 255, 255, 0.8);
+  cursor: pointer;
+}
+
+.signup__consent a {
+  color: rgba(255, 255, 255, 0.9);
+  text-decoration: underline;
+}
+
+.signup__consent a:hover {
+  color: #fff;
+}
+
 .signup__login {
   margin: 0;
   text-align: center;

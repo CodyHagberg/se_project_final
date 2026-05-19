@@ -79,10 +79,20 @@ export async function login(email, password) {
   });
 }
 
-export async function register(email, password, companyName, plan) {
+export async function register(email, password, companyName, plan, tosVersions = {}) {
   return request("/api/auth/register", {
     method: "POST",
-    body: JSON.stringify({ email, password, companyName, plan }),
+    body: JSON.stringify({
+      email,
+      password,
+      companyName,
+      plan,
+      tosAccepted: true,
+      tosVersion: tosVersions.tosVersion || "1.0",
+      privacyVersion: tosVersions.privacyVersion || "1.0",
+      aupVersion: tosVersions.aupVersion || "1.0",
+      subprocessorsVersion: tosVersions.subprocessorsVersion || "1.0",
+    }),
   });
 }
 
