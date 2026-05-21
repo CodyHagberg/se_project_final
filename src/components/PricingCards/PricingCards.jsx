@@ -35,7 +35,7 @@ function PricingCards() {
       image: smallBusinessBg,
       planSlug: "small_business",
       features: [
-        "200 conversations per month",
+        "50 conversations per month",
         "Additional conversations billed as you go",
         "Industry knowledge",
         "Analytics dashboard",
