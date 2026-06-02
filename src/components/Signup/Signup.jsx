@@ -1,7 +1,6 @@
 import { useState } from "react";
-import { useNavigate, useLocation, Link } from "react-router-dom";
-import { useAuth } from "../../contexts/useAuth";
-import { register as registerApi, startCheckout } from "../../utils/api";
+import { useLocation, Link } from "react-router-dom";
+import { register as registerApi } from "../../utils/api";
 import "./Signup.css";
 
 const PLAN_LABELS = {
@@ -16,8 +15,6 @@ function Signup() {
   const [tosAccepted, setTosAccepted] = useState(false);
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const { login } = useAuth();
-  const navigate = useNavigate();
   const location = useLocation();
 
   const plan = new URLSearchParams(location.search).get("plan") || "individual";
@@ -29,18 +26,16 @@ function Signup() {
     setIsLoading(true);
 
     try {
-      // Create the account and auto-login.
+      // No account is created here — the backend saves a temporary record and
+      // returns a Stripe Checkout URL. The real account is only created after
+      // Stripe confirms payment via webhook.
       const data = await registerApi(email, password, companyName, plan, {
         tosVersion: "1.0",
         privacyVersion: "1.0",
         aupVersion: "1.0",
         subprocessorsVersion: "1.0",
       });
-      login(data.token, data.user);
-
-      // Immediately redirect to Stripe Checkout for the selected plan.
-      const { url } = await startCheckout(plan);
-      window.location.href = url;
+      window.location.href = data.checkoutUrl;
     } catch (err) {
       setError(err.message || "Something went wrong. Please try again.");
       setIsLoading(false);

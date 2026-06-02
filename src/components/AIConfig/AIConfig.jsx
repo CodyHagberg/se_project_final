@@ -30,11 +30,14 @@ function AIConfig() {
     try {
       const data = await fetchConfig(actingBusinessId || undefined);
       if (data.config) {
+        const systemInstruction = data.config.systemInstruction || "";
+        const greetingTemplate = data.config.greetingTemplate || "";
+
         setConfig({
           assistantName: data.config.assistantName || "",
-          systemInstruction: data.config.systemInstruction || "",
+          systemInstruction,
           companyInfo: data.config.companyInfo || "",
-          greetingTemplate: data.config.greetingTemplate || "",
+          greetingTemplate,
           maxMessages: data.config.maxMessages || 6,
           maxVoiceMinutes: data.config.maxVoiceMinutes ?? 5,
           maxVoiceOverageMinutes: data.config.maxVoiceOverageMinutes ?? 6,
@@ -42,6 +45,24 @@ function AIConfig() {
           idleTimeoutSeconds: data.config.idleTimeoutSeconds ?? 60,
           visualContentSets: data.config.visualContentSets || [],
         });
+
+        // Auto-load the template for brand-new accounts that haven't configured
+        // their assistant yet so they have a starting point immediately.
+        if (!systemInstruction) {
+          try {
+            const tpl = await fetchDefaultTemplate(actingBusinessId || undefined);
+            setConfig((prev) => ({
+              ...prev,
+              systemInstruction: tpl.template,
+              ...(tpl.greetingTemplate && !greetingTemplate
+                ? { greetingTemplate: tpl.greetingTemplate }
+                : {}),
+            }));
+            setMessage("We loaded a starter template for you — fill in your company details in the ABOUT THE BUSINESS section and remove the SETUP GUIDE before going live.");
+          } catch {
+            // Non-fatal: user can still click Load Template manually.
+          }
+        }
       }
     } catch (err) {
       setError(err.message);
@@ -182,15 +203,13 @@ function AIConfig() {
           className="aiConfig__textarea aiConfig__textarea--sm"
           value={config.companyInfo}
           onChange={(e) => setConfig({ ...config, companyInfo: e.target.value })}
-          placeholder="Welcome to your AI Sales Config! This is where you train your assistant.
-
-Start here — tell your assistant about your business:
-• Who you are and what you offer
+          placeholder="Give your assistant the knowledge it needs about your business:
+• What you do and what you offer
 • Who your ideal customer is
-• What makes you different
-• Any pricing, service areas, or basics the AI should know upfront
+• What makes you different from competitors
+• Key details like pricing, service areas, or hours
 
-Write it like you're briefing a new team member. Remove any sections you don't need before going live."
+This is your AI's source of truth — the more specific you are, the better it performs."
           rows={4}
         />
       </div>

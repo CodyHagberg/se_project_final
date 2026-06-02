@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../../contexts/useAuth";
 import { login as loginApi } from "../../utils/api";
 import "./Login.css";
@@ -11,6 +11,9 @@ function Login() {
   const [isLoading, setIsLoading] = useState(false);
   const { login } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const justRegistered = new URLSearchParams(location.search).get("registered") === "true";
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -37,6 +40,11 @@ function Login() {
     <div className="login">
       <form className="login__form" onSubmit={handleSubmit}>
         <h2 className="login__title">Sign In</h2>
+        {justRegistered && (
+          <p className="login__success">
+            Your account is ready! Sign in with the email and password you just created.
+          </p>
+        )}
         {error && <p className="login__error">{error}</p>}
         <label className="login__label">
           Email

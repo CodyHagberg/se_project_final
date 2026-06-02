@@ -27,6 +27,16 @@
   color: #fff;
 }
 
+.login__success {
+  margin: 0;
+  padding: 10px;
+  background: rgba(80, 200, 120, 0.2);
+  color: #a8f0c6;
+  border-radius: 8px;
+  font-size: 14px;
+  text-align: center;
+}
+
 .login__error {
   margin: 0;
   padding: 10px;
