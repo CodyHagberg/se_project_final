@@ -21,6 +21,11 @@ const faqItems = [
     question: "How much time can my team actually save?",
     answer:
       "On average, sales teams spend up to 50% of their week on initial discovery calls with unqualified prospects. ALEI automates this entire phase. For a team of five, this can save over 40 hours of manual labor per week, allowing your high-performing agents to stop \"hunting\" and start \"closing.\""
+  },
+  {
+    question: "How do I get support?",
+    answer:
+      "Our team is here to help. Reach us any time at support@alei.ai and we'll get back to you as quickly as possible."
   }
 ];
 

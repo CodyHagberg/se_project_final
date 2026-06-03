@@ -224,7 +224,8 @@ function DashboardLayout() {
           <Outlet />
         </div>
         <footer className="dashboard__footer">
-          ALEI {new Date().getFullYear()}
+          ALEI {new Date().getFullYear()} &nbsp;·&nbsp;{" "}
+          <a href="mailto:support@alei.ai" className="dashboard__footerLink">support@alei.ai</a>
         </footer>
       </div>
     </div>

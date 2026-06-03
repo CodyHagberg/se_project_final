@@ -159,3 +159,13 @@
   color: #999;
   flex-shrink: 0;
 }
+
+.dashboard__footerLink {
+  color: #999;
+  text-decoration: none;
+}
+
+.dashboard__footerLink:hover {
+  color: #555;
+  text-decoration: underline;
+}
