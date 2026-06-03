@@ -1,23 +1,42 @@
 .demoView {
-  padding: 20px;
+  padding: 40px 20px 20px;
   min-height: 60vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.demoViewTitle {
-  margin: 0 0 24px;
-  font-size: 28px;
-  font-weight: 500;
-  color: #fff;
+.demoView__header {
+  max-width: 680px;
   text-align: center;
+  margin-bottom: 16px;
+}
+
+.demoView__title {
+  margin: 0 0 14px;
+  font-size: 42px;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.15;
+}
+
+.demoView__subtitle {
+  margin: 0;
+  font-size: 18px;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.75);
 }
 
 @media (max-width: 480px) {
   .demoView {
-    padding: 16px 12px;
+    padding: 24px 16px 12px;
   }
 
-  .demoViewTitle {
-    font-size: 22px;
-    margin-bottom: 16px;
+  .demoView__title {
+    font-size: 28px;
+  }
+
+  .demoView__subtitle {
+    font-size: 15px;
   }
 }

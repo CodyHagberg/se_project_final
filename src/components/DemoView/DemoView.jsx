@@ -6,7 +6,13 @@ import "./DemoView.css";
 function DemoView() {
   return (
     <div className="demoView">
-      <h1 className="demoViewTitle">Demo</h1>
+      <div className="demoView__header">
+        <h1 className="demoView__title">Join the Enterprise Waitlist</h1>
+        <p className="demoView__subtitle">
+          Enterprise and Enterprise+ plans are available by invitation. Fill out the form below
+          to join the waitlist — our team will follow up with next steps.
+        </p>
+      </div>
       <EmbeddableWidget apiKey={SITE_PUB_KEY} />
     </div>
   );
